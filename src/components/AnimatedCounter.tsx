@@ -33,7 +33,7 @@ export function AnimatedCounter({
     if (decimals > 0) {
       return latest.toFixed(decimals);
     }
-    return Math.floor(latest).toLocaleString();
+    return Math.floor(latest).toLocaleString('es-AR');
   });
 
   const [display, setDisplay] = useState('0');
@@ -136,10 +136,10 @@ export function OdometerCounter({
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       // Easing function (easeOutExpo)
       const easeOut = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      
+
       const current = Math.floor(startValue + (value - startValue) * easeOut);
       setDisplayValue(current);
 

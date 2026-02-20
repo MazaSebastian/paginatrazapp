@@ -2,7 +2,6 @@ import { useRef, useState } from 'react';
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { Sprout, Sun, Flower2, FlaskConical, Microscope, Check } from 'lucide-react';
 import { TiltCard } from '@/components/TiltCard';
-import { AnimatedCounter } from '@/components/AnimatedCounter';
 
 const stages = [
   {
@@ -43,7 +42,7 @@ const stages = [
     description: 'Control de calidad orientado al paciente. Integración de analíticas de terceros para el seguimiento terapéutico, asegurando la consistencia química necesario en cada entrega del tratamiento.',
     icon: Microscope,
     color: '#D1FAE5',
-    details: ['Integración de COA', 'Verificación de potencia', 'Cumplimiento de seguridad'],
+    details: ['Carga de información cromatografíca', 'Analisis de Cannabinoides', 'Control de efectividad terapeutica'],
   },
 ];
 
@@ -411,38 +410,6 @@ export function TraceabilityTimeline() {
         </div>
       </div>
 
-      {/* Bottom Stats */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6"
-        >
-          {[
-            { value: 100, suffix: '%', label: 'Trazabilidad' },
-            { value: 5, suffix: '', label: 'Etapas de Crecimiento' },
-            { value: 24, suffix: '/7', label: 'Monitoreo' },
-            { value: 0, suffix: '', label: 'Brechas de Datos' },
-          ].map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, type: 'spring' }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              className="glass rounded-xl p-6 text-center border border-white/10 hover:border-emerald-500/30 transition-colors cursor-pointer"
-            >
-              <div className="text-3xl md:text-4xl font-bold text-emerald-400 mb-2">
-                <AnimatedCounter value={stat.value} suffix={stat.suffix} duration={2} />
-              </div>
-              <div className="text-sm text-zinc-500">{stat.label}</div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
     </section>
   );
 }
