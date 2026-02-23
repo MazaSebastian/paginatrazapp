@@ -180,13 +180,13 @@ function MobileFeatureAccordionItem({ category, isCategoryDisabled }: { category
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div
-      className={`border border-white/5 rounded-lg px-3 glass overflow-hidden ${isCategoryDisabled ? 'opacity-60 grayscale border-transparent' : 'border-green-500/10'
-        }`}
+    <button
+      onClick={() => setIsOpen(!isOpen)}
+      className={`w-full text-left border border-white/5 rounded-lg px-3 glass overflow-hidden transition-all duration-300 ${isCategoryDisabled ? 'opacity-60 grayscale border-transparent' : 'border-green-500/10'
+        } ${isOpen ? 'ring-1 ring-green-500/30' : ''}`}
     >
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between py-3 text-sm font-semibold text-left focus:outline-none focus-visible:ring-1 focus-visible:ring-green-500"
+      <div
+        className="w-full flex items-center justify-between py-3 text-sm font-semibold"
       >
         <div className={`flex items-center gap-2 ${isCategoryDisabled ? 'text-slate-500' : 'text-slate-200'}`}>
           <category.icon className={`w-4 h-4 ${isCategoryDisabled ? 'text-slate-500' : 'text-green-400'}`} />
@@ -197,13 +197,13 @@ function MobileFeatureAccordionItem({ category, isCategoryDisabled }: { category
             <path d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
           </svg>
         </div>
-      </button>
+      </div>
 
       <div
-        className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] pb-3' : 'grid-rows-[0fr]'}`}
+        className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
       >
         <div className="overflow-hidden">
-          <div className="space-y-3 pt-1">
+          <div className="space-y-3 pt-1 pb-3">
             {category.features.map((feature, j) => (
               <div key={j} className="flex items-center gap-3">
                 <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${feature.included ? 'bg-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.2)]' : 'bg-slate-800'
@@ -222,7 +222,7 @@ function MobileFeatureAccordionItem({ category, isCategoryDisabled }: { category
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 }
 
