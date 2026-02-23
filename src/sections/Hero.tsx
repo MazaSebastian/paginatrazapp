@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useMotionValue, useSpring, useScroll, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useScroll, useTransform, useInView } from 'framer-motion';
 import { ArrowRight, Shield, Microscope, LayoutDashboard, Stethoscope, Sprout, MapPin, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useIsMobile } from '@/hooks/use-mobile';
 import ShinyText from '@/components/ShinyText';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
 import { TiltCard } from '@/components/TiltCard';
@@ -108,15 +109,20 @@ function GlowingOrbs() {
 
 // Holographic Stat Card
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function HolographicStatCard({ icon: Icon, value, suffix, label, delay }: any) {
+function HolographicStatCard({ icon: Icon, value, suffix, label, delay, index }: any) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const isMobile = useIsMobile();
+
   return (
     <motion.div
+      ref={ref}
       initial={{ opacity: 0, y: 20, scale: 0.9 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.8, delay }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ duration: 0.8, delay: isMobile ? index * 0.15 : delay }}
       className="h-full"
     >
-      <TiltCard tiltAmount={15} glareEnabled={true} scale={1.05} className="h-full">
+      <TiltCard tiltAmount={isMobile ? 0 : 15} glareEnabled={!isMobile} scale={isMobile ? 1 : 1.05} className="h-full">
         <div className="relative h-full group p-6 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md overflow-hidden cursor-default transition-colors duration-300 hover:bg-white/10 hover:border-green-500/30 hover:shadow-2xl hover:shadow-green-500/10">
           {/* Hover Gradient Background - Adjusted for Tilt */}
           <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -279,6 +285,7 @@ export function Hero() {
                 key={stat.label}
                 {...stat}
                 delay={2 + index * 0.15}
+                index={index}
               />
             ))}
           </div>
