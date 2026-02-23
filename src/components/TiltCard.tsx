@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'framer-motion';
 
 interface TiltCardProps {
   children: React.ReactNode;
@@ -31,6 +31,14 @@ export function TiltCard({
 
   const glareX = useTransform(xSpring, [0, 1], ['0%', '100%']);
   const glareY = useTransform(ySpring, [0, 1], ['0%', '100%']);
+
+  const glareBackground = useMotionTemplate`
+    radial-gradient(
+      circle at ${glareX} ${glareY},
+      rgba(255, 255, 255, 0.8) 0%,
+      transparent 50%
+    )
+  `;
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
@@ -79,13 +87,7 @@ export function TiltCard({
             className="absolute inset-0 pointer-events-none rounded-inherit overflow-hidden"
             style={{
               opacity: isHovering ? 0.15 : 0,
-              background: useMotionTemplate`
-                radial-gradient(
-                  circle at ${glareX} ${glareY},
-                  rgba(255, 255, 255, 0.8) 0%,
-                  transparent 50%
-                )
-              `,
+              background: glareBackground,
             }}
             transition={{ opacity: { duration: 0.3 } }}
           />
@@ -163,7 +165,7 @@ export function ExpandableCard({
       transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
     >
       <div onClick={() => setIsExpanded(!isExpanded)}>{children}</div>
-      
+
       <motion.div
         initial={{ opacity: 0, height: 0 }}
         animate={{
@@ -178,5 +180,4 @@ export function ExpandableCard({
   );
 }
 
-// Import useMotionTemplate
-import { useMotionTemplate } from 'framer-motion';
+
