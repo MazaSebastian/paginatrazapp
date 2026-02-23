@@ -179,11 +179,13 @@ const plans = [
 function PricingCard({
   plan,
   isYearly,
-  index
+  index,
+  isMobile
 }: {
   plan: typeof plans[0];
   isYearly: boolean;
   index: number;
+  isMobile: boolean;
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
@@ -326,53 +328,91 @@ function PricingCard({
               <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2 text-center md:text-left">
                 Funciones por Módulo
               </p>
-              <Accordion type="single" collapsible className="w-full space-y-2">
-                {plan.categories.map((category, i) => {
-                  const isCategoryDisabled = category.features.every(f => !f.included);
-                  return (
-                    <AccordionItem
-                      value={`item-${i}`}
-                      key={i}
-                      className={`border border-white/5 rounded-lg px-3 glass overflow-hidden transition-all duration-300 ${isCategoryDisabled
-                        ? 'opacity-60 grayscale data-[state=open]:border-slate-700/50'
-                        : 'data-[state=open]:border-green-500/30'
-                        }`}
-                    >
-                      <AccordionTrigger className={`hover:no-underline py-3 px-1 text-sm transition-colors ${isCategoryDisabled
-                        ? 'text-slate-500 hover:text-slate-400'
-                        : 'text-slate-300 hover:text-white'
-                        }`}>
-                        <div className="flex items-center gap-2">
+              {isMobile ? (
+                <div className="w-full space-y-4">
+                  {plan.categories.map((category, i) => {
+                    const isCategoryDisabled = category.features.every(f => !f.included);
+                    return (
+                      <div
+                        key={i}
+                        className={`border border-white/5 rounded-lg px-3 py-3 glass overflow-hidden ${isCategoryDisabled ? 'opacity-60 grayscale border-transparent' : 'border-green-500/10'
+                          }`}
+                      >
+                        <div className={`flex items-center gap-2 mb-3 text-sm font-semibold ${isCategoryDisabled ? 'text-slate-500' : 'text-slate-200'
+                          }`}>
                           <category.icon className={`w-4 h-4 ${isCategoryDisabled ? 'text-slate-500' : 'text-green-400'}`} />
                           {category.name}
                         </div>
-                      </AccordionTrigger>
-                      <AccordionContent className="pb-4 pt-2 space-y-3">
-                        {category.features.map((feature, j) => (
-                          <div key={j} className="flex items-center gap-3 group">
-                            <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${feature.included
-                              ? 'bg-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.2)]'
-                              : 'bg-slate-800'
-                              }`}>
-                              {feature.included ? (
-                                <Check className="w-3 h-3 text-green-400" />
-                              ) : (
-                                <X className="w-3 h-3 text-slate-600" />
-                              )}
+                        <div className="space-y-3">
+                          {category.features.map((feature, j) => (
+                            <div key={j} className="flex items-center gap-3">
+                              <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${feature.included ? 'bg-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.2)]' : 'bg-slate-800'
+                                }`}>
+                                {feature.included ? (
+                                  <Check className="w-3 h-3 text-green-400" />
+                                ) : (
+                                  <X className="w-3 h-3 text-slate-600" />
+                                )}
+                              </div>
+                              <span className={`text-xs ${feature.included ? 'text-slate-300' : 'text-slate-600'}`}>
+                                {feature.text}
+                              </span>
                             </div>
-                            <span className={`text-xs transition-all duration-300 ${feature.included
-                              ? 'group-hover:translate-x-1 text-slate-300 group-hover:text-green-300'
-                              : 'text-slate-600'
-                              }`}>
-                              {feature.text}
-                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <Accordion type="single" collapsible className="w-full space-y-2">
+                  {plan.categories.map((category, i) => {
+                    const isCategoryDisabled = category.features.every(f => !f.included);
+                    return (
+                      <AccordionItem
+                        value={`item-${i}`}
+                        key={i}
+                        className={`border border-white/5 rounded-lg px-3 glass overflow-hidden transition-all duration-300 ${isCategoryDisabled
+                          ? 'opacity-60 grayscale data-[state=open]:border-slate-700/50'
+                          : 'data-[state=open]:border-green-500/30'
+                          }`}
+                      >
+                        <AccordionTrigger className={`hover:no-underline py-3 px-1 text-sm transition-colors ${isCategoryDisabled
+                          ? 'text-slate-500 hover:text-slate-400'
+                          : 'text-slate-300 hover:text-white'
+                          }`}>
+                          <div className="flex items-center gap-2">
+                            <category.icon className={`w-4 h-4 ${isCategoryDisabled ? 'text-slate-500' : 'text-green-400'}`} />
+                            {category.name}
                           </div>
-                        ))}
-                      </AccordionContent>
-                    </AccordionItem>
-                  );
-                })}
-              </Accordion>
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-4 pt-2 space-y-3">
+                          {category.features.map((feature, j) => (
+                            <div key={j} className="flex items-center gap-3 group">
+                              <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${feature.included
+                                ? 'bg-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.2)]'
+                                : 'bg-slate-800'
+                                }`}>
+                                {feature.included ? (
+                                  <Check className="w-3 h-3 text-green-400" />
+                                ) : (
+                                  <X className="w-3 h-3 text-slate-600" />
+                                )}
+                              </div>
+                              <span className={`text-xs transition-all duration-300 ${feature.included
+                                ? 'group-hover:translate-x-1 text-slate-300 group-hover:text-green-300'
+                                : 'text-slate-600'
+                                }`}>
+                                {feature.text}
+                              </span>
+                            </div>
+                          ))}
+                        </AccordionContent>
+                      </AccordionItem>
+                    );
+                  })}
+                </Accordion>
+              )}
             </div>
           </div>
         </div>
@@ -472,6 +512,7 @@ export function Pricing() {
               plan={plan}
               isYearly={isYearly}
               index={index}
+              isMobile={isMobile}
             />
           ))}
         </div>
