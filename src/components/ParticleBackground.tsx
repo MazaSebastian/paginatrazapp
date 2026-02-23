@@ -35,7 +35,7 @@ export const ParticleBackground = () => {
         const mouse = { x: -1000, y: -1000, active: false };
 
         // Emerald palette
-        const colors = ['#10B981', '#34D399', '#059669', '#6EE7B7'];
+        const colors = ['#22C55E', '#4ADE80', '#16A34A', '#86EFAC'];
 
         const init = () => {
             width = window.innerWidth;
@@ -67,8 +67,8 @@ export const ParticleBackground = () => {
             // 1. Mouse Glow
             if (mouse.active) {
                 const gradient = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, MOUSE_RADIUS);
-                gradient.addColorStop(0, 'rgba(16, 185, 129, 0.15)');
-                gradient.addColorStop(1, 'rgba(16, 185, 129, 0)');
+                gradient.addColorStop(0, 'rgba(34, 197, 94, 0.15)');
+                gradient.addColorStop(1, 'rgba(34, 197, 94, 0)');
                 ctx.fillStyle = gradient;
                 ctx.beginPath();
                 ctx.arc(mouse.x, mouse.y, MOUSE_RADIUS, 0, Math.PI * 2);
@@ -127,7 +127,7 @@ export const ParticleBackground = () => {
                     if (dist < CONNECTION_DISTANCE) {
                         ctx.beginPath();
                         const opacity = 1 - (dist / CONNECTION_DISTANCE);
-                        ctx.strokeStyle = `rgba(16, 185, 129, ${opacity * 0.25})`;
+                        ctx.strokeStyle = `rgba(34, 197, 94, ${opacity * 0.25})`;
                         ctx.lineWidth = 0.8;
                         ctx.moveTo(p.x, p.y);
                         ctx.lineTo(p2.x, p2.y);

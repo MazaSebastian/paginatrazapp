@@ -5,7 +5,7 @@ import { TiltCard } from '@/components/TiltCard';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
 
 const sensorData = [
-  { label: 'Temperatura', value: 24.5, suffix: '°C', icon: Thermometer, status: 'optimal', color: '#10B981' },
+  { label: 'Temperatura', value: 24.5, suffix: '°C', icon: Thermometer, status: 'optimal', color: '#22C55E' },
   { label: 'Humedad', value: 62, suffix: '%', icon: Droplets, status: 'optimal', color: '#3B82F6' },
   { label: 'Luz', value: 18, suffix: 'h', icon: Sun, status: 'active', color: '#F59E0B' },
   { label: 'CO2', value: 800, suffix: 'ppm', icon: Wind, status: 'good', color: '#8B5CF6' },
@@ -47,7 +47,7 @@ function SensorCard({ sensor, index }: { sensor: typeof sensorData[0]; index: nu
         ease: [0.34, 1.56, 0.64, 1]
       }}
       whileHover={{ scale: 1.05, y: -5 }}
-      className="glass rounded-xl p-4 border border-white/10 hover:border-emerald-500/50 transition-all duration-300 group cursor-pointer"
+      className="glass rounded-xl p-4 border border-white/5 hover:border-green-500/50 transition-all duration-300 group cursor-pointer"
     >
       <div className="flex items-center justify-between mb-3">
         <motion.div
@@ -71,7 +71,7 @@ function SensorCard({ sensor, index }: { sensor: typeof sensorData[0]; index: nu
       <div className="text-2xl font-bold text-white mb-1">
         {currentValue.toFixed(1)}{sensor.suffix}
       </div>
-      <div className="text-xs text-zinc-500">{sensor.label}</div>
+      <div className="text-xs text-slate-500">{sensor.label}</div>
 
       {/* Mini sparkline */}
       <div className="flex items-end gap-0.5 h-6 mt-2">
@@ -116,17 +116,17 @@ function ChatInterface() {
       initial={{ opacity: 0, x: 50, rotateY: -15 }}
       animate={isInView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
       transition={{ duration: 0.8, delay: 0.3, ease: [0.34, 1.56, 0.64, 1] }}
-      className="glass rounded-2xl border border-white/10 overflow-hidden"
+      className="glass rounded-2xl border border-white/5 overflow-hidden"
       style={{ perspective: '1000px' }}
     >
       {/* Chat Header */}
-      <div className="bg-white/5 px-4 py-3 border-b border-white/10 flex items-center gap-3">
+      <div className="bg-white/5 px-4 py-3 border-b border-white/5 flex items-center gap-3">
         <motion.div
-          className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center"
+          className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center"
           animate={{
             boxShadow: [
-              '0 0 0 0 rgba(16, 185, 129, 0.4)',
-              '0 0 0 10px rgba(16, 185, 129, 0)',
+              '0 0 0 0 rgba(34, 197, 94, 0.4)',
+              '0 0 0 10px rgba(34, 197, 94, 0)',
             ]
           }}
           transition={{ duration: 2, repeat: Infinity }}
@@ -135,9 +135,9 @@ function ChatInterface() {
         </motion.div>
         <div>
           <div className="text-sm font-medium text-white">Asistente GrowAI</div>
-          <div className="text-xs text-emerald-400 flex items-center gap-1">
+          <div className="text-xs text-green-400 flex items-center gap-1">
             <motion.span
-              className="w-1.5 h-1.5 rounded-full bg-emerald-400"
+              className="w-1.5 h-1.5 rounded-full bg-green-400"
               animate={{ scale: [1, 1.2, 1] }}
               transition={{ duration: 1, repeat: Infinity }}
             />
@@ -163,8 +163,8 @@ function ChatInterface() {
                 animate={{ width: 'auto' }}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm overflow-hidden ${msg.type === 'user'
-                  ? 'bg-emerald-500 text-white rounded-br-md'
-                  : 'bg-white/10 text-zinc-300 rounded-bl-md border border-white/5'
+                  ? 'bg-green-500 text-white rounded-br-md'
+                  : 'bg-white/10 text-slate-300 rounded-bl-md border border-white/5'
                   }`}
               >
                 {msg.type === 'ai' && visibleMessages === index + 1 && (
@@ -202,7 +202,7 @@ function ChatInterface() {
               {[0, 1, 2].map((i) => (
                 <motion.div
                   key={i}
-                  className="w-2 h-2 rounded-full bg-emerald-400"
+                  className="w-2 h-2 rounded-full bg-green-400"
                   animate={{ y: [0, -5, 0] }}
                   transition={{ duration: 0.5, delay: i * 0.1, repeat: Infinity }}
                 />
@@ -213,19 +213,19 @@ function ChatInterface() {
       </div>
 
       {/* Chat Input */}
-      <div className="p-3 border-t border-white/10">
+      <div className="p-3 border-t border-white/5">
         <motion.div
-          className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-emerald-500/30 transition-colors cursor-text"
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/5 hover:border-green-500/30 transition-colors cursor-text"
           whileHover={{ scale: 1.01 }}
         >
-          <MessageSquare className="w-4 h-4 text-zinc-500" />
-          <span className="text-sm text-zinc-500 flex-1">Pregunta cualquier cosa sobre tu cultivo...</span>
+          <MessageSquare className="w-4 h-4 text-slate-500" />
+          <span className="text-sm text-slate-500 flex-1">Pregunta cualquier cosa sobre tu cultivo...</span>
           <motion.div
-            className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center cursor-pointer"
-            whileHover={{ scale: 1.1, backgroundColor: 'rgba(16, 185, 129, 0.4)' }}
+            className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center cursor-pointer"
+            whileHover={{ scale: 1.1, backgroundColor: 'rgba(34, 197, 94, 0.4)' }}
             whileTap={{ scale: 0.9 }}
           >
-            <Send className="w-4 h-4 text-emerald-400" />
+            <Send className="w-4 h-4 text-green-400" />
           </motion.div>
         </motion.div>
       </div>
@@ -241,19 +241,19 @@ function TuyaBadge() {
       whileInView={{ opacity: 1, scale: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
-      className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/10 cursor-pointer group"
-      whileHover={{ scale: 1.05, borderColor: 'rgba(16, 185, 129, 0.5)' }}
+      className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/5 cursor-pointer group"
+      whileHover={{ scale: 1.05, borderColor: 'rgba(34, 197, 94, 0.5)' }}
     >
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
       >
-        <Wifi className="w-4 h-4 text-emerald-400" />
+        <Wifi className="w-4 h-4 text-green-400" />
       </motion.div>
-      <span className="text-sm text-zinc-300 group-hover:text-white transition-colors">Impulsado por</span>
+      <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Impulsado por</span>
       <span className="text-sm font-semibold text-white">Tuya IoT</span>
       <motion.span
-        className="w-1.5 h-1.5 rounded-full bg-emerald-400"
+        className="w-1.5 h-1.5 rounded-full bg-green-400"
         animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
         transition={{ duration: 2, repeat: Infinity }}
       />
@@ -279,7 +279,7 @@ export function AIIntegration() {
         transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px]"
         style={{
-          background: 'conic-gradient(from 0deg, transparent, rgba(16, 185, 129, 0.05), transparent, rgba(52, 211, 153, 0.05), transparent)',
+          background: 'conic-gradient(from 0deg, transparent, rgba(34, 197, 94, 0.05), transparent, rgba(52, 211, 153, 0.05), transparent)',
           filter: 'blur(100px)',
         }}
       />
@@ -289,7 +289,7 @@ export function AIIntegration() {
         {Array.from({ length: 15 }).map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 rounded-full bg-emerald-400/40"
+            className="absolute w-1 h-1 rounded-full bg-green-400/40"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -331,7 +331,7 @@ export function AIIntegration() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-zinc-400 text-lg max-w-2xl mx-auto"
+            className="text-slate-400 text-lg max-w-2xl mx-auto"
           >
             Nuestro asistente de IA monitorea continuamente tus cultivos a través de sensores IoT,
             proporcionando información en tiempo real y recomendaciones automatizadas.
@@ -347,30 +347,30 @@ export function AIIntegration() {
             transition={{ duration: 0.8, delay: 0.3 }}
           >
             <TiltCard tiltAmount={5}>
-              <div className="glass rounded-2xl p-6 border border-white/10 hover:border-emerald-500/30 transition-colors">
+              <div className="glass rounded-2xl p-6 border border-white/5 hover:border-green-500/30 transition-colors">
                 {/* Dashboard Header */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
                     <motion.div
-                      className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center"
+                      className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center"
                       animate={{
                         boxShadow: [
-                          '0 0 0 0 rgba(16, 185, 129, 0.4)',
-                          '0 0 0 8px rgba(16, 185, 129, 0)',
+                          '0 0 0 0 rgba(34, 197, 94, 0.4)',
+                          '0 0 0 8px rgba(34, 197, 94, 0)',
                         ]
                       }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
-                      <Bot className="w-5 h-5 text-emerald-400" />
+                      <Bot className="w-5 h-5 text-green-400" />
                     </motion.div>
                     <div>
                       <h3 className="text-lg font-semibold text-white">Monitoreo en Vivo</h3>
-                      <p className="text-xs text-zinc-500">Lote #2847 • Cuarto A3</p>
+                      <p className="text-xs text-slate-500">Lote #2847 • Cuarto A3</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-emerald-400">
+                  <div className="flex items-center gap-2 text-xs text-green-400">
                     <motion.span
-                      className="w-2 h-2 rounded-full bg-emerald-400"
+                      className="w-2 h-2 rounded-full bg-green-400"
                       animate={{ scale: [1, 1.3, 1] }}
                       transition={{ duration: 1, repeat: Infinity }}
                     />
@@ -388,9 +388,9 @@ export function AIIntegration() {
                 {/* Mini Chart */}
                 <div className="mt-6 p-4 rounded-xl bg-white/5">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm text-zinc-400">Tasa de Crecimiento</span>
+                    <span className="text-sm text-slate-400">Tasa de Crecimiento</span>
                     <motion.span
-                      className="text-sm text-emerald-400"
+                      className="text-sm text-green-400"
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
@@ -408,7 +408,7 @@ export function AIIntegration() {
                           delay: 0.5 + i * 0.05,
                           ease: [0.34, 1.56, 0.64, 1]
                         }}
-                        className="flex-1 rounded-t-sm bg-emerald-500/30 hover:bg-emerald-400/50 transition-colors cursor-pointer"
+                        className="flex-1 rounded-t-sm bg-green-500/30 hover:bg-green-400/50 transition-colors cursor-pointer"
                         whileHover={{ scale: 1.2 }}
                       />
                     ))}
@@ -444,13 +444,13 @@ export function AIIntegration() {
                   className="flex items-center gap-2 cursor-pointer"
                 >
                   <motion.div
-                    className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0"
+                    className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0"
                     whileHover={{ rotate: 360, scale: 1.2 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <Sparkles className="w-3 h-3 text-emerald-400" />
+                    <Sparkles className="w-3 h-3 text-green-400" />
                   </motion.div>
-                  <span className="text-sm text-zinc-400 hover:text-emerald-300 transition-colors">{feature}</span>
+                  <span className="text-sm text-slate-400 hover:text-green-300 transition-colors">{feature}</span>
                 </motion.div>
               ))}
             </motion.div>

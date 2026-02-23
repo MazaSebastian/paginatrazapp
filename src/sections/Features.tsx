@@ -1,92 +1,37 @@
 import { useRef } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import {
-  Cpu,
-  FileText,
-  Shield,
-  BarChart3,
-  Zap,
-  Lock,
-  Globe,
-  Clock,
+  Sprout,
+  Stethoscope,
+  Briefcase,
   TrendingUp,
-  Bell,
+  Zap,
   ArrowUpRight
 } from 'lucide-react';
 import { TiltCard } from '@/components/TiltCard';
 import { TextReveal } from '@/components/TextReveal';
-import { AnimatedCounter } from '@/components/AnimatedCounter';
 
 const features = [
   {
     id: 1,
-    title: 'Integración IoT',
-    description: 'Conecta sensores, monitores y controladores para seguimiento ambiental en tiempo real. Compatible con dispositivos Tuya, Arduino y Raspberry Pi.',
-    icon: Cpu,
-    size: 'large',
-    gradient: 'from-emerald-500/20 to-emerald-700/10',
-    stats: [
-      { label: 'Dispositivos', value: 50, suffix: '+' },
-      { label: 'Latencia', value: 100, suffix: 'ms', prefix: '<' },
-    ],
+    title: 'Módulo de Cultivo',
+    description: 'Gestión integral agronómica. Trazabilidad por lotes, control de madres y esquejes, seguimiento de salas y genética, monitoreo ambiental y parametrización IoT.',
+    icon: Sprout,
+    gradient: 'from-green-500/20 to-green-700/10',
   },
   {
     id: 2,
-    title: 'Reportes PDF',
-    description: 'Genera informes profesionales de cumplimiento con un clic. Exporta historiales de lotes, resultados de laboratorio y trazabilidad de auditoría.',
-    icon: FileText,
-    size: 'medium',
+    title: 'Módulo Médico / Dispensario',
+    description: 'Panel enfocado en el paciente. Gestión de historias clínicas, recetas, control de stock y entregas para dispensarios, con pleno cumplimiento REPROCANN.',
+    icon: Stethoscope,
     gradient: 'from-blue-500/20 to-blue-700/10',
   },
   {
     id: 3,
-    title: 'Cumplimiento REPROCANN',
-    description: 'Herramientas integradas para regulaciones argentinas. Documentación automática y gestión de pacientes.',
-    icon: Shield,
-    size: 'medium',
-    gradient: 'from-purple-500/20 to-purple-700/10',
-    badge: 'Argentina',
-  },
-  {
-    id: 4,
-    title: 'Análisis Avanzado',
-    description: 'Rastrea patrones de crecimiento, predice rendimientos y optimiza tu cultivo con información de aprendizaje automático.',
-    icon: BarChart3,
-    size: 'large',
-    gradient: 'from-amber-500/20 to-amber-700/10',
-    chart: true,
-  },
-  {
-    id: 5,
-    title: 'Alertas en Tiempo Real',
-    description: 'Recibe notificaciones instantáneas cuando los parámetros se salgan de los rangos óptimos.',
-    icon: Bell,
-    size: 'small',
-    gradient: 'from-red-500/20 to-red-700/10',
-  },
-  {
-    id: 6,
-    title: 'Datos Seguros',
-    description: 'Encriptación de extremo a extremo con verificación blockchain para trazabilidad de auditoría.',
-    icon: Lock,
-    size: 'small',
-    gradient: 'from-cyan-500/20 to-cyan-700/10',
-  },
-  {
-    id: 7,
-    title: 'Acceso Global',
-    description: 'Monitorea tus cultivos desde cualquier parte del mundo.',
-    icon: Globe,
-    size: 'small',
+    title: 'Módulo Administrativo y Gestión',
+    description: 'El centro de tu negocio. Reportes detallados, gestión de usuarios y roles, control financiero, métricas de rendimiento y trazabilidad completa de auditoría.',
+    icon: Briefcase,
     gradient: 'from-indigo-500/20 to-indigo-700/10',
-  },
-  {
-    id: 8,
-    title: 'Monitoreo 24/7',
-    description: 'El seguimiento continuo nunca duerme.',
-    icon: Clock,
-    size: 'small',
-    gradient: 'from-pink-500/20 to-pink-700/10',
   },
 ];
 
@@ -101,12 +46,6 @@ function BentoCard({
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
 
-  const sizeClasses = {
-    small: 'md:col-span-1 md:row-span-1',
-    medium: 'md:col-span-1 md:row-span-2',
-    large: 'md:col-span-2 md:row-span-2',
-  };
-
   return (
     <motion.div
       ref={ref}
@@ -117,21 +56,21 @@ function BentoCard({
         delay: index * 0.1,
         ease: [0.215, 0.61, 0.355, 1]
       }}
-      className={`relative group ${sizeClasses[feature.size as keyof typeof sizeClasses]}`}
+      className={`relative group h-full md:col-span-1 md:row-span-1`}
       style={{ perspective: '1000px' }}
     >
       <TiltCard tiltAmount={8} scale={1.02}>
         <div
-          className={`h-full glass rounded-2xl p-6 border border-white/10 hover:border-emerald-500/50 transition-all duration-500 overflow-hidden bg-gradient-to-br ${feature.gradient} relative`}
+          className={`h-full glass rounded-2xl p-6 border border-white/5 hover:border-green-500/50 transition-all duration-500 overflow-hidden bg-gradient-to-br ${feature.gradient} relative`}
         >
           {/* Animated background gradient */}
           <motion.div
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
             animate={{
               background: [
-                'radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.1) 0%, transparent 50%)',
-                'radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 50%)',
-                'radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.1) 0%, transparent 50%)',
+                'radial-gradient(circle at 0% 0%, rgba(34, 197, 94, 0.1) 0%, transparent 50%)',
+                'radial-gradient(circle at 100% 100%, rgba(34, 197, 94, 0.1) 0%, transparent 50%)',
+                'radial-gradient(circle at 0% 0%, rgba(34, 197, 94, 0.1) 0%, transparent 50%)',
               ],
             }}
             transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
@@ -153,92 +92,31 @@ function BentoCard({
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
               <motion.div
-                className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center backdrop-blur-sm"
-                whileHover={{ rotate: 360, scale: 1.1 }}
+                className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-sm"
+                whileHover={{ scale: 1.1 }}
                 transition={{ duration: 0.5 }}
               >
-                <feature.icon className="w-6 h-6 text-white" />
+                <feature.icon className="w-8 h-8 text-white" />
               </motion.div>
-              {feature.badge && (
-                <motion.span
-                  className="px-2 py-1 rounded-full bg-white/10 text-xs text-white/80"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  {feature.badge}
-                </motion.span>
-              )}
               <motion.div
                 className="opacity-0 group-hover:opacity-100 transition-opacity"
                 initial={{ x: -10 }}
                 whileHover={{ x: 0 }}
               >
-                <ArrowUpRight className="w-5 h-5 text-emerald-400" />
+                <ArrowUpRight className="w-5 h-5 text-green-400" />
               </motion.div>
             </div>
 
             {/* Title & Description */}
             <motion.h3
-              className="text-xl font-bold text-white mb-2 group-hover:text-emerald-300 transition-colors"
+              className="text-2xl font-bold text-white mb-3 group-hover:text-green-300 transition-colors"
             >
               {feature.title}
             </motion.h3>
-            <p className="text-zinc-400 text-sm leading-relaxed flex-grow group-hover:text-zinc-300 transition-colors">
+            <p className="text-slate-400 text-base leading-relaxed flex-grow group-hover:text-slate-300 transition-colors">
               {feature.description}
             </p>
 
-            {/* Stats (for large cards) */}
-            {feature.stats && (
-              <div className="flex gap-6 mt-4 pt-4 border-t border-white/10">
-                {feature.stats.map((stat, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ delay: 0.5 + i * 0.1 }}
-                  >
-                    <div className="text-2xl font-bold text-white">
-                      {stat.prefix}
-                      <AnimatedCounter value={stat.value} suffix={stat.suffix} duration={2} />
-                    </div>
-                    <div className="text-xs text-zinc-500">{stat.label}</div>
-                  </motion.div>
-                ))}
-              </div>
-            )}
-
-            {/* Chart Visualization (for analytics card) */}
-            {feature.chart && (
-              <div className="mt-4 pt-4">
-                <div className="flex items-end gap-1.5 h-24">
-                  {[35, 55, 40, 70, 50, 85, 65, 90, 75, 95].map((height, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ height: 0 }}
-                      animate={isInView ? { height: `${height}%` } : {}}
-                      transition={{
-                        duration: 0.8,
-                        delay: 0.3 + i * 0.05,
-                        ease: [0.34, 1.56, 0.64, 1]
-                      }}
-                      className="flex-1 rounded-t bg-emerald-500/40 hover:bg-emerald-400/60 transition-colors cursor-pointer relative group/bar"
-                    >
-                      {/* Tooltip */}
-                      <motion.div
-                        className="absolute -top-8 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-xs px-2 py-1 rounded opacity-0 group-hover/bar:opacity-100 transition-opacity whitespace-nowrap"
-                      >
-                        {height}%
-                      </motion.div>
-                    </motion.div>
-                  ))}
-                </div>
-                <div className="flex justify-between mt-2 text-xs text-zinc-500">
-                  <span>Ene</span>
-                  <span>Oct</span>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </TiltCard>
@@ -274,7 +152,7 @@ export function Features() {
           rotate: [0, 180, 360]
         }}
         transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/4 right-1/4 w-80 h-80 bg-emerald-500/10 rounded-full blur-[100px]"
+        className="absolute top-1/4 right-1/4 w-80 h-80 bg-green-500/10 rounded-full blur-[100px]"
       />
       <motion.div
         animate={{
@@ -284,7 +162,7 @@ export function Features() {
           rotate: [360, 180, 0]
         }}
         transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-emerald-600/10 rounded-full blur-[80px]"
+        className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-green-600/10 rounded-full blur-[80px]"
       />
 
       {/* Connected particles */}
@@ -292,7 +170,7 @@ export function Features() {
         {Array.from({ length: 20 }).map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-2 h-2 rounded-full bg-emerald-400/30"
+            className="absolute w-2 h-2 rounded-full bg-green-400/30"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -315,21 +193,7 @@ export function Features() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <motion.span
-            initial={{ opacity: 0, y: 20, scale: 0.8 }}
-            animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-            transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
-            className="inline-block px-4 py-1 rounded-full glass text-emerald-400 text-sm font-medium mb-4"
-          >
-            <motion.span
-              animate={{ opacity: [1, 0.5, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              ✨
-            </motion.span>{' '}
-            Funciones Poderosas
-          </motion.span>
-
+          {/* Badge Hidden as Requested */}
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -345,15 +209,15 @@ export function Features() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-zinc-400 text-lg max-w-2xl mx-auto"
+            className="text-slate-400 text-lg max-w-2xl mx-auto"
           >
             Un conjunto completo de herramientas diseñadas para el cultivo moderno de cannabis,
             desde el seguimiento de semillas hasta los informes de cumplimiento.
           </motion.p>
         </div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-3 gap-4 lg:gap-6 auto-rows-min">
+        {/* Modules Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 auto-rows-fr">
           {features.map((feature, index) => (
             <BentoCard key={feature.id} feature={feature} index={index} />
           ))}
@@ -376,12 +240,12 @@ export function Features() {
               animate={{ x: [0, 3, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
-              <Zap className="w-5 h-5 text-emerald-400" />
+              <Zap className="w-5 h-5 text-green-400" />
               <span className="text-white font-medium">¿Listo para comenzar?</span>
             </motion.div>
             <motion.a
               href="#pricing"
-              className="text-emerald-400 hover:text-emerald-300 font-medium flex items-center gap-1 transition-colors"
+              className="text-green-400 hover:text-green-300 font-medium flex items-center gap-1 transition-colors"
               whileHover={{ x: 5 }}
             >
               Ver Precios

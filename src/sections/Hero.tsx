@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useSpring, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Shield, Microscope, ChevronDown, LayoutDashboard, Stethoscope, Sprout, MapPin, Lock } from 'lucide-react';
+import { ArrowRight, Shield, Microscope, LayoutDashboard, Stethoscope, Sprout, MapPin, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { TextReveal } from '@/components/TextReveal';
+import ShinyText from '@/components/ShinyText';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
 import { TiltCard } from '@/components/TiltCard';
 import { AuroraBackground } from '@/components/GlowEffect';
@@ -49,7 +49,7 @@ function MagneticButton({ children, className }: { children: React.ReactNode; cl
     >
       {children}
       <motion.div
-        className="absolute inset-0 rounded-xl bg-emerald-400/20 blur-xl"
+        className="absolute inset-0 rounded-xl bg-green-400/20 blur-xl"
         animate={{ opacity: isHovered ? 1 : 0, scale: isHovered ? 1.2 : 1 }}
         transition={{ duration: 0.3 }}
       />
@@ -65,7 +65,7 @@ function GlowingOrbs() {
       <motion.div
         className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full"
         style={{
-          background: 'radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, transparent 70%)',
           filter: 'blur(60px)',
         }}
         animate={{
@@ -93,7 +93,7 @@ function GlowingOrbs() {
       <motion.div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
         style={{
-          background: 'radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 60%)',
+          background: 'radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 60%)',
           filter: 'blur(80px)',
         }}
         animate={{
@@ -106,26 +106,6 @@ function GlowingOrbs() {
 }
 
 
-// Scroll indicator
-function ScrollIndicator() {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 2, duration: 1 }}
-      className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-    >
-      <span className="text-xs text-zinc-500 uppercase tracking-widest">Desplázate</span>
-      <motion.div
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <ChevronDown className="w-5 h-5 text-emerald-400" />
-      </motion.div>
-    </motion.div>
-  );
-}
-
 // Holographic Stat Card
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function HolographicStatCard({ icon: Icon, value, suffix, label, delay }: any) {
@@ -137,17 +117,17 @@ function HolographicStatCard({ icon: Icon, value, suffix, label, delay }: any) {
       className="h-full"
     >
       <TiltCard tiltAmount={15} glareEnabled={true} scale={1.05} className="h-full">
-        <div className="relative h-full group p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md overflow-hidden cursor-default transition-colors duration-300 hover:bg-white/10 hover:border-emerald-500/30 hover:shadow-2xl hover:shadow-emerald-500/10">
+        <div className="relative h-full group p-6 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md overflow-hidden cursor-default transition-colors duration-300 hover:bg-white/10 hover:border-green-500/30 hover:shadow-2xl hover:shadow-green-500/10">
           {/* Hover Gradient Background - Adjusted for Tilt */}
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           {/* Animated Border Effect */}
-          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-transparent group-hover:ring-emerald-500/30 transition-all duration-500" />
+          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-transparent group-hover:ring-green-500/30 transition-all duration-500" />
 
           {/* Content */}
           <div className="relative z-10 flex flex-col items-center h-full pt-4">
-            <div className="mb-4 p-3 rounded-full bg-white/5 group-hover:bg-emerald-500/10 transition-colors duration-300 ring-1 ring-white/10 group-hover:ring-emerald-500/30">
-              <Icon className="w-8 h-8 text-emerald-400 group-hover:scale-110 group-hover:text-emerald-300 transition-all duration-300" />
+            <div className="mb-4 p-3 rounded-full bg-white/5 group-hover:bg-green-500/10 transition-colors duration-300 ring-1 ring-white/10 group-hover:ring-green-500/30">
+              <Icon className="w-8 h-8 text-green-400 group-hover:scale-110 group-hover:text-green-300 transition-all duration-300" />
             </div>
             <div className={`font-bold text-white mb-2 tracking-tight drop-shadow-lg ${typeof value === 'number' ? 'text-4xl md:text-5xl' : 'text-2xl md:text-3xl'}`}>
               {typeof value === 'number' ? (
@@ -156,14 +136,14 @@ function HolographicStatCard({ icon: Icon, value, suffix, label, delay }: any) {
                 <span>{value}{suffix}</span>
               )}
             </div>
-            <div className="text-sm text-zinc-400 uppercase tracking-widest font-medium group-hover:text-emerald-300 transition-colors">
+            <div className="text-sm text-slate-400 uppercase tracking-widest font-medium group-hover:text-green-300 transition-colors">
               {label}
             </div>
           </div>
 
           {/* Decorate corners */}
-          <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/20 blur-3xl -mr-12 -mt-12 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-emerald-500/10 blur-3xl -ml-12 -mb-12 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+          <div className="absolute top-0 right-0 w-24 h-24 bg-green-500/20 blur-3xl -mr-12 -mt-12 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-green-500/10 blur-3xl -ml-12 -mb-12 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
         </div>
       </TiltCard>
     </motion.div>
@@ -207,14 +187,26 @@ export function Hero() {
           >
             <div className="flex flex-wrap justify-center items-center gap-x-4">
               <span className="text-white">
-                <TextReveal className="justify-center" delay={0.5} stagger={0.03} type="chars" interactive>
-                  Crecemos
-                </TextReveal>
+                <ShinyText
+                  text="Crecemos"
+                  speed={2}
+                  delay={3}
+                  color="#ffffff"
+                  shineColor="#22C55E"
+                  spread={90}
+                  direction="left"
+                />
               </span>
-              <span className="text-emerald-400">
-                <TextReveal className="justify-center" delay={0.8} stagger={0.03} type="chars" interactive>
-                  con vos.
-                </TextReveal>
+              <span className="text-green-400">
+                <ShinyText
+                  text="con vos."
+                  speed={2}
+                  delay={3.5}
+                  color="#4ade80"
+                  shineColor="#ffffff"
+                  spread={90}
+                  direction="left"
+                />
               </span>
             </div>
           </motion.h1>
@@ -224,9 +216,9 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.2 }}
-            className="text-lg sm:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed"
+            className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed"
           >
-            Administración, gestión y trazabilidad aplicada al <span className="text-emerald-400">cannabis medicinal.</span>
+            Administración, gestión y trazabilidad aplicada al <span className="text-green-400">cannabis medicinal.</span>
           </motion.p>
 
           {/* CTA Buttons with stagger */}
@@ -236,20 +228,13 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 1.5 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <MagneticButton className="relative group">
-              <Link to="/register">
+            <Link to="/register" className="relative group block">
+              <MagneticButton className="w-full h-full">
                 <Button
                   size="lg"
-                  className="relative bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-8 py-6 text-lg rounded-xl transition-all duration-300 group-hover:shadow-emerald-lg overflow-hidden"
+                  className="relative bg-[#020617]/40 backdrop-blur-xl border border-white/10 hover:border-green-500/50 text-white font-semibold px-8 py-6 text-lg rounded-xl transition-all duration-300 group-hover:shadow-green-lg overflow-hidden flex items-center gap-2 w-full"
                 >
                   <span className="relative z-10 flex items-center gap-2">
-                    <motion.span
-                      initial={{ width: 0 }}
-                      whileHover={{ width: 'auto' }}
-                      className="overflow-hidden"
-                    >
-                      ✨
-                    </motion.span>
                     Comenzar Ahora
                     <motion.span
                       animate={{ x: [0, 4, 0] }}
@@ -260,24 +245,26 @@ export function Hero() {
                   </span>
                   {/* Shine effect */}
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 pointer-events-none"
                     initial={{ x: '-200%' }}
                     whileHover={{ x: '200%' }}
                     transition={{ duration: 0.8 }}
                   />
                 </Button>
-              </Link>
-            </MagneticButton>
+              </MagneticButton>
+            </Link>
 
+            {/*
             <TiltCard tiltAmount={5} scale={1.02}>
               <Button
                 size="lg"
                 variant="outline"
-                className="border-zinc-700 text-zinc-300 hover:bg-white/5 hover:border-emerald-500/50 hover:text-white px-8 py-6 text-lg rounded-xl transition-all duration-300"
+                className="border-slate-700 text-slate-300 hover:bg-white/5 hover:border-green-500/50 hover:text-white px-8 py-6 text-lg rounded-xl transition-all duration-300"
               >
                 Ver Demo
               </Button>
             </TiltCard>
+*/}
           </motion.div>
 
           {/* Stats Row */}
@@ -319,13 +306,13 @@ export function Hero() {
                   y: -2,
                   transition: { duration: 0.2 }
                 }}
-                className="flex items-center gap-2 text-zinc-500 glass px-4 py-2 rounded-full cursor-pointer hover:border-emerald-500/30 transition-colors"
+                className="flex items-center gap-2 text-slate-500 glass px-4 py-2 rounded-full cursor-pointer hover:border-green-500/30 transition-colors"
               >
                 <motion.div
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <badge.icon className="w-4 h-4 text-emerald-500" />
+                  <badge.icon className="w-4 h-4 text-green-500" />
                 </motion.div>
                 <span className="text-sm">{badge.text}</span>
               </motion.div>
@@ -334,11 +321,9 @@ export function Hero() {
         </div>
       </motion.div>
 
-      {/* Scroll Indicator */}
-      <ScrollIndicator />
+      {/* Scroll Indicator Removed as requested */}
 
-      {/* Bottom Gradient Fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-dark to-transparent pointer-events-none" />
+      {/* Bottom Gradient Fade Removed to allow global background to show through */}
     </section>
   );
 }

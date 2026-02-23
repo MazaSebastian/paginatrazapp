@@ -81,7 +81,7 @@ export function TextReveal({
           whileHover={interactive ? {
             scale: 1.15,
             y: -3,
-            color: '#34D399',
+            color: '#4ADE80',
             textShadow: '0 0 8px rgba(52, 211, 153, 0.5)',
             transition: { type: "spring", stiffness: 400, damping: 15 }
           } : undefined}
@@ -100,7 +100,7 @@ export function GlitchText({ children, className = '' }: { children: string; cla
     <span className={`relative inline-block group ${className}`}>
       <span className="relative z-10">{children}</span>
       <span
-        className="absolute top-0 left-0 -z-10 opacity-0 group-hover:opacity-70 text-emerald-500 animate-pulse"
+        className="absolute top-0 left-0 -z-10 opacity-0 group-hover:opacity-70 text-green-500 animate-pulse"
         style={{ clipPath: 'inset(0 0 50% 0)', transform: 'translateX(2px)' }}
       >
         {children}
@@ -231,7 +231,7 @@ export function Typewriter({
       {displayText}
       {cursor && (
         <span
-          className={`inline-block w-[3px] h-[1em] bg-emerald-400 ml-1 align-middle transition-opacity duration-100 ${showCursor ? 'opacity-100' : 'opacity-0'
+          className={`inline-block w-[3px] h-[1em] bg-green-400 ml-1 align-middle transition-opacity duration-100 ${showCursor ? 'opacity-100' : 'opacity-0'
             }`}
         />
       )}

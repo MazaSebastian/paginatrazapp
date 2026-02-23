@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { Sprout, Sun, Flower2, FlaskConical, Microscope, Check } from 'lucide-react';
 import { TiltCard } from '@/components/TiltCard';
+import TrueFocus from '@/components/TrueFocus';
 
 const stages = [
   {
@@ -9,7 +10,7 @@ const stages = [
     title: 'Germinación/Clones',
     description: 'Estandarización genética y seguimiento del crecimiento inicial.',
     icon: Sprout,
-    color: '#10B981',
+    color: '#22C55E',
     details: ['Gestion de lotes', 'Control de tasa de efectividad', 'Asignación de ID único'],
   },
   {
@@ -17,7 +18,7 @@ const stages = [
     title: 'Vegetativo',
     description: 'Reflejo digital de tu sala en tiempo real. Gestión centralizada de nutrición, sanidad y tareas preventivas con respaldo de datos IoT.',
     icon: Sun,
-    color: '#34D399',
+    color: '#4ADE80',
     details: ['Integración de sensores IoT', 'Seguimiento de nutrientes', 'Análisis de crecimiento'],
   },
   {
@@ -25,7 +26,7 @@ const stages = [
     title: 'Floración',
     description: 'Registro para la planificación de cosecha. Gestión de cronogramas de floración y monitoreo de indicadores de madurez para maximizar el rendimiento terapéutico.',
     icon: Flower2,
-    color: '#6EE7B7',
+    color: '#86EFAC',
     details: ['Perfilado de cannabinoides', 'Optimización de cosecha', 'Métricas de calidad'],
   },
   {
@@ -60,9 +61,9 @@ function AnimatedPath({ progress }: { progress: any }) {
         {/* Background Path with glow */}
         <defs>
           <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#10B981" />
-            <stop offset="50%" stopColor="#34D399" />
-            <stop offset="100%" stopColor="#6EE7B7" />
+            <stop offset="0%" stopColor="#22C55E" />
+            <stop offset="50%" stopColor="#4ADE80" />
+            <stop offset="100%" stopColor="#86EFAC" />
           </linearGradient>
           <filter id="glow">
             <feGaussianBlur stdDeviation="2" result="coloredBlur" />
@@ -75,7 +76,7 @@ function AnimatedPath({ progress }: { progress: any }) {
 
         <path
           d="M2 0 L2 1000"
-          stroke="rgba(16, 185, 129, 0.1)"
+          stroke="rgba(34, 197, 94, 0.1)"
           strokeWidth="2"
           fill="none"
           strokeLinecap="round"
@@ -95,10 +96,10 @@ function AnimatedPath({ progress }: { progress: any }) {
 
       {/* Animated glow dot */}
       <motion.div
-        className="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-emerald-400"
+        className="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-green-400"
         style={{
           top: useTransform(progress, [0, 1], ['0%', '100%']),
-          boxShadow: '0 0 20px rgba(16, 185, 129, 0.8)',
+          boxShadow: '0 0 20px rgba(34, 197, 94, 0.8)',
         }}
       />
     </div>
@@ -158,7 +159,7 @@ function StageCard({
     >
       {/* Scroll Highlight Overlay - Subtle Glow */}
       <motion.div
-        className="absolute inset-0 rounded-3xl blur-xl -z-10 bg-emerald-500/10"
+        className="absolute inset-0 rounded-3xl blur-xl -z-10 bg-green-500/10"
         style={{
           opacity: highlightOpacity,
         }}
@@ -170,14 +171,14 @@ function StageCard({
           <motion.div
             onClick={onClick}
             className={`glass rounded-2xl p-6 border transition-all duration-500 cursor-pointer group relative ${isActive
-              ? 'border-emerald-500/50 shadow-emerald-lg'
-              : 'border-white/10 hover:border-emerald-500/30'
+              ? 'border-green-500/50 shadow-green-lg'
+              : 'border-white/5 hover:border-green-500/30'
               }`}
             whileHover={{ y: -5 }}
           >
             {/* Scroll Highlight Border */}
             <motion.div
-              className="absolute inset-0 rounded-2xl border-2 border-emerald-400/50 pointer-events-none"
+              className="absolute inset-0 rounded-2xl border-2 border-green-400/50 pointer-events-none"
               style={{ opacity: highlightOpacity }}
             />
 
@@ -198,13 +199,13 @@ function StageCard({
                 >
                   Etapa {stage.id}
                 </motion.span>
-                <h3 className="text-xl font-bold text-white group-hover:text-emerald-300 transition-colors">
+                <h3 className="text-xl font-bold text-white group-hover:text-green-300 transition-colors">
                   {stage.title}
                 </h3>
               </div>
             </div>
 
-            <p className="text-zinc-400 text-sm leading-relaxed mb-4 group-hover:text-zinc-300 transition-colors">
+            <p className="text-slate-400 text-sm leading-relaxed mb-4 group-hover:text-slate-300 transition-colors">
               {stage.description}
             </p>
 
@@ -218,11 +219,11 @@ function StageCard({
                   transition={{ duration: 0.3 }}
                   className="overflow-hidden"
                 >
-                  <ul className={`space-y-2 pt-4 border-t border-white/10 ${isReversed ? 'lg:text-right' : ''}`}>
+                  <ul className={`space-y-2 pt-4 border-t border-white/5 ${isReversed ? 'lg:text-right' : ''}`}>
                     {stage.details.map((detail, i) => (
                       <motion.li
                         key={i}
-                        className={`flex items-center gap-2 text-xs text-zinc-400 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
+                        className={`flex items-center gap-2 text-xs text-slate-400 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
                         initial={{ opacity: 0, x: isReversed ? 20 : -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.1 }}
@@ -241,8 +242,6 @@ function StageCard({
                 </motion.div>
               )}
             </AnimatePresence>
-
-
           </motion.div>
         </TiltCard>
       </div>
@@ -263,7 +262,7 @@ function StageCard({
             className="w-8 h-8 rounded-full border-4 flex items-center justify-center"
             style={{
               borderColor: stage.color,
-              backgroundColor: isActive ? stage.color : '#050505',
+              backgroundColor: isActive ? stage.color : '#0B1120',
               boxShadow: isActive ? `0 0 30px ${stage.color}` : 'none'
             }}
             animate={isActive ? {
@@ -275,7 +274,7 @@ function StageCard({
             } : {}}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <span className="text-xs font-bold" style={{ color: isActive ? '#050505' : stage.color }}>
+            <span className="text-xs font-bold" style={{ color: isActive ? '#0B1120' : stage.color }}>
               {stage.id}
             </span>
           </motion.div>
@@ -338,7 +337,7 @@ export function TraceabilityTimeline() {
           scale: [1, 1.1, 1]
         }}
         transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/4 left-1/4 w-64 h-64 bg-emerald-500/10 rounded-full blur-[100px]"
+        className="absolute top-1/4 left-1/4 w-64 h-64 bg-green-500/10 rounded-full blur-[100px]"
       />
 
       {/* Section Header */}
@@ -350,28 +349,30 @@ export function TraceabilityTimeline() {
           transition={{ duration: 0.8 }}
           className="text-center"
         >
-          <motion.span
-            className="inline-block px-4 py-1 rounded-full glass text-emerald-400 text-sm font-medium mb-4"
-            whileHover={{ scale: 1.05 }}
-          >
-            🌱 El Motor de Trazabilidad
-          </motion.span>
-
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 cursor-default">
             <motion.span
               className="block mb-2"
-              whileHover={{ scale: 1.05, textShadow: "0 0 20px rgba(16, 185, 129, 0.5)" }}
+              whileHover={{ scale: 1.05, textShadow: "0 0 20px rgba(34, 197, 94, 0.5)" }}
               transition={{ type: "spring", stiffness: 300, damping: 10 }}
             >
-              Seguimiento completo
+              Seguimiento completo de
             </motion.span>
-            <motion.span
-              className="block text-gradient"
+            <motion.div
+              className="flex justify-center text-white mt-4"
               whileHover={{ scale: 1.05, filter: "brightness(1.2)" }}
               transition={{ type: "spring", stiffness: 300, damping: 10 }}
+              style={{ filter: "drop-shadow(0 0 10px rgba(34, 197, 94, 0.2))" }}
             >
-              de principio a fin.
-            </motion.span>
+              <TrueFocus
+                sentence="principio a fin."
+                manualMode={false}
+                blurAmount={5}
+                borderColor="#29ff7b"
+                animationDuration={0.8}
+                pauseBetweenAnimations={2}
+                ignoreWords={['a']}
+              />
+            </motion.div>
           </h2>
 
           <motion.p
@@ -379,7 +380,7 @@ export function TraceabilityTimeline() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-zinc-400 text-lg max-w-2xl mx-auto"
+            className="text-slate-400 text-lg max-w-2xl mx-auto"
           >
             Nuestro sistema de gestión y trazabilidad genética garantiza transparencia total y cumplimiento en cada paso del proceso de cultivo.
           </motion.p>

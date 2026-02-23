@@ -12,7 +12,7 @@ interface GlowEffectProps {
 export function GlowEffect({
   children,
   className = '',
-  glowColor = 'rgba(16, 185, 129, 0.3)',
+  glowColor = 'rgba(34, 197, 94, 0.3)',
   glowSize = 200,
   intensity = 0.5,
 }: GlowEffectProps) {
@@ -94,7 +94,7 @@ export function Spotlight({
           background: useMotionTemplate`
             radial-gradient(
               400px circle at ${mouseX}px ${mouseY}px,
-              rgba(16, 185, 129, 0.15),
+              rgba(34, 197, 94, 0.15),
               transparent 80%
             )
           `,
@@ -131,7 +131,7 @@ export function AuroraBackground({
           <div 
             className="absolute top-1/2 left-1/2 w-[800px] h-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px]"
             style={{
-              background: 'conic-gradient(from 0deg, transparent, rgba(16, 185, 129, 0.1), transparent, rgba(52, 211, 153, 0.1), transparent)',
+              background: 'conic-gradient(from 0deg, transparent, rgba(34, 197, 94, 0.1), transparent, rgba(52, 211, 153, 0.1), transparent)',
             }}
           />
         </motion.div>
@@ -150,7 +150,7 @@ export function AuroraBackground({
           <div 
             className="absolute top-1/2 left-1/2 w-[600px] h-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px]"
             style={{
-              background: 'conic-gradient(from 180deg, transparent, rgba(16, 185, 129, 0.08), transparent, rgba(110, 231, 183, 0.08), transparent)',
+              background: 'conic-gradient(from 180deg, transparent, rgba(34, 197, 94, 0.08), transparent, rgba(110, 231, 183, 0.08), transparent)',
             }}
           />
         </motion.div>
@@ -230,7 +230,7 @@ export function ConnectedParticles({
                 y1={`${p1.y}%`}
                 x2={`${p2.x}%`}
                 y2={`${p2.y}%`}
-                stroke={`rgba(16, 185, 129, ${opacity})`}
+                stroke={`rgba(34, 197, 94, ${opacity})`}
                 strokeWidth="1"
               />
             );
@@ -242,7 +242,7 @@ export function ConnectedParticles({
       {particles.map((particle) => (
         <motion.div
           key={particle.id}
-          className="absolute rounded-full bg-emerald-400/40"
+          className="absolute rounded-full bg-green-400/40"
           style={{
             left: `${particle.x}%`,
             top: `${particle.y}%`,

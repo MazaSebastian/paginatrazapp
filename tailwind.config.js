@@ -38,15 +38,15 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        emerald: {
-          DEFAULT: '#10B981',
+        green: {
+          DEFAULT: '#22C55E',
           50: '#ECFDF5',
           100: '#D1FAE5',
           200: '#A7F3D0',
-          300: '#6EE7B7',
-          400: '#34D399',
-          500: '#10B981',
-          600: '#059669',
+          300: '#86EFAC',
+          400: '#4ADE80',
+          500: '#22C55E',
+          600: '#16A34A',
           700: '#047857',
           800: '#065F46',
           900: '#064E3B',
@@ -72,9 +72,9 @@ module.exports = {
       },
       boxShadow: {
         xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        'emerald': '0 0 20px rgba(16, 185, 129, 0.3)',
-        'emerald-lg': '0 0 40px rgba(16, 185, 129, 0.4)',
-        'glow': '0 0 30px rgba(16, 185, 129, 0.2)',
+        'green': '0 0 20px rgba(34, 197, 94, 0.3)',
+        'green-lg': '0 0 40px rgba(34, 197, 94, 0.4)',
+        'glow': '0 0 30px rgba(34, 197, 94, 0.2)',
       },
       keyframes: {
         "accordion-down": {
