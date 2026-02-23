@@ -146,18 +146,178 @@ function StageCard({
     [0, 1, 0]
   );
 
+  if (isMobile) {
+    return (
+      <div
+        ref={ref}
+        className={`relative flex items-center gap-8 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
+      >
+        {/* Scroll Highlight Overlay - Subtle Glow */}
+        <motion.div
+          className="absolute inset-0 rounded-3xl blur-xl -z-10 bg-green-500/10"
+          style={{
+            opacity: highlightOpacity,
+          }}
+        />
+
+        {/* Content Card */}
+        <div className={`flex-1 ${isReversed ? 'lg:text-right' : ''}`}>
+          <TiltCard tiltAmount={5} scale={1.01}>
+            <motion.div
+              onClick={onClick}
+              className={`glass rounded-2xl p-6 border transition-all duration-500 cursor-pointer group relative ${isActive
+                ? 'border-green-500/50 shadow-green-lg'
+                : 'border-white/5 hover:border-green-500/30'
+                }`}
+              whileHover={{ y: -5 }}
+            >
+              {/* Scroll Highlight Border */}
+              <motion.div
+                className="absolute inset-0 rounded-2xl border-2 border-green-400/50 pointer-events-none"
+                style={{ opacity: highlightOpacity }}
+              />
+
+              {/* Header */}
+              <div className={`flex flex-col lg:flex-row items-center gap-4 mb-4 text-center lg:text-left ${isReversed ? 'lg:flex-row-reverse lg:text-right' : ''}`}>
+                <motion.div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300"
+                  style={{ backgroundColor: `${stage.color}20` }}
+                  whileHover={{ rotate: 360, scale: 1.1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <stage.icon className="w-6 h-6" style={{ color: stage.color }} />
+                </motion.div>
+                <div>
+                  <motion.span
+                    className="text-xs font-medium uppercase tracking-wider"
+                    style={{ color: stage.color }}
+                  >
+                    Etapa {stage.id}
+                  </motion.span>
+                  <h3 className="text-xl font-bold text-white group-hover:text-green-300 transition-colors">
+                    {stage.title}
+                  </h3>
+                </div>
+              </div>
+
+              <p className="text-slate-400 text-sm leading-relaxed mb-4 group-hover:text-slate-300 transition-colors text-center lg:text-left md:text-left px-2 lg:px-0">
+                {stage.description}
+              </p>
+
+              {/* Expandable details */}
+              <AnimatePresence>
+                {isActive && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <ul className={`space-y-3 lg:space-y-2 pt-4 border-t border-white/5 flex flex-col items-center lg:items-start ${isReversed ? 'lg:text-right lg:items-end' : ''}`}>
+                      {stage.details.map((detail, i) => (
+                        <motion.li
+                          key={i}
+                          className={`flex items-center text-left lg:text-left gap-2 text-xs text-slate-400 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
+                          initial={{ opacity: 0, x: isReversed ? 20 : -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.1 }}
+                        >
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: i * 0.1 + 0.2, type: 'spring' }}
+                          >
+                            <Check className="w-3 h-3 flex-shrink-0" style={{ color: stage.color }} />
+                          </motion.div>
+                          {detail}
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </TiltCard>
+        </div>
+
+        {/* Center Node */}
+        <div className="hidden lg:flex items-center justify-center relative">
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={isInView ? { scale: 1, rotate: 0 } : {}}
+            transition={{ duration: 0.6, delay: index * 0.15 + 0.2, type: 'spring' }}
+            className="relative z-10 cursor-pointer"
+            onClick={onClick}
+            style={{ scale }}
+            whileHover={{ scale: 1.3 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <motion.div
+              className="w-8 h-8 rounded-full border-4 flex items-center justify-center"
+              style={{
+                borderColor: stage.color,
+                backgroundColor: isActive ? stage.color : '#0B1120',
+                boxShadow: isActive ? `0 0 30px ${stage.color}` : 'none'
+              }}
+              animate={isActive ? {
+                boxShadow: [
+                  `0 0 20px ${stage.color}`,
+                  `0 0 40px ${stage.color}`,
+                  `0 0 20px ${stage.color}`,
+                ]
+              } : {}}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <span className="text-xs font-bold" style={{ color: isActive ? '#0B1120' : stage.color }}>
+                {stage.id}
+              </span>
+            </motion.div>
+
+            {/* Pulse rings */}
+            {isActive && (
+              <>
+                <motion.div
+                  className="absolute inset-0 rounded-full"
+                  style={{ border: `2px solid ${stage.color}` }}
+                  animate={{ scale: [1, 2], opacity: [0.5, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                />
+                <motion.div
+                  className="absolute inset-0 rounded-full"
+                  style={{ border: `2px solid ${stage.color}` }}
+                  animate={{ scale: [1, 2], opacity: [0.5, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}
+                />
+              </>
+            )}
+
+            {/* Scroll Highlight Ring */}
+            <motion.div
+              className="absolute inset-0 rounded-full -z-10 bg-white"
+              style={{ opacity: highlightOpacity, scale: 2, filter: 'blur(10px)', backgroundColor: stage.color }}
+            />
+          </motion.div>
+        </div>
+
+        {/* Spacer for alternating layout */}
+        <div className="flex-1 hidden lg:block" />
+      </div>
+    );
+  }
+
   return (
     <motion.div
       ref={ref}
-      initial={isMobile ? false : { opacity: 0, x: isReversed ? 100 : -100, rotateY: isReversed ? 15 : -15 }}
-      animate={isMobile ? { opacity: 1, x: 0, rotateY: 0 } : (isInView ? { opacity: 1, x: 0, rotateY: 0 } : {})}
-      transition={isMobile ? { duration: 0 } : {
+      initial={{ opacity: 0, x: isReversed ? 100 : -100, rotateY: isReversed ? 15 : -15 }}
+      animate={isInView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
+      transition={{
         duration: 0.8,
         delay: index * 0.15,
         ease: [0.215, 0.61, 0.355, 1]
       }}
       className={`relative flex items-center gap-8 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
-      style={isMobile ? {} : { perspective: '1000px', scale }}
+      style={{ perspective: '1000px', scale }}
     >
       {/* Scroll Highlight Overlay - Subtle Glow */}
       <motion.div
