@@ -149,11 +149,11 @@ function StageCard({
   return (
     <motion.div
       ref={ref}
-      initial={isMobile ? { opacity: 0, y: 30, x: 0, rotateY: 0 } : { opacity: 0, x: isReversed ? 100 : -100, rotateY: isReversed ? 15 : -15 }}
-      animate={isInView ? (isMobile ? { opacity: 1, y: 0, x: 0, rotateY: 0 } : { opacity: 1, x: 0, rotateY: 0 }) : {}}
-      transition={{
+      initial={isMobile ? false : { opacity: 0, x: isReversed ? 100 : -100, rotateY: isReversed ? 15 : -15 }}
+      animate={isMobile ? { opacity: 1, x: 0, rotateY: 0 } : (isInView ? { opacity: 1, x: 0, rotateY: 0 } : {})}
+      transition={isMobile ? { duration: 0 } : {
         duration: 0.8,
-        delay: isMobile ? index * 0.1 : index * 0.15,
+        delay: index * 0.15,
         ease: [0.215, 0.61, 0.355, 1]
       }}
       className={`relative flex items-center gap-8 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
