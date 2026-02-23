@@ -90,7 +90,7 @@ function BentoCard({
           {/* Content */}
           <div className="relative z-10 h-full flex flex-col">
             {/* Header */}
-            <div className="flex items-start justify-between mb-4">
+            <div className="flex flex-col md:flex-row items-center md:items-start justify-between mb-4 gap-4 md:gap-0">
               <motion.div
                 className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-sm"
                 whileHover={{ scale: 1.1 }}
@@ -109,11 +109,11 @@ function BentoCard({
 
             {/* Title & Description */}
             <motion.h3
-              className="text-2xl font-bold text-white mb-3 group-hover:text-green-300 transition-colors"
+              className="text-2xl font-bold text-white mb-3 group-hover:text-green-300 transition-colors text-center md:text-left"
             >
               {feature.title}
             </motion.h3>
-            <p className="text-slate-400 text-base leading-relaxed flex-grow group-hover:text-slate-300 transition-colors">
+            <p className="text-slate-400 text-base leading-relaxed flex-grow group-hover:text-slate-300 transition-colors text-center md:text-left">
               {feature.description}
             </p>
 

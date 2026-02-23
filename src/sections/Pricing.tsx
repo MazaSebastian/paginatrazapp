@@ -239,7 +239,7 @@ function PricingCard({
             )}
 
             {/* Plan Header */}
-            <div className="flex items-center gap-3 mb-4 relative z-10">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-3 mb-4 relative z-10 text-center md:text-left">
               <motion.div
                 className={`w-12 h-12 rounded-xl flex items-center justify-center ${plan.popular ? 'bg-green-500/20' : 'bg-white/5'
                   }`}
@@ -259,13 +259,13 @@ function PricingCard({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="text-xs text-green-400 mb-4"
+              className="text-xs text-green-400 mb-4 text-center md:text-left"
             >
               {plan.highlight}
             </motion.p>
 
             {/* Price with animation */}
-            <div className="mb-6 relative z-10">
+            <div className="mb-6 relative z-10 flex justify-center md:justify-start">
               <div className="flex items-baseline gap-1">
                 <span className="text-slate-500 text-lg">{isYearly ? 'U$S' : '$'}</span>
                 <AnimatePresence mode="wait">
@@ -322,7 +322,7 @@ function PricingCard({
 
             {/* Features List with Accordion */}
             <div className="space-y-4 relative z-10">
-              <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">
+              <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2 text-center md:text-left">
                 Funciones por Módulo
               </p>
               <Accordion type="single" collapsible className="w-full space-y-2">

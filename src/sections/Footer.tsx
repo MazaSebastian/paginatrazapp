@@ -41,33 +41,33 @@ export function Footer() {
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-8 lg:gap-12 text-center md:text-left">
           {/* Brand Column */}
-          <div className="col-span-2">
+          <div className="col-span-1 sm:col-span-2 flex flex-col items-center md:items-start">
             <motion.a
               href="#"
-              className="flex items-center gap-2 mb-6"
+              className="flex items-center justify-center md:justify-start gap-2 mb-6"
               whileHover={{ scale: 1.02 }}
             >
               <img src="/LOGOTRAZAPP.png" alt="GrowAPP Logo" className="h-20 w-auto" />
             </motion.a>
 
-            <p className="text-slate-500 text-sm mb-6 max-w-xs">
+            <p className="text-slate-500 text-sm mb-6 max-w-xs mx-auto md:mx-0">
               Solución completa de trazabilidad para el cultivo de cannabis medicinal.
               Seguimiento completo de principio a fin, cada paso rastreado y verificado.
             </p>
 
             {/* Contact Info */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 text-sm text-slate-500">
+            <div className="space-y-3 w-full">
+              <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-slate-500">
                 <Mail className="w-4 h-4 text-green-500" />
                 <span>creapp.ar@gmail.com</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-slate-500">
+              <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-slate-500">
                 <MapPin className="w-4 h-4 text-green-500" />
                 <span>Buenos Aires, Argentina</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-slate-500">
+              <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-slate-500">
                 <Phone className="w-4 h-4 text-green-500" />
                 <span>+54 9 11-3028-8564</span>
               </div>
@@ -144,7 +144,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-4 text-center md:text-left">
           <p className="text-sm text-slate-600">
             © {new Date().getFullYear()} TrazAPP by CreAPP. Todos los derechos reservados.
           </p>

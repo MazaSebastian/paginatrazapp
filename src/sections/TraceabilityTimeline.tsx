@@ -183,7 +183,7 @@ function StageCard({
             />
 
             {/* Header */}
-            <div className={`flex items-center gap-4 mb-4 ${isReversed ? 'lg:flex-row-reverse' : ''}`}>
+            <div className={`flex flex-col lg:flex-row items-center gap-4 mb-4 text-center lg:text-left ${isReversed ? 'lg:flex-row-reverse lg:text-right' : ''}`}>
               <motion.div
                 className="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300"
                 style={{ backgroundColor: `${stage.color}20` }}
@@ -205,7 +205,7 @@ function StageCard({
               </div>
             </div>
 
-            <p className="text-slate-400 text-sm leading-relaxed mb-4 group-hover:text-slate-300 transition-colors">
+            <p className="text-slate-400 text-sm leading-relaxed mb-4 group-hover:text-slate-300 transition-colors text-center lg:text-left md:text-left px-2 lg:px-0">
               {stage.description}
             </p>
 
@@ -219,11 +219,11 @@ function StageCard({
                   transition={{ duration: 0.3 }}
                   className="overflow-hidden"
                 >
-                  <ul className={`space-y-2 pt-4 border-t border-white/5 ${isReversed ? 'lg:text-right' : ''}`}>
+                  <ul className={`space-y-3 lg:space-y-2 pt-4 border-t border-white/5 flex flex-col items-center lg:items-start ${isReversed ? 'lg:text-right lg:items-end' : ''}`}>
                     {stage.details.map((detail, i) => (
                       <motion.li
                         key={i}
-                        className={`flex items-center gap-2 text-xs text-slate-400 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
+                        className={`flex items-center text-left lg:text-left gap-2 text-xs text-slate-400 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
                         initial={{ opacity: 0, x: isReversed ? 20 : -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.1 }}

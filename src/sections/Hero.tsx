@@ -143,7 +143,7 @@ function HolographicStatCard({ icon: Icon, value, suffix, label, delay, index }:
                 <span>{value}{suffix}</span>
               )}
             </div>
-            <div className="text-sm text-slate-400 uppercase tracking-widest font-medium group-hover:text-green-300 transition-colors">
+            <div className="text-sm text-slate-300 uppercase tracking-widest font-medium group-hover:text-green-300 transition-colors">
               {label}
             </div>
           </div>
@@ -159,6 +159,7 @@ function HolographicStatCard({ icon: Icon, value, suffix, label, delay, index }:
 
 export function Hero() {
   const containerRef = useRef(null);
+  const isMobile = useIsMobile();
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
@@ -181,7 +182,7 @@ export function Hero() {
       {/* Content with parallax */}
       <motion.div
         className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32"
-        style={{ y, opacity, scale }}
+        style={isMobile ? {} : { y, opacity, scale }}
       >
         <div className="text-center">
 
@@ -314,7 +315,7 @@ export function Hero() {
                   y: -2,
                   transition: { duration: 0.2 }
                 }}
-                className="flex items-center gap-2 text-slate-500 glass px-4 py-2 rounded-full cursor-pointer hover:border-green-500/30 transition-colors"
+                className="flex items-center gap-2 text-slate-300 glass px-4 py-2 rounded-full cursor-pointer hover:border-green-500/30 transition-colors"
               >
                 <motion.div
                   whileHover={{ rotate: 360 }}
