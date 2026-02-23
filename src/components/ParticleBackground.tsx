@@ -1,7 +1,13 @@
 import { useEffect, useRef } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export const ParticleBackground = () => {
+    const isMobile = useIsMobile();
     const canvasRef = useRef<HTMLCanvasElement>(null);
+
+    if (isMobile) {
+        return null;
+    }
 
     useEffect(() => {
         const canvas = canvasRef.current;

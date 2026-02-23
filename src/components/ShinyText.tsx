@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useAnimationFrame, useTransform } from 'framer-motion';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ShinyTextProps {
   text: string;
@@ -28,6 +29,7 @@ const ShinyText: React.FC<ShinyTextProps> = ({
   direction = 'left',
   delay = 0
 }) => {
+  const isMobile = useIsMobile();
   const [isPaused, setIsPaused] = useState(false);
   const progress = useMotionValue(0);
   const elapsedRef = useRef(0);
@@ -38,7 +40,7 @@ const ShinyText: React.FC<ShinyTextProps> = ({
   const delayDuration = delay * 1000;
 
   useAnimationFrame(time => {
-    if (disabled || isPaused) {
+    if (disabled || isPaused || isMobile) {
       lastTimeRef.current = null;
       return;
     }
@@ -98,7 +100,7 @@ const ShinyText: React.FC<ShinyTextProps> = ({
   }, [direction]);
 
   // Transform: p=0 -> 150% (shine off right), p=100 -> -50% (shine off left)
-  const backgroundPosition = useTransform(progress, p => `${150 - p * 2}% center`);
+  const backgroundPosition = useTransform(progress, p => isMobile ? '0% center' : `${150 - p * 2}% center`);
 
   const handleMouseEnter = useCallback(() => {
     if (pauseOnHover) setIsPaused(true);

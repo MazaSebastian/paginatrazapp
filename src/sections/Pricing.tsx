@@ -8,6 +8,7 @@ import { TextReveal } from '@/components/TextReveal';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const plans = [
   {
@@ -382,6 +383,7 @@ function PricingCard({
 
 export function Pricing() {
   const [isYearly, setIsYearly] = useState(false);
+  const isMobile = useIsMobile();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
 
@@ -391,14 +393,16 @@ export function Pricing() {
       <div className="absolute inset-0 grid-pattern opacity-30" />
 
       {/* Animated glow orbs */}
-      <motion.div
-        animate={{
-          scale: [1, 1.3, 1],
-          opacity: [0.1, 0.3, 0.1],
-        }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-green-500/20 rounded-full blur-[150px]"
-      />
+      {!isMobile && (
+        <motion.div
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.1, 0.3, 0.1],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-green-500/20 rounded-full blur-[150px]"
+        />
+      )}
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}

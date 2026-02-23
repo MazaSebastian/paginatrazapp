@@ -176,8 +176,12 @@ export function Hero() {
     >
       {/* Background Effects */}
       <AuroraBackground className="absolute inset-0" />
-      <div className="absolute inset-0 grid-pattern opacity-50" />
-      <GlowingOrbs />
+      {!isMobile && (
+        <>
+          <div className="absolute inset-0 grid-pattern opacity-50" />
+          <GlowingOrbs />
+        </>
+      )}
 
       {/* Content with parallax */}
       <motion.div

@@ -3,6 +3,7 @@ import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'fra
 import { Sprout, Sun, Flower2, FlaskConical, Microscope, Check } from 'lucide-react';
 import { TiltCard } from '@/components/TiltCard';
 import TrueFocus from '@/components/TrueFocus';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const stages = [
   {
@@ -313,6 +314,7 @@ function StageCard({
 
 export function TraceabilityTimeline() {
   const containerRef = useRef(null);
+  const isMobile = useIsMobile();
   const [activeStage, setActiveStage] = useState<number | null>(0);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -330,15 +332,17 @@ export function TraceabilityTimeline() {
       />
 
       {/* Floating orbs */}
-      <motion.div
-        animate={{
-          x: [0, 30, 0],
-          y: [0, -20, 0],
-          scale: [1, 1.1, 1]
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/4 left-1/4 w-64 h-64 bg-green-500/10 rounded-full blur-[100px]"
-      />
+      {!isMobile && (
+        <motion.div
+          animate={{
+            x: [0, 30, 0],
+            y: [0, -20, 0],
+            scale: [1, 1.1, 1]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-1/4 left-1/4 w-64 h-64 bg-green-500/10 rounded-full blur-[100px]"
+        />
+      )}
 
       {/* Section Header */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface TrueFocusProps {
   sentence?: string;
@@ -31,6 +32,7 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
   pauseBetweenAnimations = 1,
   ignoreWords = []
 }) => {
+  const isMobile = useIsMobile();
   const words = sentence.split(separator);
 
   // Find the first non-ignored index to start
@@ -123,14 +125,14 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
             className="relative font-black cursor-pointer"
             style={
               {
-                filter: isIgnored ? 'blur(0px)' : (manualMode
+                filter: isMobile ? 'none' : (isIgnored ? 'blur(0px)' : (manualMode
                   ? isActive
                     ? `blur(0px)`
                     : `blur(${blurAmount}px)`
                   : isActive
                     ? `blur(0px)`
-                    : `blur(${blurAmount}px)`),
-                transition: `filter ${animationDuration}s ease`,
+                    : `blur(${blurAmount}px)`)),
+                transition: isMobile ? 'none' : `filter ${animationDuration}s ease`,
                 outline: 'none',
                 userSelect: 'none'
               } as React.CSSProperties
