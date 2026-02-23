@@ -175,9 +175,9 @@ export function Hero() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Background Effects */}
-      <AuroraBackground className="absolute inset-0" />
       {!isMobile && (
         <>
+          <AuroraBackground className="absolute inset-0" />
           <div className="absolute inset-0 grid-pattern opacity-50" />
           <GlowingOrbs />
         </>
