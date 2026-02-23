@@ -11,7 +11,7 @@ import { AuroraBackground } from '@/components/GlowEffect';
 
 // Magnetic Button Component
 function MagneticButton({ children, className }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef<HTMLButtonElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
   const x = useMotionValue(0);
@@ -40,7 +40,7 @@ function MagneticButton({ children, className }: { children: React.ReactNode; cl
   };
 
   return (
-    <motion.button
+    <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
@@ -54,9 +54,10 @@ function MagneticButton({ children, className }: { children: React.ReactNode; cl
         animate={{ opacity: isHovered ? 1 : 0, scale: isHovered ? 1.2 : 1 }}
         transition={{ duration: 0.3 }}
       />
-    </motion.button>
+    </motion.div>
   );
 }
+
 
 
 // Glowing Orbs with complex animation
