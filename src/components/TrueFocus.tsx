@@ -106,6 +106,57 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
     }
   };
 
+  if (isMobile) {
+    // Static fallback for mobile to ensure premium experience without lag/glitches
+    const focusWordIndex = words.length - 1; // Highlight the last word statically
+
+    return (
+      <div className="relative flex gap-4 justify-center items-center flex-wrap" style={{ outline: 'none', userSelect: 'none' }}>
+        {words.map((word, index) => {
+          const isFocused = index === focusWordIndex;
+          return (
+            <span
+              key={index}
+              className="relative font-black"
+            >
+              {word}
+              {isFocused && (
+                <div
+                  className="absolute pointer-events-none box-border border-0"
+                  style={{
+                    top: '-4px',
+                    left: '-8px',
+                    right: '-8px',
+                    bottom: '-4px',
+                    '--border-color': borderColor,
+                    '--glow-color': glowColor
+                  } as React.CSSProperties}
+                >
+                  <span
+                    className="absolute w-4 h-4 border-[3px] rounded-[3px] top-[-10px] left-[-10px] border-r-0 border-b-0"
+                    style={{ borderColor: 'var(--border-color)', filter: 'drop-shadow(0 0 4px var(--border-color))' }}
+                  ></span>
+                  <span
+                    className="absolute w-4 h-4 border-[3px] rounded-[3px] top-[-10px] right-[-10px] border-l-0 border-b-0"
+                    style={{ borderColor: 'var(--border-color)', filter: 'drop-shadow(0 0 4px var(--border-color))' }}
+                  ></span>
+                  <span
+                    className="absolute w-4 h-4 border-[3px] rounded-[3px] bottom-[-10px] left-[-10px] border-r-0 border-t-0"
+                    style={{ borderColor: 'var(--border-color)', filter: 'drop-shadow(0 0 4px var(--border-color))' }}
+                  ></span>
+                  <span
+                    className="absolute w-4 h-4 border-[3px] rounded-[3px] bottom-[-10px] right-[-10px] border-l-0 border-t-0"
+                    style={{ borderColor: 'var(--border-color)', filter: 'drop-shadow(0 0 4px var(--border-color))' }}
+                  ></span>
+                </div>
+              )}
+            </span>
+          );
+        })}
+      </div>
+    );
+  }
+
   return (
     <div
       className="relative flex gap-4 justify-center items-center flex-wrap"
