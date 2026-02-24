@@ -180,8 +180,9 @@ function MobileFeatureAccordionItem({ category, isCategoryDisabled }: { category
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div
-      onClick={() => setIsOpen(!isOpen)}
+    <button
+      type="button"
+      onClick={() => setIsOpen(prev => !prev)}
       className={`w-full text-left cursor-pointer border border-white/5 rounded-lg px-3 glass overflow-hidden transition-all duration-300 ${isCategoryDisabled ? 'opacity-60 grayscale border-transparent' : 'border-green-500/10'
         } ${isOpen ? 'ring-1 ring-green-500/30' : ''}`}
     >
@@ -222,7 +223,7 @@ function MobileFeatureAccordionItem({ category, isCategoryDisabled }: { category
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 }
 
