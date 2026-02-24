@@ -204,39 +204,26 @@ function StageCard({
                 {stage.description}
               </p>
 
-              {/* Expandable details */}
-              <AnimatePresence>
-                {isActive && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <ul className={`space-y-3 lg:space-y-2 pt-4 border-t border-white/5 flex flex-col items-center lg:items-start ${isReversed ? 'lg:text-right lg:items-end' : ''}`}>
-                      {stage.details.map((detail, i) => (
-                        <motion.li
-                          key={i}
-                          className={`flex items-center text-left lg:text-left gap-2 text-xs text-slate-400 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
-                          initial={{ opacity: 0, x: isReversed ? 20 : -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.1 }}
-                        >
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ delay: i * 0.1 + 0.2, type: 'spring' }}
-                          >
-                            <Check className="w-3 h-3 flex-shrink-0" style={{ color: stage.color }} />
-                          </motion.div>
-                          {detail}
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {/* Expandable details - CSS driven for mobile performance */}
+              <div
+                className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${isActive ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
+              >
+                <div className="overflow-hidden">
+                  <ul className={`space-y-3 lg:space-y-2 pt-4 border-t border-white/5 flex flex-col items-center lg:items-start ${isReversed ? 'lg:text-right lg:items-end' : ''}`}>
+                    {stage.details.map((detail, i) => (
+                      <li
+                        key={i}
+                        className={`flex items-center text-left lg:text-left gap-2 text-xs text-slate-400 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
+                      >
+                        <div className="transform scale-100 transition-transform duration-300">
+                          <Check className="w-3 h-3 flex-shrink-0" style={{ color: stage.color }} />
+                        </div>
+                        <span className="opacity-100 transition-opacity duration-300">{detail}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </motion.div>
           </TiltCard>
         </div>
@@ -371,39 +358,26 @@ function StageCard({
               {stage.description}
             </p>
 
-            {/* Expandable details */}
-            <AnimatePresence>
-              {isActive && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="overflow-hidden"
-                >
-                  <ul className={`space-y-3 lg:space-y-2 pt-4 border-t border-white/5 flex flex-col items-center lg:items-start ${isReversed ? 'lg:text-right lg:items-end' : ''}`}>
-                    {stage.details.map((detail, i) => (
-                      <motion.li
-                        key={i}
-                        className={`flex items-center text-left lg:text-left gap-2 text-xs text-slate-400 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
-                        initial={{ opacity: 0, x: isReversed ? 20 : -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.1 }}
-                      >
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ delay: i * 0.1 + 0.2, type: 'spring' }}
-                        >
-                          <Check className="w-3 h-3 flex-shrink-0" style={{ color: stage.color }} />
-                        </motion.div>
-                        {detail}
-                      </motion.li>
-                    ))}
-                  </ul>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {/* Expandable details - CSS driven for performance */}
+            <div
+              className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${isActive ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
+            >
+              <div className="overflow-hidden">
+                <ul className={`space-y-3 lg:space-y-2 pt-4 border-t border-white/5 flex flex-col items-center lg:items-start ${isReversed ? 'lg:text-right lg:items-end' : ''}`}>
+                  {stage.details.map((detail, i) => (
+                    <li
+                      key={i}
+                      className={`flex items-center text-left lg:text-left gap-2 text-xs text-slate-400 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
+                    >
+                      <div className="transform scale-100 transition-transform duration-300">
+                        <Check className="w-3 h-3 flex-shrink-0" style={{ color: stage.color }} />
+                      </div>
+                      <span className="opacity-100 transition-opacity duration-300">{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </motion.div>
         </TiltCard>
       </div>
