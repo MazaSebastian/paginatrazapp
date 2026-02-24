@@ -5,8 +5,7 @@ import {
   Stethoscope,
   Briefcase,
   TrendingUp,
-  Zap,
-  ArrowUpRight
+  Zap
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { TiltCard } from '@/components/TiltCard';
@@ -91,20 +90,13 @@ function BentoCard({
           {/* Content */}
           <div className="relative z-10 h-full flex flex-col">
             {/* Header */}
-            <div className="flex flex-col md:flex-row items-center md:items-start justify-between mb-4 gap-4 md:gap-0">
+            <div className="flex flex-col md:flex-row items-center md:items-start justify-start mb-4 gap-4 md:gap-0">
               <motion.div
                 className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-sm"
                 whileHover={{ scale: 1.1 }}
                 transition={{ duration: 0.5 }}
               >
                 <feature.icon className="w-8 h-8 text-white" />
-              </motion.div>
-              <motion.div
-                className="opacity-0 group-hover:opacity-100 transition-opacity"
-                initial={{ x: -10 }}
-                whileHover={{ x: 0 }}
-              >
-                <ArrowUpRight className="w-5 h-5 text-green-400" />
               </motion.div>
             </div>
 
