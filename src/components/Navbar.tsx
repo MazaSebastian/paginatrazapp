@@ -35,15 +35,15 @@ export function Navbar() {
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between relative h-16 md:h-auto">
             {/* Logo */}
             <motion.a
               href="#"
-              className="flex items-center gap-2 group"
+              className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 flex items-center gap-2 group"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <img src="/LOGOTRAZAPP.png" alt="GrowAPP Logo" className="h-16 w-auto" />
+              <img src="/LOGOTRAZAPP.png" alt="GrowAPP Logo" className="h-[54px] md:h-16 w-auto" />
             </motion.a>
 
             {/* Desktop Navigation */}
@@ -92,10 +92,13 @@ export function Navbar() {
               </motion.div>
             </div>
 
+            {/* Invisible spacer for mobile centering balance */}
+            <div className="md:hidden w-10"></div>
+
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-slate-400 hover:text-white transition-colors"
+              className="md:hidden p-2 text-slate-400 hover:text-white transition-colors z-10"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
