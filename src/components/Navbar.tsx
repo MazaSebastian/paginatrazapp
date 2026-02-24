@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 
 const navLinks = [
@@ -13,7 +12,6 @@ const navLinks = [
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -92,62 +90,11 @@ export function Navbar() {
               </motion.div>
             </div>
 
-            {/* Invisible spacer for mobile centering balance */}
+            {/* Invisible spacer for mobile centering balance (kept slightly for overall padding balance) */}
             <div className="md:hidden w-10"></div>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-slate-400 hover:text-white transition-colors z-10"
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
           </div>
         </div>
       </motion.nav>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-[72px] z-40 md:hidden"
-          >
-            <div className="glass-strong mx-4 rounded-2xl p-4 border border-white/5">
-              <div className="flex flex-col gap-2">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
-                  >
-                    {link.name}
-                  </a>
-                ))}
-                <div className="border-t border-white/5 mt-2 pt-2 flex flex-col gap-2">
-                  <a href="https://software.trazapp.ar" target="_blank" rel="noopener noreferrer" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-center text-slate-400 hover:text-white"
-                    >
-                      Iniciar Sesión
-                    </Button>
-                  </a>
-                  <Link to="/register" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
-                      Comenzar
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 }
