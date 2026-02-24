@@ -144,7 +144,7 @@ export function Register() {
                             animate={isPageReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                             exit={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className="w-full max-w-xl glass p-8 rounded-2xl border border-white/5 relative z-10 my-auto"
+                            className="w-[calc(100%-2rem)] md:w-full max-w-xl glass p-6 md:p-8 rounded-2xl border border-white/5 relative z-10 my-auto mx-4 md:mx-auto"
                         >
                             <div className="mb-8 text-center">
                                 <Link to="/" className="inline-flex items-center gap-2 text-slate-400 hover:text-white mb-6 transition-colors">
