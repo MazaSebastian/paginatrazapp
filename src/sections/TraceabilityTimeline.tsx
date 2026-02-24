@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { Sprout, Sun, Flower2, FlaskConical, Microscope, Check } from 'lucide-react';
 import { TiltCard } from '@/components/TiltCard';
 import TrueFocus from '@/components/TrueFocus';
