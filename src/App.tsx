@@ -11,6 +11,7 @@ import { Register } from '@/pages/Register';
 import Aurora from './components/Aurora';
 import Ribbons from './components/Ribbons';
 import { Toaster } from 'sonner';
+import { useIsMobile } from '@/hooks/use-mobile';
 import './App.css';
 
 function LandingPage() {
@@ -30,11 +31,12 @@ function LandingPage() {
 }
 
 function App() {
+  const isMobile = useIsMobile();
   return (
     <Router>
       <div className="w-full min-h-screen bg-background text-white">
         <div className="fixed inset-0 z-0 pointer-events-none opacity-60 mix-blend-screen transition-opacity duration-1000">
-          <Aurora colorStops={["#16A34A", "#4ADE80", "#047857"]} amplitude={1.2} blend={1} />
+          {!isMobile && <Aurora colorStops={["#16A34A", "#4ADE80", "#047857"]} amplitude={1.2} blend={1} />}
         </div>
 
 

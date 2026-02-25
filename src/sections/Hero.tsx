@@ -166,7 +166,7 @@ export function Hero() {
     >
       {/* Background Effects */}
       <>
-        <AuroraBackground className="absolute inset-0" />
+        {!isMobile && <AuroraBackground className="absolute inset-0" />}
         <div className="absolute inset-0 grid-pattern opacity-50" />
         <GlowingOrbs />
       </>
