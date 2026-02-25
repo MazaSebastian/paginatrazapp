@@ -1,0 +1,17 @@
+# Recursos Gráficos - Web GrowAPP
+
+## Tipografía
+- **Familia Principal:** `Inter` (cargada mediante Tailwind CSS)
+- **Familias de Respaldo:** `system-ui, -apple-system, sans-serif`
+
+## Iconos
+- **Librería Utilizada:** `lucide-react`
+- **Archivos Estáticos (Exportados en la carpeta iconos/):**
+  - `LOGOTRAZAPP.png` (Logo principal)
+  - `cursor.svg` (Cursor personalizado)
+
+## Tarjetas (Cards)
+Las tarjetas de la web utilizan un diseño de tipo "Glassmorphism" con bordes y brillos en tonos verdes (TrazAPP Green). 
+- **Sombras:** `box-shadow: 0 0 20px rgba(34, 197, 94, 0.3)`
+- **Fondo:** Tonos oscuros transparentes con bordes de la paleta principal (`#22C55E`).
+*(Ver capturas en la carpeta "tarjetas" para el diseño renderizado de los componentes).*

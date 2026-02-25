@@ -204,26 +204,28 @@ function StageCard({
                 {stage.description}
               </p>
 
-              {/* Expandable details - CSS driven for mobile performance */}
-              <div
-                className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${isActive ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
+              {/* Expandable details - Lightweight animation */}
+              <motion.div
+                initial={false}
+                animate={{
+                  height: isActive ? 'auto' : 0,
+                  opacity: isActive ? 1 : 0
+                }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="overflow-hidden"
               >
-                <div className="overflow-hidden">
-                  <ul className={`space-y-3 lg:space-y-2 pt-4 border-t border-white/5 flex flex-col items-center lg:items-start ${isReversed ? 'lg:text-right lg:items-end' : ''}`}>
-                    {stage.details.map((detail, i) => (
-                      <li
-                        key={i}
-                        className={`flex items-center text-left lg:text-left gap-2 text-xs text-slate-400 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
-                      >
-                        <div className="transform scale-100 transition-transform duration-300">
-                          <Check className="w-3 h-3 flex-shrink-0" style={{ color: stage.color }} />
-                        </div>
-                        <span className="opacity-100 transition-opacity duration-300">{detail}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+                <ul className={`space-y-3 lg:space-y-2 pt-4 border-t border-white/5 flex flex-col items-center lg:items-start ${isReversed ? 'lg:text-right lg:items-end' : ''}`}>
+                  {stage.details.map((detail, i) => (
+                    <li
+                      key={i}
+                      className={`flex items-center text-left lg:text-left gap-2 text-xs text-slate-400 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
+                    >
+                      <Check className="w-3 h-3 flex-shrink-0" style={{ color: stage.color }} />
+                      <span>{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
             </motion.div>
           </TiltCard>
         </div>
@@ -358,26 +360,28 @@ function StageCard({
               {stage.description}
             </p>
 
-            {/* Expandable details - CSS driven for performance */}
-            <div
-              className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${isActive ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
+            {/* Expandable details - Lightweight animation */}
+            <motion.div
+              initial={false}
+              animate={{
+                height: isActive ? 'auto' : 0,
+                opacity: isActive ? 1 : 0
+              }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="overflow-hidden"
             >
-              <div className="overflow-hidden">
-                <ul className={`space-y-3 lg:space-y-2 pt-4 border-t border-white/5 flex flex-col items-center lg:items-start ${isReversed ? 'lg:text-right lg:items-end' : ''}`}>
-                  {stage.details.map((detail, i) => (
-                    <li
-                      key={i}
-                      className={`flex items-center text-left lg:text-left gap-2 text-xs text-slate-400 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
-                    >
-                      <div className="transform scale-100 transition-transform duration-300">
-                        <Check className="w-3 h-3 flex-shrink-0" style={{ color: stage.color }} />
-                      </div>
-                      <span className="opacity-100 transition-opacity duration-300">{detail}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+              <ul className={`space-y-3 lg:space-y-2 pt-4 border-t border-white/5 flex flex-col items-center lg:items-start ${isReversed ? 'lg:text-right lg:items-end' : ''}`}>
+                {stage.details.map((detail, i) => (
+                  <li
+                    key={i}
+                    className={`flex items-center text-left lg:text-left gap-2 text-xs text-slate-400 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
+                  >
+                    <Check className="w-3 h-3 flex-shrink-0" style={{ color: stage.color }} />
+                    <span>{detail}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
           </motion.div>
         </TiltCard>
       </div>
