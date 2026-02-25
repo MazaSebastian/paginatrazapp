@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 
 interface TrueFocusProps {
   sentence?: string;
@@ -48,9 +48,10 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const [focusRect, setFocusRect] = useState<FocusRect>({ x: 0, y: 0, width: 0, height: 0 });
+  const isInView = useInView(containerRef);
 
   useEffect(() => {
-    if (!manualMode) {
+    if (!manualMode && isInView) {
       const interval = setInterval(
         () => {
           setCurrentIndex(prev => {
@@ -73,7 +74,7 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
 
       return () => clearInterval(interval);
     }
-  }, [manualMode, animationDuration, pauseBetweenAnimations, words.length]);
+  }, [manualMode, animationDuration, pauseBetweenAnimations, words.length, isInView]);
 
   useEffect(() => {
     if (currentIndex === null || currentIndex === -1) return;

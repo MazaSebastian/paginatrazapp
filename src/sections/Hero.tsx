@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useSpring, useScroll, useTransform, useInView } from 'framer-motion';
 import { ArrowRight, Shield, Microscope, LayoutDashboard, Stethoscope, Sprout, MapPin, Lock } from 'lucide-react';
@@ -12,7 +12,6 @@ import { AuroraBackground } from '@/components/GlowEffect';
 // Magnetic Button Component
 function MagneticButton({ children, className }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -36,24 +35,18 @@ function MagneticButton({ children, className }: { children: React.ReactNode; cl
   const handleMouseLeave = () => {
     x.set(0);
     y.set(0);
-    setIsHovered(false);
   };
 
   return (
     <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
       style={{ x: springX, y: springY }}
       className={className}
     >
       {children}
-      <motion.div
-        className="absolute inset-0 rounded-xl bg-green-400/20 blur-xl"
-        animate={{ opacity: isHovered ? 1 : 0, scale: isHovered ? 1.2 : 1 }}
-        transition={{ duration: 0.3 }}
-      />
+      {/* Magnetic ring hover removed to optimize mobile GPU usage */}
     </motion.div>
   );
 }
@@ -67,8 +60,7 @@ function GlowingOrbs() {
       <motion.div
         className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full"
         style={{
-          background: 'radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, transparent 70%)',
-          filter: 'blur(60px)',
+          background: 'radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 50%, transparent 80%)',
         }}
         animate={{
           scale: [1, 1.3, 1],
@@ -81,8 +73,7 @@ function GlowingOrbs() {
       <motion.div
         className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full"
         style={{
-          background: 'radial-gradient(circle, rgba(52, 211, 153, 0.12) 0%, transparent 70%)',
-          filter: 'blur(50px)',
+          background: 'radial-gradient(circle, rgba(52, 211, 153, 0.12) 0%, rgba(52, 211, 153, 0.04) 50%, transparent 80%)',
         }}
         animate={{
           scale: [1.2, 1, 1.2],
@@ -95,8 +86,7 @@ function GlowingOrbs() {
       <motion.div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
         style={{
-          background: 'radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 60%)',
-          filter: 'blur(80px)',
+          background: 'radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, rgba(34, 197, 94, 0.02) 50%, transparent 80%)',
         }}
         animate={{
           rotate: [0, 360],
@@ -255,9 +245,10 @@ export function Hero() {
                   </span>
                   {/* Shine effect */}
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 pointer-events-none"
-                    initial={{ x: '-200%' }}
-                    whileHover={{ x: '200%' }}
+                    className="absolute top-0 bottom-0 w-[200%] bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 pointer-events-none"
+                    initial={{ x: '-150%' }}
+                    whileHover={{ x: '100%' }}
+                    style={{ willChange: 'transform' }}
                     transition={{ duration: 0.8 }}
                   />
                 </Button>

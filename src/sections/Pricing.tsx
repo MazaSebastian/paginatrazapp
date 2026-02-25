@@ -468,7 +468,10 @@ export function Pricing() {
           opacity: [0.1, 0.3, 0.1],
         }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-green-500/20 rounded-full blur-[150px]"
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full"
+        style={{
+          background: 'radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.02) 50%, transparent 80%)',
+        }}
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -353,7 +353,10 @@ export function TraceabilityTimeline() {
           scale: [1, 1.1, 1]
         }}
         transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/4 left-1/4 w-64 h-64 bg-green-500/10 rounded-full blur-[100px]"
+        className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full"
+        style={{
+          background: 'radial-gradient(circle, rgba(34, 197, 94, 0.10) 0%, rgba(34, 197, 94, 0.02) 50%, transparent 80%)',
+        }}
       />
 
       {/* Section Header */}

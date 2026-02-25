@@ -148,7 +148,10 @@ export function Features() {
           rotate: [0, 180, 360]
         }}
         transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/4 right-1/4 w-80 h-80 bg-green-500/10 rounded-full blur-[100px]"
+        className="absolute top-1/4 right-1/4 w-80 h-80 rounded-full"
+        style={{
+          background: 'radial-gradient(circle, rgba(34, 197, 94, 0.10) 0%, rgba(34, 197, 94, 0.02) 50%, transparent 80%)',
+        }}
       />
       <motion.div
         animate={{
@@ -158,7 +161,10 @@ export function Features() {
           rotate: [360, 180, 0]
         }}
         transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-green-600/10 rounded-full blur-[80px]"
+        className="absolute bottom-1/4 left-1/4 w-64 h-64 rounded-full"
+        style={{
+          background: 'radial-gradient(circle, rgba(22, 163, 74, 0.10) 0%, rgba(22, 163, 74, 0.02) 50%, transparent 80%)',
+        }}
       />
 
       {/* Connected particles */}
@@ -170,6 +176,7 @@ export function Features() {
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
+              willChange: 'transform, opacity',
             }}
             animate={{
               y: [0, -100, 0],

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useAnimationFrame, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useAnimationFrame, useTransform, useInView } from 'framer-motion';
 
 interface ShinyTextProps {
   text: string;
@@ -29,6 +29,8 @@ const ShinyText: React.FC<ShinyTextProps> = ({
   delay = 0
 }) => {
   const [isPaused, setIsPaused] = useState(false);
+  const containerRef = useRef<HTMLElement>(null);
+  const isInView = useInView(containerRef);
   const progress = useMotionValue(0);
   const elapsedRef = useRef(0);
   const lastTimeRef = useRef<number | null>(null);
@@ -38,7 +40,7 @@ const ShinyText: React.FC<ShinyTextProps> = ({
   const delayDuration = delay * 1000;
 
   useAnimationFrame(time => {
-    if (disabled || isPaused) {
+    if (disabled || isPaused || !isInView) {
       lastTimeRef.current = null;
       return;
     }
