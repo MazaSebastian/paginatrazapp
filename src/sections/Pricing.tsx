@@ -183,11 +183,11 @@ function MobileFeatureAccordionItem({ category, isCategoryDisabled }: { category
     <button
       type="button"
       onClick={() => setIsOpen(prev => !prev)}
-      className={`w-full text-left cursor-pointer border border-white/5 rounded-lg px-3 glass overflow-hidden transition-all duration-300 ${isCategoryDisabled ? 'opacity-60 grayscale border-transparent' : 'border-green-500/10'
+      className={`w-full text-left cursor-pointer border border-white/5 rounded-lg glass overflow-hidden transition-all duration-300 ${isCategoryDisabled ? 'opacity-60 grayscale border-transparent' : 'border-green-500/10'
         } ${isOpen ? 'ring-1 ring-green-500/30' : ''}`}
     >
       <div
-        className="w-full flex items-center justify-between py-3 text-sm font-semibold"
+        className="w-full flex items-center justify-between py-3 px-3 text-sm font-semibold"
       >
         <div className={`flex items-center gap-2 ${isCategoryDisabled ? 'text-slate-500' : 'text-slate-200'}`}>
           <category.icon className={`w-4 h-4 ${isCategoryDisabled ? 'text-slate-500' : 'text-green-400'}`} />
@@ -204,7 +204,7 @@ function MobileFeatureAccordionItem({ category, isCategoryDisabled }: { category
         className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
       >
         <div className="overflow-hidden">
-          <div className="space-y-3 pt-1 pb-3">
+          <div className="space-y-3 pt-1 pb-3 px-3">
             {category.features.map((feature, j) => (
               <div key={j} className="flex items-center gap-3">
                 <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${feature.included ? 'bg-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.2)]' : 'bg-slate-800'
@@ -401,21 +401,21 @@ function PricingCard({
                       <AccordionItem
                         value={`item-${i}`}
                         key={i}
-                        className={`border border-white/5 rounded-lg px-3 glass overflow-hidden transition-all duration-300 ${isCategoryDisabled
+                        className={`border border-white/5 rounded-lg glass overflow-hidden transition-all duration-300 ${isCategoryDisabled
                           ? 'opacity-60 grayscale data-[state=open]:border-slate-700/50'
                           : 'data-[state=open]:border-green-500/30'
                           }`}
                       >
-                        <AccordionTrigger className={`hover:no-underline py-3 px-1 text-sm transition-colors ${isCategoryDisabled
+                        <AccordionTrigger className={`w-full hover:no-underline py-3 px-3 text-sm transition-colors ${isCategoryDisabled
                           ? 'text-slate-500 hover:text-slate-400'
-                          : 'text-slate-300 hover:text-white'
+                          : 'text-slate-300 hover:text-white hover:bg-white/5'
                           }`}>
                           <div className="flex items-center gap-2">
                             <category.icon className={`w-4 h-4 ${isCategoryDisabled ? 'text-slate-500' : 'text-green-400'}`} />
                             {category.name}
                           </div>
                         </AccordionTrigger>
-                        <AccordionContent className="pb-4 pt-2 space-y-3">
+                        <AccordionContent className="pb-4 pt-2 px-3 space-y-3">
                           {category.features.map((feature, j) => (
                             <div key={j} className="flex items-center gap-3 group">
                               <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${feature.included
