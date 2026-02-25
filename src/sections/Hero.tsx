@@ -175,13 +175,11 @@ export function Hero() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Background Effects */}
-      {!isMobile && (
-        <>
-          <AuroraBackground className="absolute inset-0" />
-          <div className="absolute inset-0 grid-pattern opacity-50" />
-          <GlowingOrbs />
-        </>
-      )}
+      <>
+        <AuroraBackground className="absolute inset-0" />
+        <div className="absolute inset-0 grid-pattern opacity-50" />
+        <GlowingOrbs />
+      </>
 
       {/* Content with parallax */}
       <motion.div

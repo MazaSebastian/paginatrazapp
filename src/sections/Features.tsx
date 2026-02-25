@@ -7,7 +7,6 @@ import {
   TrendingUp,
   Zap
 } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { TiltCard } from '@/components/TiltCard';
 import { TextReveal } from '@/components/TextReveal';
 
@@ -118,7 +117,6 @@ function BentoCard({
 }
 
 export function Features() {
-  const isMobile = useIsMobile();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
 
@@ -132,65 +130,57 @@ export function Features() {
   return (
     <section id="features" className="relative py-32 overflow-hidden" ref={sectionRef}>
       {/* Animated Background */}
-      {!isMobile && (
-        <motion.div
-          className="absolute inset-0 grid-pattern opacity-30"
-          style={{ y: backgroundY }}
-        />
-      )}
+      <motion.div
+        className="absolute inset-0 grid-pattern opacity-30"
+        style={{ y: backgroundY }}
+      />
 
       {/* Floating Orbs with enhanced animation */}
-      {!isMobile && (
-        <>
-          <motion.div
-            animate={{
-              x: [0, 50, 0],
-              y: [0, -30, 0],
-              scale: [1, 1.2, 1],
-              rotate: [0, 180, 360]
-            }}
-            transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute top-1/4 right-1/4 w-80 h-80 bg-green-500/10 rounded-full blur-[100px]"
-          />
-          <motion.div
-            animate={{
-              x: [0, -40, 0],
-              y: [0, 40, 0],
-              scale: [1.2, 1, 1.2],
-              rotate: [360, 180, 0]
-            }}
-            transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-green-600/10 rounded-full blur-[80px]"
-          />
-        </>
-      )}
+      <motion.div
+        animate={{
+          x: [0, 50, 0],
+          y: [0, -30, 0],
+          scale: [1, 1.2, 1],
+          rotate: [0, 180, 360]
+        }}
+        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-1/4 right-1/4 w-80 h-80 bg-green-500/10 rounded-full blur-[100px]"
+      />
+      <motion.div
+        animate={{
+          x: [0, -40, 0],
+          y: [0, 40, 0],
+          scale: [1.2, 1, 1.2],
+          rotate: [360, 180, 0]
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-green-600/10 rounded-full blur-[80px]"
+      />
 
       {/* Connected particles */}
-      {!isMobile && (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 rounded-full bg-green-400/30"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                y: [0, -100, 0],
-                opacity: [0.2, 0.6, 0.2],
-                scale: [1, 1.5, 1],
-              }}
-              transition={{
-                duration: 5 + Math.random() * 5,
-                delay: Math.random() * 2,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-            />
-          ))}
-        </div>
-      )}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 rounded-full bg-green-400/30"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -100, 0],
+              opacity: [0.2, 0.6, 0.2],
+              scale: [1, 1.5, 1],
+            }}
+            transition={{
+              duration: 5 + Math.random() * 5,
+              delay: Math.random() * 2,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+          />
+        ))}
+      </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
