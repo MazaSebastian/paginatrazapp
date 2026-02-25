@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { Sprout, Sun, Flower2, FlaskConical, Microscope, Check } from 'lucide-react';
+import { Sprout, Sun, Flower2, FlaskConical, Microscope } from 'lucide-react';
 import { TiltCard } from '@/components/TiltCard';
 import TrueFocus from '@/components/TrueFocus';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -114,16 +114,12 @@ function StageCard({
   totalStages,
   globalProgress,
   isReversed,
-  isActive,
-  onClick
 }: {
   stage: typeof stages[0];
   index: number;
   totalStages: number;
   globalProgress: any;
   isReversed: boolean;
-  isActive: boolean;
-  onClick: () => void;
 }) {
   const ref = useRef(null);
   const isMobile = useIsMobile();
@@ -164,11 +160,7 @@ function StageCard({
         <div className={`flex-1 ${isReversed ? 'lg:text-right' : ''}`}>
           <TiltCard tiltAmount={5} scale={1.01}>
             <motion.div
-              onClick={onClick}
-              className={`glass rounded-2xl p-6 border transition-all duration-500 cursor-pointer group relative ${isActive
-                ? 'border-green-500/50 shadow-green-lg'
-                : 'border-white/5 hover:border-green-500/30'
-                }`}
+              className="glass rounded-2xl p-6 border transition-all duration-500 group relative border-white/5 hover:border-green-500/30"
               whileHover={{ y: -5 }}
             >
               {/* Scroll Highlight Border */}
@@ -203,29 +195,6 @@ function StageCard({
               <p className="text-slate-400 text-sm leading-relaxed mb-4 group-hover:text-slate-300 transition-colors text-center lg:text-left md:text-left px-2 lg:px-0">
                 {stage.description}
               </p>
-
-              {/* Expandable details - Lightweight animation */}
-              <motion.div
-                initial={false}
-                animate={{
-                  height: isActive ? 'auto' : 0,
-                  opacity: isActive ? 1 : 0
-                }}
-                transition={{ duration: 0.25, ease: 'easeOut' }}
-                className="overflow-hidden"
-              >
-                <ul className={`space-y-3 lg:space-y-2 pt-4 border-t border-white/5 flex flex-col items-center lg:items-start ${isReversed ? 'lg:text-right lg:items-end' : ''}`}>
-                  {stage.details.map((detail, i) => (
-                    <li
-                      key={i}
-                      className={`flex items-center text-left lg:text-left gap-2 text-xs text-slate-400 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
-                    >
-                      <Check className="w-3 h-3 flex-shrink-0" style={{ color: stage.color }} />
-                      <span>{detail}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
             </motion.div>
           </TiltCard>
         </div>
@@ -236,50 +205,17 @@ function StageCard({
             initial={{ scale: 0, rotate: -180 }}
             animate={isInView ? { scale: 1, rotate: 0 } : {}}
             transition={{ duration: 0.6, delay: index * 0.15 + 0.2, type: 'spring' }}
-            className="relative z-10 cursor-pointer"
-            onClick={onClick}
+            className="relative z-10"
             style={{ scale }}
-            whileHover={{ scale: 1.3 }}
-            whileTap={{ scale: 0.9 }}
           >
             <motion.div
-              className="w-8 h-8 rounded-full border-4 flex items-center justify-center"
-              style={{
-                borderColor: stage.color,
-                backgroundColor: isActive ? stage.color : '#0B1120',
-                boxShadow: isActive ? `0 0 30px ${stage.color}` : 'none'
-              }}
-              animate={isActive ? {
-                boxShadow: [
-                  `0 0 20px ${stage.color}`,
-                  `0 0 40px ${stage.color}`,
-                  `0 0 20px ${stage.color}`,
-                ]
-              } : {}}
-              transition={{ duration: 2, repeat: Infinity }}
+              className="w-8 h-8 rounded-full border-4 flex items-center justify-center bg-[#0B1120]"
+              style={{ borderColor: stage.color }}
             >
-              <span className="text-xs font-bold" style={{ color: isActive ? '#0B1120' : stage.color }}>
+              <span className="text-xs font-bold" style={{ color: stage.color }}>
                 {stage.id}
               </span>
             </motion.div>
-
-            {/* Pulse rings */}
-            {isActive && (
-              <>
-                <motion.div
-                  className="absolute inset-0 rounded-full"
-                  style={{ border: `2px solid ${stage.color}` }}
-                  animate={{ scale: [1, 2], opacity: [0.5, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                />
-                <motion.div
-                  className="absolute inset-0 rounded-full"
-                  style={{ border: `2px solid ${stage.color}` }}
-                  animate={{ scale: [1, 2], opacity: [0.5, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}
-                />
-              </>
-            )}
 
             {/* Scroll Highlight Ring */}
             <motion.div
@@ -320,11 +256,7 @@ function StageCard({
       <div className={`flex-1 ${isReversed ? 'lg:text-right' : ''}`}>
         <TiltCard tiltAmount={5} scale={1.01}>
           <motion.div
-            onClick={onClick}
-            className={`glass rounded-2xl p-6 border transition-all duration-500 cursor-pointer group relative ${isActive
-              ? 'border-green-500/50 shadow-green-lg'
-              : 'border-white/5 hover:border-green-500/30'
-              }`}
+            className="glass rounded-2xl p-6 border transition-all duration-500 group relative border-white/5 hover:border-green-500/30"
             whileHover={{ y: -5 }}
           >
             {/* Scroll Highlight Border */}
@@ -359,29 +291,6 @@ function StageCard({
             <p className="text-slate-400 text-sm leading-relaxed mb-4 group-hover:text-slate-300 transition-colors text-center lg:text-left md:text-left px-2 lg:px-0">
               {stage.description}
             </p>
-
-            {/* Expandable details - Lightweight animation */}
-            <motion.div
-              initial={false}
-              animate={{
-                height: isActive ? 'auto' : 0,
-                opacity: isActive ? 1 : 0
-              }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="overflow-hidden"
-            >
-              <ul className={`space-y-3 lg:space-y-2 pt-4 border-t border-white/5 flex flex-col items-center lg:items-start ${isReversed ? 'lg:text-right lg:items-end' : ''}`}>
-                {stage.details.map((detail, i) => (
-                  <li
-                    key={i}
-                    className={`flex items-center text-left lg:text-left gap-2 text-xs text-slate-400 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
-                  >
-                    <Check className="w-3 h-3 flex-shrink-0" style={{ color: stage.color }} />
-                    <span>{detail}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
           </motion.div>
         </TiltCard>
       </div>
@@ -392,50 +301,18 @@ function StageCard({
           initial={{ scale: 0, rotate: -180 }}
           animate={isInView ? { scale: 1, rotate: 0 } : {}}
           transition={{ duration: 0.6, delay: index * 0.15 + 0.2, type: 'spring' }}
-          className="relative z-10 cursor-pointer"
-          onClick={onClick}
+          className="relative z-10"
           style={{ scale }}
           whileHover={{ scale: 1.3 }}
-          whileTap={{ scale: 0.9 }}
         >
           <motion.div
-            className="w-8 h-8 rounded-full border-4 flex items-center justify-center"
-            style={{
-              borderColor: stage.color,
-              backgroundColor: isActive ? stage.color : '#0B1120',
-              boxShadow: isActive ? `0 0 30px ${stage.color}` : 'none'
-            }}
-            animate={isActive ? {
-              boxShadow: [
-                `0 0 20px ${stage.color}`,
-                `0 0 40px ${stage.color}`,
-                `0 0 20px ${stage.color}`,
-              ]
-            } : {}}
-            transition={{ duration: 2, repeat: Infinity }}
+            className="w-8 h-8 rounded-full border-4 flex items-center justify-center bg-[#0B1120]"
+            style={{ borderColor: stage.color }}
           >
-            <span className="text-xs font-bold" style={{ color: isActive ? '#0B1120' : stage.color }}>
+            <span className="text-xs font-bold" style={{ color: stage.color }}>
               {stage.id}
             </span>
           </motion.div>
-
-          {/* Pulse rings */}
-          {isActive && (
-            <>
-              <motion.div
-                className="absolute inset-0 rounded-full"
-                style={{ border: `2px solid ${stage.color}` }}
-                animate={{ scale: [1, 2], opacity: [0.5, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              />
-              <motion.div
-                className="absolute inset-0 rounded-full"
-                style={{ border: `2px solid ${stage.color}` }}
-                animate={{ scale: [1, 2], opacity: [0.5, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}
-              />
-            </>
-          )}
 
           {/* Scroll Highlight Ring */}
           <motion.div
@@ -454,7 +331,6 @@ function StageCard({
 export function TraceabilityTimeline() {
   const containerRef = useRef(null);
   const isMobile = useIsMobile();
-  const [activeStage, setActiveStage] = useState<number | null>(0);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start end', 'end start'],
@@ -546,8 +422,6 @@ export function TraceabilityTimeline() {
                 totalStages={stages.length}
                 globalProgress={scrollYProgress}
                 isReversed={index % 2 === 1}
-                isActive={activeStage === index}
-                onClick={() => setActiveStage(activeStage === index ? null : index)}
               />
             ))}
           </div>
