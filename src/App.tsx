@@ -9,7 +9,6 @@ import { Footer } from '@/sections/Footer';
 import { Login } from '@/pages/Login';
 import { Register } from '@/pages/Register';
 import Aurora from './components/Aurora';
-import Antigravity from './components/Antigravity';
 import Ribbons from './components/Ribbons';
 import { Toaster } from 'sonner';
 import './App.css';
@@ -37,25 +36,7 @@ function App() {
         <div className="fixed inset-0 z-0 pointer-events-none opacity-60 mix-blend-screen transition-opacity duration-1000">
           <Aurora colorStops={["#16A34A", "#4ADE80", "#047857"]} amplitude={1.2} blend={1} />
         </div>
-        <div className="fixed inset-0 z-0 pointer-events-none opacity-60 transition-opacity duration-1000">
-          <Antigravity
-            count={600}
-            magnetRadius={10}
-            ringRadius={15}
-            waveSpeed={0.5}
-            waveAmplitude={2.6}
-            particleSize={0.5}
-            lerpSpeed={0.17}
-            color="#22C55E"
-            autoAnimate={false}
-            particleVariance={0.8}
-            rotationSpeed={0.1}
-            depthFactor={0.9}
-            pulseSpeed={2.5}
-            particleShape="capsule"
-            fieldStrength={15}
-          />
-        </div>
+
 
         {/* Global Ribbons Effect */}
         <div className="fixed inset-0 z-0 transition-opacity duration-1000">
