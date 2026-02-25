@@ -7,6 +7,7 @@ import {
   TrendingUp,
   Zap
 } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { TiltCard } from '@/components/TiltCard';
 import { TextReveal } from '@/components/TextReveal';
 
@@ -37,10 +38,12 @@ const features = [
 // Bento Card Component with enhanced animations
 function BentoCard({
   feature,
-  index
+  index,
+  isMobile
 }: {
   feature: typeof features[0];
   index: number;
+  isMobile: boolean;
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
@@ -48,7 +51,7 @@ function BentoCard({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50, rotateX: -15 }}
+      initial={{ opacity: 0, y: 50, rotateX: isMobile ? 0 : -15 }}
       animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
       transition={{
         duration: 0.7,
@@ -56,9 +59,9 @@ function BentoCard({
         ease: [0.215, 0.61, 0.355, 1]
       }}
       className={`relative group h-full md:col-span-1 md:row-span-1`}
-      style={{ perspective: '1000px' }}
+      style={{ perspective: isMobile ? 'none' : '1000px' }}
     >
-      <TiltCard tiltAmount={8} scale={1.02}>
+      <TiltCard tiltAmount={isMobile ? 0 : 8} scale={isMobile ? 1 : 1.02} glareEnabled={!isMobile}>
         <div
           className={`h-full glass rounded-2xl p-6 border border-white/5 hover:border-green-500/50 transition-all duration-500 overflow-hidden bg-gradient-to-br ${feature.gradient} relative`}
         >
@@ -117,6 +120,7 @@ function BentoCard({
 }
 
 export function Features() {
+  const isMobile = useIsMobile();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
 
@@ -211,7 +215,7 @@ export function Features() {
         {/* Modules Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 auto-rows-fr">
           {features.map((feature, index) => (
-            <BentoCard key={feature.id} feature={feature} index={index} />
+            <BentoCard key={feature.id} feature={feature} index={index} isMobile={isMobile} />
           ))}
         </div>
 
