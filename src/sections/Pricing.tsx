@@ -7,6 +7,7 @@ import { TiltCard } from '@/components/TiltCard';
 import { TextReveal } from '@/components/TextReveal';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Link } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -29,6 +30,13 @@ const plans = [
           { text: 'Control de Madres', included: true },
           { text: 'Gestión de Stock', included: true },
           { text: 'Dispositivos IoT', included: false },
+        ]
+      },
+      {
+        name: 'Growy (Inteligencia Artificial)',
+        icon: Sparkles,
+        features: [
+          { text: 'Asistente IA Growy', included: false },
         ]
       },
       {
@@ -72,7 +80,7 @@ const plans = [
     icon: Users,
     monthlyPrice: 80000,
     yearlyPrice: 650,
-    popular: true,
+    popular: false,
     categories: [
       {
         name: 'Módulo de Cultivo',
@@ -83,6 +91,13 @@ const plans = [
           { text: 'Control de Madres', included: true },
           { text: 'Gestión de Stock', included: true },
           { text: 'Dispositivos IoT', included: true },
+        ]
+      },
+      {
+        name: 'Growy (Inteligencia Artificial)',
+        icon: Sparkles,
+        features: [
+          { text: 'Asistente IA Growy', included: false },
         ]
       },
       {
@@ -116,7 +131,7 @@ const plans = [
       }
     ],
     cta: 'Contactar Ventas',
-    ctaVariant: 'default' as const,
+    ctaVariant: 'outline' as const,
     highlight: 'Recomendado',
   },
   {
@@ -124,8 +139,8 @@ const plans = [
     name: 'ONG / Club',
     description: 'Especializado para cumplimiento REPROCANN',
     icon: Building2,
-    monthlyPrice: 160000,
-    yearlyPrice: 1100,
+    monthlyPrice: 180000,
+    yearlyPrice: 1600,
     popular: false,
     categories: [
       {
@@ -137,6 +152,13 @@ const plans = [
           { text: 'Control de Madres', included: true },
           { text: 'Gestión de Stock', included: true },
           { text: 'Dispositivos IoT', included: true },
+        ]
+      },
+      {
+        name: 'Growy (Inteligencia Artificial)',
+        icon: Sparkles,
+        features: [
+          { text: 'Asistente IA Growy', included: false },
         ]
       },
       {
@@ -173,6 +195,67 @@ const plans = [
     ctaVariant: 'outline' as const,
     highlight: 'Para organizaciones',
   },
+  {
+    id: 'trazapp',
+    name: 'Plan TrazAPP',
+    description: 'La experiencia definitiva con Inteligencia Artificial',
+    icon: Sparkles,
+    monthlyPrice: 250000,
+    yearlyPrice: 1800,
+    popular: true,
+    categories: [
+      {
+        name: 'Módulo de Cultivo',
+        icon: Sprout,
+        features: [
+          { text: 'Gestión Integral', included: true },
+          { text: 'Esquejes y Clones', included: true },
+          { text: 'Control de Madres', included: true },
+          { text: 'Gestión de Stock', included: true },
+          { text: 'Dispositivos IoT', included: true },
+        ]
+      },
+      {
+        name: 'Growy (Inteligencia Artificial)',
+        icon: Sparkles,
+        features: [
+          { text: 'Asistente IA Growy', included: true },
+        ]
+      },
+      {
+        name: 'Módulo Médico & Dispensario',
+        icon: Stethoscope,
+        features: [
+          { text: 'Historias Clínicas', included: true },
+          { text: 'Seguimiento de Pacientes', included: true },
+          { text: 'Gestión de Dispensario', included: true },
+          { text: 'Recetas Médicas', included: true },
+        ]
+      },
+      {
+        name: 'Módulo de Laboratorio',
+        icon: Microscope,
+        features: [
+          { text: 'Seguimiento Lab', included: true },
+          { text: 'Extracciones y Resinas', included: true },
+          { text: 'Elaboración de Aceites', included: true },
+        ]
+      },
+      {
+        name: 'Módulo Administrativo',
+        icon: Briefcase,
+        features: [
+          { text: 'Control de Insumos', included: true },
+          { text: 'Registro de Gastos', included: true },
+          { text: 'Gestión de Socios', included: true },
+          { text: 'Métricas y Reportes', included: true },
+        ]
+      }
+    ],
+    cta: 'Contactar Ventas',
+    ctaVariant: 'default' as const,
+    highlight: 'Todo incluido + IA',
+  },
 ];
 
 // Lightweight native accordion for mobile to prevent Framer Motion lag
@@ -205,21 +288,62 @@ function MobileFeatureAccordionItem({ category, isCategoryDisabled }: { category
       >
         <div className="overflow-hidden">
           <div className="space-y-3 pt-1 pb-3 px-3">
-            {category.features.map((feature, j) => (
-              <div key={j} className="flex items-center gap-3">
-                <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${feature.included ? 'bg-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.2)]' : 'bg-slate-800'
+            {category.features.map((feature, j) => {
+              const isGrowy = feature.text === 'Asistente IA Growy';
+              
+              const featureContent = (
+                <div className={`flex items-center gap-3 ${isGrowy && feature.included ? 'cursor-pointer group/growy' : ''}`}>
+                  <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
+                    feature.included 
+                      ? isGrowy 
+                        ? 'bg-gradient-to-r from-emerald-400 to-cyan-400 shadow-[0_0_15px_rgba(52,211,153,0.4)] group-hover/growy:scale-110' 
+                        : 'bg-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.2)]'
+                      : 'bg-slate-800'
                   }`}>
-                  {feature.included ? (
-                    <Check className="w-3 h-3 text-green-400" />
-                  ) : (
-                    <X className="w-3 h-3 text-slate-600" />
-                  )}
+                    {feature.included ? (
+                      isGrowy ? <Sparkles className="w-3 h-3 text-emerald-950" /> : <Check className="w-3 h-3 text-green-400" />
+                    ) : (
+                      <X className="w-3 h-3 text-slate-600" />
+                    )}
+                  </div>
+                  <span className={`text-xs transition-colors ${
+                    feature.included 
+                      ? isGrowy 
+                        ? 'text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300 font-bold group-hover/growy:from-emerald-200 group-hover/growy:to-cyan-200 border-b border-emerald-400/30 border-dashed'
+                        : 'text-slate-300' 
+                      : 'text-slate-600'
+                  }`}>
+                    {feature.text}
+                  </span>
                 </div>
-                <span className={`text-xs ${feature.included ? 'text-slate-300' : 'text-slate-600'}`}>
-                  {feature.text}
-                </span>
-              </div>
-            ))}
+              );
+
+              if (isGrowy && feature.included) {
+                return (
+                  <Popover key={j}>
+                    <PopoverTrigger asChild>
+                      {featureContent}
+                    </PopoverTrigger>
+                    <PopoverContent side="top" className="w-72 glass border-emerald-500/30 p-4">
+                      <div className="flex gap-3 mb-2">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center shrink-0">
+                          <Sparkles className="w-4 h-4 text-emerald-950" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-sm text-white">Growy (IA)</h4>
+                          <p className="text-[10px] text-emerald-400 font-medium">Asistente Virtual Exclusivo</p>
+                        </div>
+                      </div>
+                      <p className="text-xs text-slate-300 leading-relaxed">
+                        Controla tu cultivo usando lenguaje natural. Growy puede ejecutar acciones por ti, analizar el clima, programar tareas y predecir tiempos de cosecha automáticamente.
+                      </p>
+                    </PopoverContent>
+                  </Popover>
+                );
+              }
+
+              return <div key={j}>{featureContent}</div>;
+            })}
           </div>
         </div>
       </div>
@@ -416,26 +540,62 @@ function PricingCard({
                           </div>
                         </AccordionTrigger>
                         <AccordionContent className="pb-4 pt-2 px-3 space-y-3">
-                          {category.features.map((feature, j) => (
-                            <div key={j} className="flex items-center gap-3 group">
-                              <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${feature.included
-                                ? 'bg-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.2)]'
-                                : 'bg-slate-800'
+                          {category.features.map((feature, j) => {
+                            const isGrowy = feature.text === 'Asistente IA Growy';
+                            
+                            const featureContent = (
+                              <div className={`flex items-center gap-3 group/item ${isGrowy && feature.included ? 'cursor-pointer group/growy' : ''}`}>
+                                <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                                  feature.included
+                                    ? isGrowy
+                                      ? 'bg-gradient-to-r from-emerald-400 to-cyan-400 shadow-[0_0_15px_rgba(52,211,153,0.4)] group-hover/growy:scale-110'
+                                      : 'bg-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.2)]'
+                                    : 'bg-slate-800'
                                 }`}>
-                                {feature.included ? (
-                                  <Check className="w-3 h-3 text-green-400" />
-                                ) : (
-                                  <X className="w-3 h-3 text-slate-600" />
-                                )}
+                                  {feature.included ? (
+                                    isGrowy ? <Sparkles className="w-3 h-3 text-emerald-950" /> : <Check className="w-3 h-3 text-green-400" />
+                                  ) : (
+                                    <X className="w-3 h-3 text-slate-600" />
+                                  )}
+                                </div>
+                                <span className={`text-xs transition-all duration-300 ${
+                                  feature.included
+                                    ? isGrowy
+                                      ? 'text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300 font-bold border-b border-emerald-400/30 border-dashed group-hover/growy:from-emerald-200 group-hover/growy:to-cyan-200'
+                                      : 'group-hover/item:translate-x-1 text-slate-300 group-hover/item:text-green-300'
+                                    : 'text-slate-600'
+                                }`}>
+                                  {feature.text}
+                                </span>
                               </div>
-                              <span className={`text-xs transition-all duration-300 ${feature.included
-                                ? 'group-hover:translate-x-1 text-slate-300 group-hover:text-green-300'
-                                : 'text-slate-600'
-                                }`}>
-                                {feature.text}
-                              </span>
-                            </div>
-                          ))}
+                            );
+
+                            if (isGrowy && feature.included) {
+                              return (
+                                <Popover key={j}>
+                                  <PopoverTrigger asChild>
+                                    <div className="inline-block w-full">{featureContent}</div>
+                                  </PopoverTrigger>
+                                  <PopoverContent side="left" align="start" sideOffset={15} className="w-72 glass border-emerald-500/30 p-4 z-[100]">
+                                    <div className="flex gap-3 mb-2">
+                                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center shrink-0">
+                                        <Sparkles className="w-4 h-4 text-emerald-950" />
+                                      </div>
+                                      <div>
+                                        <h4 className="font-bold text-sm text-white">Growy (IA)</h4>
+                                        <p className="text-[10px] text-emerald-400 font-medium">Asistente Virtual Exclusivo</p>
+                                      </div>
+                                    </div>
+                                    <p className="text-xs text-slate-300 leading-relaxed">
+                                      Controla tu cultivo usando lenguaje natural. Growy puede ejecutar acciones por ti, analizar el clima, programar tareas y predecir tiempos de cosecha automáticamente.
+                                    </p>
+                                  </PopoverContent>
+                                </Popover>
+                              );
+                            }
+
+                            return <div key={j}>{featureContent}</div>;
+                          })}
                         </AccordionContent>
                       </AccordionItem>
                     );
@@ -535,7 +695,7 @@ export function Pricing() {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {plans.map((plan, index) => (
             <PricingCard
               key={plan.id}

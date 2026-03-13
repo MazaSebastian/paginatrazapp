@@ -14,7 +14,6 @@ export function AnimatedCounter({
   value,
   suffix = '',
   prefix = '',
-  duration = 2,
   className = '',
   decimals = 0,
 }: AnimatedCounterProps) {
@@ -24,9 +23,10 @@ export function AnimatedCounter({
 
   const motionValue = useMotionValue(0);
   const springValue = useSpring(motionValue, {
-    damping: 50,
-    stiffness: 100,
-    duration: duration * 1000,
+    damping: 30,
+    stiffness: 150,
+    mass: 0.8,
+    restDelta: 0.001
   });
 
   const displayValue = useTransform(springValue, (latest) => {

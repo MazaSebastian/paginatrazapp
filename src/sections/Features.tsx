@@ -10,6 +10,7 @@ import {
 import { useIsMobile } from '@/hooks/use-mobile';
 import { TiltCard } from '@/components/TiltCard';
 import { TextReveal } from '@/components/TextReveal';
+import { AnimatedMockups } from '@/components/AnimatedMockups';
 
 const features = [
   {
@@ -194,6 +195,11 @@ export function Features() {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <AnimatedMockups />
+
+        <div className="mt-24 md:mt-32" />
+
         {/* Section Header */}
         <div className="text-center mb-16">
           {/* Badge Hidden as Requested */}
