@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform, useMotionValue, useMotionTemplate } from 'framer-motion';
 import {
   Sprout,
   Stethoscope,
@@ -9,7 +9,6 @@ import {
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { TiltCard } from '@/components/TiltCard';
-import { TextReveal } from '@/components/TextReveal';
 import { AnimatedMockups } from '@/components/AnimatedMockups';
 
 const features = [
@@ -36,7 +35,7 @@ const features = [
   },
 ];
 
-// Bento Card Component with enhanced animations
+// Bento Card Component with enhanced hover animations
 function BentoCard({
   feature,
   index,
@@ -46,49 +45,52 @@ function BentoCard({
   index: number;
   isMobile: boolean;
 }) {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
+  
+  // Spotlight effect logic
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50, rotateX: isMobile ? 0 : -15 }}
-      animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{
-        duration: 0.7,
-        delay: index * 0.1,
+        duration: 0.8,
+        delay: index * 0.15,
         ease: [0.215, 0.61, 0.355, 1]
       }}
-      className={`relative group h-full md:col-span-1 md:row-span-1`}
-      style={{ perspective: isMobile ? 'none' : '1000px' }}
+      className="h-full relative group"
     >
-      <TiltCard tiltAmount={isMobile ? 0 : 8} scale={isMobile ? 1 : 1.02} glareEnabled={!isMobile}>
+      <TiltCard tiltAmount={isMobile ? 0 : 5} scale={isMobile ? 1 : 1.02} glareEnabled={!isMobile} className="h-full">
         <div
-          className={`h-full glass rounded-2xl p-6 border border-white/5 hover:border-green-500/50 transition-all duration-500 overflow-hidden bg-gradient-to-br ${feature.gradient} relative`}
+          onMouseMove={handleMouseMove}
+          className={`h-full relative glass rounded-2xl p-6 lg:p-8 flex flex-col justify-start border border-white/5 hover:border-green-500/50 transition-colors duration-500 overflow-hidden bg-gradient-to-br ${feature.gradient}`}
         >
-          {/* Animated background gradient */}
+          {/* Spotlight Effect */}
           <motion.div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-            animate={{
-              background: [
-                'radial-gradient(circle at 0% 0%, rgba(34, 197, 94, 0.1) 0%, transparent 50%)',
-                'radial-gradient(circle at 100% 100%, rgba(34, 197, 94, 0.1) 0%, transparent 50%)',
-                'radial-gradient(circle at 0% 0%, rgba(34, 197, 94, 0.1) 0%, transparent 50%)',
-              ],
+            className="absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100 pointer-events-none"
+            style={{
+              background: useMotionTemplate`
+                radial-gradient(
+                  450px circle at ${mouseX}px ${mouseY}px,
+                  rgba(34, 197, 94, 0.15),
+                  transparent 80%
+                )
+              `,
             }}
-            transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
           />
 
-          {/* Shine effect on hover */}
-          <motion.div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-            style={{
-              background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.1) 45%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 55%, transparent 60%)',
-            }}
-            initial={{ x: '-100%' }}
-            whileHover={{ x: '100%' }}
-            transition={{ duration: 0.8, ease: 'easeInOut' }}
-          />
+          {/* Animated background gradient fallback class */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
           {/* Content */}
           <div className="relative z-10 h-full flex flex-col">
@@ -209,9 +211,7 @@ export function Features() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6"
           >
-            <TextReveal delay={0.2} stagger={0.03}>
-              Todo lo que Necesitas
-            </TextReveal>
+            Todo lo que Necesitas
           </motion.h2>
 
           <motion.p
@@ -225,10 +225,15 @@ export function Features() {
           </motion.p>
         </div>
 
-        {/* Modules Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 auto-rows-fr">
+        {/* Interactive Grid Container */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mt-20">
           {features.map((feature, index) => (
-            <BentoCard key={feature.id} feature={feature} index={index} isMobile={isMobile} />
+            <BentoCard 
+              key={feature.id} 
+              feature={feature} 
+              index={index} 
+              isMobile={isMobile} 
+            />
           ))}
         </div>
 

@@ -7,7 +7,8 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import ShinyText from '@/components/ShinyText';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
 import { TiltCard } from '@/components/TiltCard';
-import { AuroraBackground } from '@/components/GlowEffect';
+import { ScrollRevealText } from '@/components/ScrollRevealText';
+
 
 // Magnetic Button Component
 function MagneticButton({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -155,9 +156,9 @@ export function Hero() {
     offset: ['start start', 'end start'],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9]);
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
+  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.5]);
 
   return (
     <section
@@ -166,7 +167,7 @@ export function Hero() {
     >
       {/* Background Effects */}
       <>
-        {!isMobile && <AuroraBackground className="absolute inset-0" />}
+        {/* DarkVeil removed from here to prevent duplicate WebGL contexts, it runs globally in App.tsx */}
         <div className="absolute inset-0 grid-pattern opacity-50" />
         <GlowingOrbs />
       </>
@@ -211,15 +212,13 @@ export function Hero() {
             </div>
           </motion.h1>
 
-          {/* Subheadline with fade up */}
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-            className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed"
-          >
-            Administración, gestión y trazabilidad aplicada al <span className="text-green-400">cannabis medicinal.</span>
-          </motion.p>
+          <div className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed flex justify-center text-center">
+            <ScrollRevealText 
+              text="Administración, gestión y trazabilidad aplicada al cannabis medicinal." 
+              className="justify-center"
+              wordClassName="last:text-green-400 last:font-semibold"
+            />
+          </div>
 
           {/* CTA Buttons with stagger */}
           <motion.div

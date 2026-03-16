@@ -8,7 +8,8 @@ import { Pricing } from '@/sections/Pricing';
 import { Footer } from '@/sections/Footer';
 import { Login } from '@/pages/Login';
 import { Register } from '@/pages/Register';
-import Aurora from './components/Aurora';
+// @ts-ignore
+import DarkVeil from './components/DarkVeil';
 import Ribbons from './components/Ribbons';
 import { Toaster } from 'sonner';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -36,7 +37,7 @@ function App() {
     <Router>
       <div className="w-full min-h-screen bg-background text-white">
         <div className="fixed inset-0 z-0 pointer-events-none opacity-60 mix-blend-screen transition-opacity duration-1000">
-          {!isMobile && <Aurora colorStops={["#16A34A", "#4ADE80", "#047857"]} amplitude={1.2} blend={1} />}
+          {!isMobile && <DarkVeil hueShift={80} speed={0.4} noiseIntensity={0.03} />}
         </div>
 
 

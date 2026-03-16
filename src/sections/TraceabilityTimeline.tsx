@@ -95,12 +95,12 @@ function AnimatedPath({ progress }: { progress: any }) {
         />
       </svg>
 
-      {/* Animated glow dot */}
+      {/* Animated glow dot following the path */}
       <motion.div
-        className="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-green-400"
+        className="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-green-400 z-10"
         style={{
           top: useTransform(progress, [0, 1], ['0%', '100%']),
-          boxShadow: '0 0 20px rgba(34, 197, 94, 0.8)',
+          boxShadow: '0 0 20px 4px rgba(34, 197, 94, 0.8)',
         }}
       />
     </div>
@@ -138,8 +138,20 @@ function StageCard({
 
   const highlightOpacity = useTransform(
     globalProgress,
-    [triggerPoint - 0.1, triggerPoint, triggerPoint + 0.1],
-    [0, 1, 0]
+    [triggerPoint - 0.15, triggerPoint, triggerPoint + 0.15],
+    [0, 1, 0.2] // Keeps a slight glow even after passing
+  );
+
+  const translateXPc = useTransform(
+    globalProgress,
+    [triggerPoint - 0.2, triggerPoint],
+    [isReversed ? 100 : -100, 0]
+  );
+  
+  const opacityPc = useTransform(
+    globalProgress,
+    [triggerPoint - 0.2, triggerPoint],
+    [0, 1]
   );
 
   if (isMobile) {
@@ -234,15 +246,8 @@ function StageCard({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, x: isReversed ? 100 : -100, rotateY: isReversed ? 15 : -15 }}
-      animate={isInView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
-      transition={{
-        duration: 0.8,
-        delay: index * 0.15,
-        ease: [0.215, 0.61, 0.355, 1]
-      }}
       className={`relative flex items-center gap-8 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
-      style={{ perspective: '1000px', scale }}
+      style={{ perspective: '1000px', scale, x: translateXPc, opacity: opacityPc }}
     >
       {/* Scroll Highlight Overlay - Subtle Glow */}
       <motion.div
@@ -306,8 +311,12 @@ function StageCard({
           whileHover={{ scale: 1.3 }}
         >
           <motion.div
-            className="w-8 h-8 rounded-full border-4 flex items-center justify-center bg-[#0B1120]"
-            style={{ borderColor: stage.color }}
+            className="w-8 h-8 rounded-full border-4 flex items-center justify-center bg-[#0B1120] relative z-20"
+            style={{ 
+              borderColor: stage.color,
+              boxShadow: highlightOpacity.get() > 0.5 ? `0 0 20px ${stage.color}` : 'none',
+              transition: 'box-shadow 0.3s ease'
+            }}
           >
             <span className="text-xs font-bold" style={{ color: stage.color }}>
               {stage.id}
