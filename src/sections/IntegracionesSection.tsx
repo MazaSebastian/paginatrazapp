@@ -12,11 +12,11 @@ import {
 export function IntegracionesSection() {
   const integrations = [
     {
-      category: 'Comunicaciones & IA',
-      name: 'Meta Cloud WhatsApp API',
-      description: 'Conexión oficial directa con Meta Business. Sin riesgo de bloqueo de línea ni intermediarios.',
+      category: 'Inteligencia & Telemetría',
+      name: 'Protocolo Abierto MCP (AI Copilot)',
+      description: 'Conexión nativa con modelos de IA como Gemini y Claude para telemetría ambiental y soporte agronómico.',
       icon: Bot,
-      badge: 'API Oficial Meta'
+      badge: 'Protocolo Abierto'
     },
     {
       category: 'Pasarela de Pagos',

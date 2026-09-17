@@ -62,7 +62,7 @@ export function Navbar({ onOpenDemo }: NavbarProps) {
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
 
-    const sectionIds = ['growy', 'iot', 'trazabilidad', 'dispensario', 'gobernanza', 'whatsapp', 'precios']
+    const sectionIds = ['growy', 'iot', 'trazabilidad', 'dispensario', 'gobernanza', 'precios']
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

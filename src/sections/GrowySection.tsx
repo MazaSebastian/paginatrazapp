@@ -141,7 +141,7 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
           transition={{ duration: 0.6, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
           className="mt-4 text-base sm:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed"
         >
-          Diseñado para montarse directamente en los caños de tu sala o carpa técnica. Monitorea sustrato y atmósfera en tiempo real, interactúa mediante su rostro ciberpunk biofílico y expone el control biológico a modelos como <span className="text-emerald-400 font-semibold">Gemini</span> y <span className="text-emerald-400 font-semibold">Claude</span> a través del protocolo abierto <span className="text-teal-300 font-semibold font-mono">MCP (Model Context Protocol)</span>.
+          Diseñado para montarse directamente en los caños de tu sala o carpa técnica. Monitorea sustrato y atmósfera en tiempo real y expone el control biológico a modelos como <span className="text-emerald-400 font-semibold">Gemini</span> y <span className="text-emerald-400 font-semibold">Claude</span> a través del protocolo abierto <span className="text-teal-300 font-semibold font-mono">MCP</span>.
         </motion.p>
       </div>
 
@@ -186,11 +186,11 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
             <Sprout className="w-5 h-5" />
           </div>
           <h3 className="text-base font-bold text-white mb-2">Monitoreo Radicular</h3>
-          <p className="text-xs text-slate-400 leading-relaxed">
-            Sonda TDR de 3 agujas para medición de humedad volumétrica de sustrato (VWC), electroconductividad (EC) y temperatura de raíz.
+          <p className="text-xs text-slate-300 leading-relaxed">
+            Growy mide <span className="text-emerald-400 font-medium">Humedad de suelo</span>, <span className="text-teal-300 font-medium">Humedad Ambiental</span> y <span className="text-cyan-300 font-medium">Temperatura ambiental</span>.
           </p>
           <div className="mt-4 pt-3 border-t border-white/[0.06] text-[10px] font-mono text-emerald-400">
-            Precisión ±1.5% VWC
+            Humedad de suelo • Humedad • Temperatura
           </div>
         </div>
 

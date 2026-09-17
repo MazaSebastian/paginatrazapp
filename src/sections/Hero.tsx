@@ -79,7 +79,7 @@ export function Hero({ onOpenDemo, onExploreModules }: HeroProps) {
         {/* Subtítulo dinámico con TextType */}
         <div className="mt-6 max-w-3xl mx-auto min-h-[64px] sm:min-h-[52px]">
           <TextType
-            text="Descubrí en vivo cómo operan nuestras herramientas: telemetría ambiental IoT, pasaporte genético inviolable con QR, dispensario legal con cupo REPROCANN y chatbot oficial con WhatsApp Meta API."
+            text="Descubrí en vivo cómo operan nuestras herramientas: telemetría ambiental IoT, pasaporte genético inviolable con QR, dispensario legal con cupo REPROCANN y gobernanza de clubes."
             as="p"
             className="text-base sm:text-xl text-slate-300 leading-relaxed font-normal inline"
             typingSpeed={16}

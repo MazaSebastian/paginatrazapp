@@ -3,11 +3,11 @@ import { Mail, MapPin, Phone, ShieldCheck } from 'lucide-react'
 export function Footer() {
   const footerLinks = {
     product: [
+      { name: 'Hardware Growy 3D', href: '#growy' },
       { name: 'Telemetría IoT', href: '#iot' },
       { name: 'Trazabilidad Genética', href: '#trazabilidad' },
       { name: 'Dispensario & REPROCANN', href: '#dispensario' },
       { name: 'Gobernanza & Finanzas', href: '#gobernanza' },
-      { name: 'WhatsApp Bot Meta', href: '#whatsapp' },
       { name: 'Planes & Precios', href: '#precios' },
     ],
     legal: [

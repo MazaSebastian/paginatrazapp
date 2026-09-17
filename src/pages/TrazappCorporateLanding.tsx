@@ -6,7 +6,6 @@ import { InteractiveIoTRoom } from '@/components/interactive/InteractiveIoTRoom'
 import { InteractiveBatchTracker } from '@/components/interactive/InteractiveBatchTracker'
 import { InteractiveDispensary } from '@/components/interactive/InteractiveDispensary'
 import { InteractiveClubLedger } from '@/components/interactive/InteractiveClubLedger'
-import { InteractiveWhatsAppBot } from '@/components/interactive/InteractiveWhatsAppBot'
 import { Features } from '@/sections/Features'
 import { ComparisonSection } from '@/sections/ComparisonSection'
 import { IntegracionesSection } from '@/sections/IntegracionesSection'
@@ -18,7 +17,7 @@ import { TextType } from '@/components/ui/TextType'
 import { SplitText } from '@/components/ui/SplitText'
 import { BlurText } from '@/components/ui/BlurText'
 import { motion } from 'framer-motion'
-import { Cpu, Dna, Stethoscope, Briefcase, Bot } from 'lucide-react'
+import { Cpu, Dna, Stethoscope, Briefcase } from 'lucide-react'
 
 export function TrazappCorporateLanding() {
   const [isDemoOpen, setIsDemoOpen] = useState(false)
@@ -237,53 +236,6 @@ export function TrazappCorporateLanding() {
           </div>
         </section>
 
-        {/* ── SECCIÓN 5 INTERACTIVA: WHATSAPP BOT META API ───────────────── */}
-        <section id="whatsapp" className="w-full py-20 bg-[#070c17]/80 border-t border-white/[0.08] scroll-mt-24 overflow-hidden relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <motion.div 
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="flex justify-center mb-2"
-              >
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-                  <Bot className="w-3.5 h-3.5" />
-                  Módulo 05 • Automatización Meta Cloud API
-                </span>
-              </motion.div>
-              <SplitText
-                text="Asistente Oficial en WhatsApp 24/7"
-                tag="h2"
-                className="text-3xl sm:text-4xl font-black text-white tracking-tight"
-                delay={28}
-                duration={0.6}
-                splitType="chars"
-                from={{ opacity: 0, y: 35 }}
-                to={{ opacity: 1, y: 0 }}
-                rootMargin="-50px"
-                textAlign="center"
-              />
-              <div className="mt-2 min-h-[44px] sm:min-h-[28px]">
-                <TextType
-                  text="Interesá a tus socios con un canal de atención inmediato: consultas de variedades disponibles en dispensario, estado de carnet y alertas de cultivo."
-                  as="p"
-                  className="text-sm text-slate-300 inline"
-                  typingSpeed={16}
-                  initialDelay={300}
-                  startOnVisible={true}
-                  loop={false}
-                  showCursor={true}
-                  cursorCharacter="|"
-                  cursorClassName="text-emerald-400 font-bold ml-0.5"
-                />
-              </div>
-            </div>
-
-            <InteractiveWhatsAppBot />
-          </div>
-        </section>
 
         {/* ── BENTO GRID DE FEATURES ──────────────────────────────────── */}
         <Features />

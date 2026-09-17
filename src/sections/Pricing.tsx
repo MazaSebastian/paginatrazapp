@@ -40,7 +40,7 @@ export function Pricing({ onOpenDemo }: PricingProps) {
       features: [
         'Hasta 150 socios registrados',
         'Salas de cultivo y secado ilimitadas',
-        'Asistente oficial WhatsApp con IA (Meta API)',
+        'Validación y retiro de cupo en dispensario',
         'Cobro automatizado de cuotas con Mercado Pago',
         'Pasaporte genético con Hash SHA-256',
         'Generación de Libro Foliado ARICCAME / INASE',

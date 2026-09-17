@@ -35,9 +35,9 @@ export function ComparisonSection({ onOpenDemo }: ComparisonSectionProps) {
       trazapp: 'Exportación en 1 clic del Libro Foliado Oficial de Cultivo en formato PDF/Excel homologado según normativas vigentes.'
     },
     {
-      feature: 'Comunicación con el Socio / Paciente',
-      traditional: 'El teléfono del cultivador o presidente colapsado de mensajes a deshoras preguntando si hay flores disponibles.',
-      trazapp: 'Asistente oficial con IA sobre la API de WhatsApp de Meta atendiendo 24/7: stock, reservas de lote y estado de carnet.'
+      feature: 'Gestión de Retiro & Dispensario',
+      traditional: 'El teléfono del cultivador o presidente colapsado de mensajes a deshoras y planillas manuales de entrega propensas a errores.',
+      trazapp: 'Terminal de dispensario con validación de carnet REPROCANN en tiempo real, control estricto de cupo legal y emisión de remitos digitales.'
     }
   ]
 
