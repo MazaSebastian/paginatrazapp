@@ -156,7 +156,7 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
           />
           <div className="mt-3 flex items-center justify-between text-[11px] text-slate-400 px-2 font-mono">
             <span>🖱️ Hacé clic y arrastrá para rotar 360° • Rueda del mouse para zoom</span>
-            <span className="text-emerald-400 font-bold hidden sm:inline">Diseño Industrial IP65</span>
+            <span className="text-emerald-400 font-bold hidden sm:inline">Polímero Técnico Hidrófugo</span>
           </div>
         </div>
 
@@ -204,17 +204,17 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
           </div>
         </div>
 
-        {/* Card 3: Chasis Industrial */}
+        {/* Card 3: Chasis Impresión 3D Técnica */}
         <div className="p-6 rounded-3xl bg-[#090e18]/80 border border-white/[0.08] hover:border-emerald-500/30 transition-all group">
           <div className="w-10 h-10 rounded-2xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
             <ShieldCheck className="w-5 h-5" />
           </div>
-          <h3 className="text-base font-bold text-white mb-2">Carcasa Fibra de Carbono</h3>
-          <p className="text-xs text-slate-400 leading-relaxed">
-            Grafito técnico texturizado, tornillería Allen inoxidable vista y abrazaderas de anclaje rápido para caños de 16mm a 32mm.
+          <h3 className="text-base font-bold text-white mb-2">Carcasa en Impresión 3D Técnica</h3>
+          <p className="text-xs text-slate-300 leading-relaxed">
+            Manufactura aditiva de grado técnico con polímero termoplástico hidrófugo. Diseñada para operar de forma continua bajo humedad ambiental extrema y condensación sin absorción de agua ni deformación.
           </p>
           <div className="mt-4 pt-3 border-t border-white/[0.06] text-[10px] font-mono text-cyan-400">
-            Resistente a humedad 95% IP65
+            Filamento técnico resistente a humedad
           </div>
         </div>
 

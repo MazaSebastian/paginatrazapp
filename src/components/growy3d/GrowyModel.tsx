@@ -34,8 +34,8 @@ export function GrowyModel({
     }
   })
 
-  // Textura procedural de fibra de carbono
-  const carbonTexture = useMemo(() => {
+  // Textura procedural de polímero técnico impreso en 3D
+  const technicalPolymerTexture = useMemo(() => {
     if (typeof document === 'undefined') return null
     const canvas = document.createElement('canvas')
     canvas.width = 64
@@ -74,7 +74,7 @@ export function GrowyModel({
       }),
       carbonPlate: new THREE.MeshStandardMaterial({
         color: '#1a202c',
-        map: carbonTexture || undefined,
+        map: technicalPolymerTexture || undefined,
         roughness: 0.35,
         metalness: 0.4,
       }),
@@ -113,7 +113,7 @@ export function GrowyModel({
         roughness: 0.2,
       })
     }
-  }, [carbonTexture])
+  }, [technicalPolymerTexture])
 
   // Coordenadas de los 4 tornillos Allen esquineros frontales
   const screwPositions: [number, number, number][] = [
