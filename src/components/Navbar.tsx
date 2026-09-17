@@ -87,29 +87,32 @@ export function Navbar({ onOpenDemo }: NavbarProps) {
 
   return (
     <>
-      {/* ── BARRA SUPERIOR INSTITUCIONAL ─────────────────────────────────── */}
-      <div className="border-b border-white/[0.06] bg-[#070b14]/90 backdrop-blur-md py-1.5 px-3 sm:px-6 text-xs text-slate-400 z-50 relative">
-        <div className="max-w-6xl mx-auto flex items-center justify-between text-[11px] sm:text-xs">
-          <div className="flex items-center gap-2">
+      {/* ── BARRA SUPERIOR INSTITUCIONAL CENTRADA ───────────────────────── */}
+      <div className="border-b border-white/[0.06] bg-[#070b14]/95 backdrop-blur-md py-2 px-4 text-xs text-slate-400 z-50 relative">
+        <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-6 gap-y-1.5 text-center text-[11px] sm:text-xs">
+          <div className="flex items-center justify-center gap-2 flex-wrap">
             <span className="font-bold text-white flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               TrazAPP OS
             </span>
-            <span className="text-slate-600 hidden md:inline">•</span>
-            <span className="hidden md:inline text-slate-400">
+            <span className="text-slate-600 hidden sm:inline">•</span>
+            <span className="text-slate-300">
               Plataforma Cloud de Trazabilidad, IoT y Gestión Integral de Cannabis Medicinal en Argentina
             </span>
           </div>
-          <div className="flex items-center gap-4 shrink-0">
+
+          <div className="flex items-center justify-center gap-3 shrink-0">
+            <span className="text-slate-700 hidden sm:inline">|</span>
             <Link
               to="/login"
               className="text-slate-300 hover:text-white transition-colors font-medium hover:underline"
             >
               Acceso a Clubes
             </Link>
+            <span className="text-slate-600">•</span>
             <button
               onClick={onOpenDemo}
-              className="text-emerald-400 hover:text-emerald-300 font-semibold underline underline-offset-2 cursor-pointer"
+              className="text-emerald-400 hover:text-emerald-300 font-semibold hover:underline underline-offset-2 cursor-pointer transition-colors"
             >
               Solicitar Demo
             </button>
