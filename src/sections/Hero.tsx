@@ -1,330 +1,148 @@
-import { useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { motion, useMotionValue, useSpring, useScroll, useTransform, useInView } from 'framer-motion';
-import { ArrowRight, Shield, Microscope, LayoutDashboard, Stethoscope, Sprout, MapPin, Lock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useIsMobile } from '@/hooks/use-mobile';
-import ShinyText from '@/components/ShinyText';
-import { AnimatedCounter } from '@/components/AnimatedCounter';
-import { TiltCard } from '@/components/TiltCard';
-import { ScrollRevealText } from '@/components/ScrollRevealText';
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { ArrowRight } from 'lucide-react'
+import { SplitText } from '@/components/ui/SplitText'
+import { TextType } from '@/components/ui/TextType'
+import { SpecularButton } from '@/components/ui/SpecularButton'
+import { useIsMobile } from '@/hooks/use-mobile'
 
-
-// Magnetic Button Component
-function MagneticButton({ children, className }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const springConfig = { damping: 15, stiffness: 150 };
-  const springX = useSpring(x, springConfig);
-  const springY = useSpring(y, springConfig);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const distanceX = e.clientX - centerX;
-    const distanceY = e.clientY - centerY;
-
-    x.set(distanceX * 0.3);
-    y.set(distanceY * 0.3);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ x: springX, y: springY }}
-      className={className}
-    >
-      {children}
-      {/* Magnetic ring hover removed to optimize mobile GPU usage */}
-    </motion.div>
-  );
+interface HeroProps {
+  onOpenDemo: () => void
+  onExploreModules: () => void
 }
 
+export function Hero({ onOpenDemo, onExploreModules }: HeroProps) {
+  const containerRef = useRef<HTMLElement>(null)
+  const isMobile = useIsMobile()
 
-
-// Glowing Orbs with complex animation
-function GlowingOrbs() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <motion.div
-        className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full"
-        style={{
-          background: 'radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 50%, transparent 80%)',
-        }}
-        animate={{
-          scale: [1, 1.3, 1],
-          x: [0, 50, 0],
-          y: [0, -30, 0],
-          opacity: [0.3, 0.6, 0.3],
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full"
-        style={{
-          background: 'radial-gradient(circle, rgba(52, 211, 153, 0.12) 0%, rgba(52, 211, 153, 0.04) 50%, transparent 80%)',
-        }}
-        animate={{
-          scale: [1.2, 1, 1.2],
-          x: [0, -40, 0],
-          y: [0, 40, 0],
-          opacity: [0.2, 0.5, 0.2],
-        }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-        style={{
-          background: 'radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, rgba(34, 197, 94, 0.02) 50%, transparent 80%)',
-        }}
-        animate={{
-          rotate: [0, 360],
-        }}
-        transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-      />
-    </div>
-  );
-}
-
-
-// Holographic Stat Card
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function HolographicStatCard({ icon: Icon, value, suffix, label, delay, index }: any) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-  const isMobile = useIsMobile();
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20, scale: 0.9 }}
-      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.8, delay: isMobile ? index * 0.15 : delay }}
-      className="h-full"
-    >
-      <TiltCard tiltAmount={isMobile ? 0 : 15} glareEnabled={!isMobile} scale={isMobile ? 1 : 1.05} className="h-full">
-        <div className="relative h-full group p-6 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md overflow-hidden cursor-default transition-colors duration-300 hover:bg-white/10 hover:border-green-500/30 hover:shadow-2xl hover:shadow-green-500/10">
-          {/* Hover Gradient Background - Adjusted for Tilt */}
-          <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-          {/* Animated Border Effect */}
-          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-transparent group-hover:ring-green-500/30 transition-all duration-500" />
-
-          {/* Content */}
-          <div className="relative z-10 flex flex-col items-center h-full pt-4">
-            <div className="mb-4 p-3 rounded-full bg-white/5 group-hover:bg-green-500/10 transition-colors duration-300 ring-1 ring-white/10 group-hover:ring-green-500/30">
-              <Icon className="w-8 h-8 text-green-400 group-hover:scale-110 group-hover:text-green-300 transition-all duration-300" />
-            </div>
-            <div className={`font-bold text-white mb-2 tracking-tight drop-shadow-lg ${typeof value === 'number' ? 'text-4xl md:text-5xl' : 'text-2xl md:text-3xl'}`}>
-              {typeof value === 'number' ? (
-                <AnimatedCounter value={value} suffix={suffix} duration={2.5} />
-              ) : (
-                <span>{value}{suffix}</span>
-              )}
-            </div>
-            <div className="text-sm text-slate-300 uppercase tracking-widest font-medium group-hover:text-green-300 transition-colors">
-              {label}
-            </div>
-          </div>
-
-          {/* Decorate corners */}
-          <div className="absolute top-0 right-0 w-24 h-24 bg-green-500/20 blur-3xl -mr-12 -mt-12 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-green-500/10 blur-3xl -ml-12 -mb-12 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-        </div>
-      </TiltCard>
-    </motion.div>
-  );
-}
-
-export function Hero() {
-  const containerRef = useRef(null);
-  const isMobile = useIsMobile();
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
-  });
+  })
 
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.5]);
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '35%'])
+  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
 
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-12 pb-20 px-4 sm:px-6 lg:px-8 text-center"
     >
-      {/* Background Effects */}
-      <>
-        {/* DarkVeil removed from here to prevent duplicate WebGL contexts, it runs globally in App.tsx */}
-        <div className="absolute inset-0 grid-pattern opacity-50" />
-        <GlowingOrbs />
-      </>
+      {/* Background ambient lighting */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[450px] bg-gradient-to-b from-emerald-600/15 via-teal-600/10 to-transparent blur-[130px] pointer-events-none -z-10" />
+      <div className="absolute top-1/2 -left-40 w-[500px] h-[500px] bg-emerald-500/10 blur-[150px] rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-1/2 -right-40 w-[500px] h-[500px] bg-teal-500/10 blur-[150px] rounded-full pointer-events-none -z-10" />
 
-      {/* Content with parallax */}
+      {/* Grid Pattern sutil */}
+      <div 
+        className="absolute inset-0 opacity-[0.15] pointer-events-none -z-10"
+        style={{
+          backgroundImage: 'linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px)',
+          backgroundSize: '48px 48px',
+          maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 80%)'
+        }}
+      />
+
       <motion.div
-        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32"
-        style={isMobile ? {} : { y, opacity, scale }}
+        className="relative z-10 max-w-6xl mx-auto flex flex-col items-center pt-6 sm:pt-10"
+        style={isMobile ? {} : { y, opacity }}
       >
-        <div className="text-center">
+        {/* Headline con SplitText */}
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white max-w-5xl leading-[1.12]">
+          <SplitText
+            text="La plataforma que profesionaliza tu cultivo y "
+            tag="span"
+            className="text-white"
+            delay={25}
+            duration={0.65}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 35 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.05}
+            rootMargin="0px"
+            textAlign="center"
+          />
+          <SplitText
+            text="blinda tu club cannábico"
+            tag="span"
+            className="text-emerald-400 inline-block font-black drop-shadow-[0_0_25px_rgba(16,185,129,0.25)]"
+            delay={25}
+            duration={0.65}
+            splitType="chars"
+            from={{ opacity: 0, y: 35 }}
+            to={{ opacity: 1, y: 0 }}
+            textAlign="center"
+          />
+        </h1>
 
-          {/* Main Headline with character animation */}
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6"
-          >
-            <div className="flex flex-wrap justify-center items-center gap-x-4">
-              <span className="text-white">
-                <ShinyText
-                  text="Crecemos"
-                  speed={2}
-                  delay={3}
-                  color="#ffffff"
-                  shineColor="#22C55E"
-                  spread={90}
-                  direction="left"
-                />
-              </span>
-              <span className="text-green-400">
-                <ShinyText
-                  text="con vos."
-                  speed={2}
-                  delay={3.5}
-                  color="#4ade80"
-                  shineColor="#ffffff"
-                  spread={90}
-                  direction="left"
-                />
-              </span>
-            </div>
-          </motion.h1>
-
-          <div className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed flex justify-center text-center">
-            <ScrollRevealText 
-              text="Administración, gestión y trazabilidad aplicada al cannabis medicinal." 
-              className="justify-center"
-              wordClassName="last:text-green-400 last:font-semibold"
-            />
-          </div>
-
-          {/* CTA Buttons with stagger */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.5 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <Link to="/register" className="relative group block">
-              <MagneticButton className="w-full h-full">
-                <Button
-                  size="lg"
-                  className="relative bg-[#020617]/40 backdrop-blur-xl border border-white/10 hover:border-green-500/50 text-white font-semibold px-8 py-6 text-lg rounded-xl transition-all duration-300 group-hover:shadow-green-lg overflow-hidden flex items-center gap-2 w-full"
-                >
-                  <span className="relative z-10 flex items-center gap-2">
-                    Comenzar Ahora
-                    <motion.span
-                      animate={{ x: [0, 4, 0] }}
-                      transition={{ duration: 1, repeat: Infinity }}
-                    >
-                      <ArrowRight className="w-5 h-5" />
-                    </motion.span>
-                  </span>
-                  {/* Shine effect */}
-                  <motion.div
-                    className="absolute top-0 bottom-0 w-[200%] bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 pointer-events-none"
-                    initial={{ x: '-150%' }}
-                    whileHover={{ x: '100%' }}
-                    style={{ willChange: 'transform' }}
-                    transition={{ duration: 0.8 }}
-                  />
-                </Button>
-              </MagneticButton>
-            </Link>
-
-            {/*
-            <TiltCard tiltAmount={5} scale={1.02}>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-slate-700 text-slate-300 hover:bg-white/5 hover:border-green-500/50 hover:text-white px-8 py-6 text-lg rounded-xl transition-all duration-300"
-              >
-                Ver Demo
-              </Button>
-            </TiltCard>
-*/}
-          </motion.div>
-
-          {/* Stats Row */}
-          {/* Stats Row */}
-          <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
-            {[
-              { value: 100, suffix: '%', label: 'Trazable', icon: LayoutDashboard },
-              { value: 'AES', suffix: '-256', label: 'Proteccion de Datos y Registros clínicos', icon: Lock },
-              { value: 24, suffix: '/7', label: 'Seguimiento en Tiempo Real', icon: MapPin },
-            ].map((stat, index) => (
-              <HolographicStatCard
-                key={stat.label}
-                {...stat}
-                delay={2 + index * 0.15}
-                index={index}
-              />
-            ))}
-          </div>
-
-          {/* Trust Badges with hover effects */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 2.2 }}
-            className="mt-12 flex flex-wrap items-center justify-center gap-6"
-          >
-            {[
-              { icon: Shield, text: 'Adecuado a REPROCANN' },
-              { icon: Microscope, text: 'Certificado por Laboratorio' },
-              { icon: Sprout, text: 'Preservación Genética' },
-              { icon: Stethoscope, text: 'Acompañamiento Profesional' },
-            ].map((badge, index) => (
-              <motion.div
-                key={badge.text}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 2.4 + index * 0.1 }}
-                whileHover={{
-                  scale: 1.05,
-                  y: -2,
-                  transition: { duration: 0.2 }
-                }}
-                className="flex items-center gap-2 text-slate-300 glass px-4 py-2 rounded-full cursor-pointer hover:border-green-500/30 transition-colors"
-              >
-                <motion.div
-                  whileHover={{ rotate: 360 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <badge.icon className="w-4 h-4 text-green-500" />
-                </motion.div>
-                <span className="text-sm">{badge.text}</span>
-              </motion.div>
-            ))}
-          </motion.div>
+        {/* Subtítulo dinámico con TextType */}
+        <div className="mt-6 max-w-3xl mx-auto min-h-[64px] sm:min-h-[52px]">
+          <TextType
+            text="Descubrí en vivo cómo operan nuestras herramientas: telemetría ambiental IoT, pasaporte genético inviolable con QR, dispensario legal con cupo REPROCANN y chatbot oficial con WhatsApp Meta API."
+            as="p"
+            className="text-base sm:text-xl text-slate-300 leading-relaxed font-normal inline"
+            typingSpeed={16}
+            initialDelay={400}
+            loop={false}
+            showCursor={true}
+            cursorCharacter="|"
+            cursorClassName="text-emerald-400 font-bold ml-1"
+          />
         </div>
+
+        {/* Botones de Acción Specular */}
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+          <SpecularButton
+            size="lg"
+            radius={16}
+            tint="#059669"
+            tintOpacity={1}
+            textColor="#ffffff"
+            lineColor="#6ee7b7"
+            baseColor="#047857"
+            intensity={1.4}
+            shineSize={20}
+            shineFade={45}
+            thickness={1.5}
+            speed={0.4}
+            followMouse
+            proximity={280}
+            onClick={onOpenDemo}
+            className="w-full sm:w-auto h-14 px-8 shadow-xl shadow-emerald-600/25 cursor-pointer"
+          >
+            <span className="font-extrabold text-base flex items-center gap-2.5">
+              Agendar Demo en Vivo
+              <ArrowRight className="w-5 h-5" />
+            </span>
+          </SpecularButton>
+
+          <SpecularButton
+            size="lg"
+            radius={16}
+            tint="#0f172a"
+            tintOpacity={0.96}
+            textColor="#ffffff"
+            lineColor="#10b981"
+            baseColor="#1e293b"
+            intensity={1.2}
+            shineSize={20}
+            shineFade={45}
+            thickness={1.5}
+            speed={0.4}
+            followMouse
+            proximity={280}
+            onClick={onExploreModules}
+            className="w-full sm:w-auto h-14 px-8 border border-white/15 shadow-sm cursor-pointer hover:border-emerald-400/60"
+          >
+            <span className="font-bold text-base text-slate-200 flex items-center gap-2">
+              Explorar Módulos en Vivo
+              <ArrowRight className="w-4 h-4 text-emerald-400" />
+            </span>
+          </SpecularButton>
+        </div>
+
       </motion.div>
-
-      {/* Scroll Indicator Removed as requested */}
-
-      {/* Bottom Gradient Fade Removed to allow global background to show through */}
     </section>
-  );
+  )
 }

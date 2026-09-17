@@ -1,141 +1,107 @@
-import { motion } from 'framer-motion';
-import { Github, Twitter, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
-
-const footerLinks = {
-  product: [
-    { name: 'Funciones', href: '#features' },
-    { name: 'Precios', href: '#pricing' },
-    { name: 'Integraciones', href: '#' },
-    { name: 'API', href: '#' },
-  ],
-  company: [
-    { name: 'Nosotros', href: '#' },
-    { name: 'Blog', href: '#' },
-    { name: 'Carreras', href: '#' },
-    { name: 'Prensa', href: '#' },
-  ],
-  resources: [
-    { name: 'Documentación', href: '#' },
-    { name: 'Centro de Ayuda', href: '#' },
-    { name: 'Comunidad', href: '#' },
-    { name: 'Contacto', href: '#' },
-  ],
-  legal: [
-    { name: 'Privacidad', href: '#' },
-    { name: 'Términos', href: '#' },
-    { name: 'Seguridad', href: '#' },
-    { name: 'Cookies', href: '#' },
-  ],
-};
-
-const socialLinks = [
-  { name: 'Twitter', icon: Twitter, href: '#' },
-  { name: 'LinkedIn', icon: Linkedin, href: '#' },
-  { name: 'GitHub', icon: Github, href: '#' },
-];
+import { Mail, MapPin, Phone, ShieldCheck } from 'lucide-react'
 
 export function Footer() {
+  const footerLinks = {
+    product: [
+      { name: 'Telemetría IoT', href: '#iot' },
+      { name: 'Trazabilidad Genética', href: '#trazabilidad' },
+      { name: 'Dispensario & REPROCANN', href: '#dispensario' },
+      { name: 'Gobernanza & Finanzas', href: '#gobernanza' },
+      { name: 'WhatsApp Bot Meta', href: '#whatsapp' },
+      { name: 'Planes & Precios', href: '#precios' },
+    ],
+    legal: [
+      { name: 'Términos de Servicio', href: '#' },
+      { name: 'Política de Privacidad', href: '#' },
+      { name: 'Ley 25.326 Protección de Datos', href: '#' },
+      { name: 'Secreto Médico & Seguridad AES-256', href: '#' },
+    ],
+    company: [
+      { name: 'Sobre CreAPP', href: '#' },
+      { name: 'Soporte Técnico', href: 'https://wa.me/5491130288564' },
+      { name: 'Documentación de API', href: '#' },
+      { name: 'Contacto Comercial', href: 'mailto:creapp.ar@gmail.com' },
+    ]
+  }
+
   return (
-    <footer className="relative border-t border-white/5">
-      {/* Top Gradient Line */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent" />
+    <footer className="relative border-t border-white/[0.08] bg-[#050810] text-slate-400 text-xs">
+      {/* Top Emerald Gradient Line */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-8 lg:gap-12 text-center md:text-left">
-          {/* Brand Column */}
-          <div className="col-span-1 sm:col-span-2 flex flex-col items-center md:items-start">
-            <motion.a
-              href="#"
-              className="flex items-center justify-center md:justify-start gap-2 mb-6"
-              whileHover={{ scale: 1.02 }}
-            >
-              <img src="/LOGOTRAZAPP.png" alt="GrowAPP Logo" className="h-20 w-auto" />
-            </motion.a>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12">
+          {/* Brand Column (Col 2) */}
+          <div className="sm:col-span-2 space-y-4">
+            <a href="#" className="inline-block">
+              <img
+                src="/LOGOTRAZAPP.png"
+                alt="TrazAPP Logo"
+                className="h-10 w-auto object-contain drop-shadow-[0_0_12px_rgba(16,185,129,0.25)]"
+              />
+            </a>
 
-            <p className="text-slate-500 text-sm mb-6 max-w-xs mx-auto md:mx-0">
-              Solución completa de trazabilidad para el cultivo de cannabis medicinal.
-              Seguimiento completo de principio a fin, cada paso rastreado y verificado.
+            <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
+              Plataforma Cloud de Trazabilidad, IoT y Gestión Operativa para Clubes de Cultivo, Dispensarios e Industria del Cannabis Medicinal en Argentina.
             </p>
 
-            {/* Contact Info */}
-            <div className="space-y-3 w-full">
-              <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-slate-500">
-                <Mail className="w-4 h-4 text-green-500" />
+            <div className="pt-2 space-y-2 text-slate-400 text-xs">
+              <div className="flex items-center gap-2">
+                <Mail className="w-3.5 h-3.5 text-emerald-400" />
                 <span>creapp.ar@gmail.com</span>
               </div>
-              <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-slate-500">
-                <MapPin className="w-4 h-4 text-green-500" />
-                <span>Buenos Aires, Argentina</span>
-              </div>
-              <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-slate-500">
-                <Phone className="w-4 h-4 text-green-500" />
+              <div className="flex items-center gap-2">
+                <Phone className="w-3.5 h-3.5 text-emerald-400" />
                 <span>+54 9 11-3028-8564</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Buenos Aires, Argentina</span>
               </div>
             </div>
           </div>
 
-          {/* Product Links */}
+          {/* Módulos */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Producto</h4>
-            <ul className="space-y-3">
-              {footerLinks.product.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-slate-500 hover:text-green-400 transition-colors"
-                  >
-                    {link.name}
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-4">Plataforma</h4>
+            <ul className="space-y-2.5">
+              {footerLinks.product.map((item) => (
+                <li key={item.name}>
+                  <a href={item.href} className="hover:text-emerald-400 transition-colors">
+                    {item.name}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Company Links */}
+          {/* Legal & Marco Normativo */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Empresa</h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-slate-500 hover:text-green-400 transition-colors"
-                  >
-                    {link.name}
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-4">Marco Legal</h4>
+            <ul className="space-y-2.5">
+              {footerLinks.legal.map((item) => (
+                <li key={item.name}>
+                  <a href={item.href} className="hover:text-emerald-400 transition-colors">
+                    {item.name}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Resources Links */}
+          {/* Soporte y Empresa */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Recursos</h4>
-            <ul className="space-y-3">
-              {footerLinks.resources.map((link) => (
-                <li key={link.name}>
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-4">Contacto & Empresa</h4>
+            <ul className="space-y-2.5">
+              {footerLinks.company.map((item) => (
+                <li key={item.name}>
                   <a
-                    href={link.href}
-                    className="text-sm text-slate-500 hover:text-green-400 transition-colors"
+                    href={item.href}
+                    target={item.href.startsWith('http') ? '_blank' : undefined}
+                    rel="noreferrer"
+                    className="hover:text-emerald-400 transition-colors"
                   >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Legal Links */}
-          <div>
-            <h4 className="text-white font-semibold mb-4">Legal</h4>
-            <ul className="space-y-3">
-              {footerLinks.legal.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-slate-500 hover:text-green-400 transition-colors"
-                  >
-                    {link.name}
+                    {item.name}
                   </a>
                 </li>
               ))}
@@ -143,28 +109,17 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-4 text-center md:text-left">
-          <p className="text-sm text-slate-600">
-            © {new Date().getFullYear()} TrazAPP by CreAPP. Todos los derechos reservados.
-          </p>
-
-          {/* Social Links */}
-          <div className="flex items-center gap-4">
-            {socialLinks.map((social) => (
-              <motion.a
-                key={social.name}
-                href={social.href}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-500 hover:text-green-400 hover:bg-white/10 transition-colors"
-              >
-                <social.icon className="w-5 h-5" />
-              </motion.a>
-            ))}
+        {/* Bottom bar */}
+        <div className="mt-16 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+          <div>
+            © {new Date().getFullYear()} TrazAPP OS by CreAPP. Todos los derechos reservados.
+          </div>
+          <div className="flex items-center gap-2 text-slate-400">
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <span>Infraestructura Segura • Servidores Cloud en Argentina</span>
           </div>
         </div>
       </div>
     </footer>
-  );
+  )
 }

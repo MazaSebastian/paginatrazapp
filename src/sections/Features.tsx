@@ -1,273 +1,156 @@
-import { useRef } from 'react';
-import { motion, useInView, useScroll, useTransform, useMotionValue, useMotionTemplate } from 'framer-motion';
-import {
-  Sprout,
-  Stethoscope,
-  Briefcase,
-  TrendingUp,
-  Zap
-} from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { TiltCard } from '@/components/TiltCard';
-import { AnimatedMockups } from '@/components/AnimatedMockups';
-
-const features = [
-  {
-    id: 1,
-    title: 'Módulo de Cultivo',
-    description: 'Gestión integral agronómica. Trazabilidad por lotes, control de madres y esquejes, seguimiento de salas y genética, monitoreo ambiental y parametrización IoT.',
-    icon: Sprout,
-    gradient: 'from-green-500/20 to-green-700/10',
-  },
-  {
-    id: 2,
-    title: 'Módulo Médico / Dispensario',
-    description: 'Panel enfocado en el paciente. Gestión de historias clínicas, recetas, control de stock y entregas para dispensarios, con pleno cumplimiento REPROCANN.',
-    icon: Stethoscope,
-    gradient: 'from-blue-500/20 to-blue-700/10',
-  },
-  {
-    id: 3,
-    title: 'Módulo Administrativo y Gestión',
-    description: 'El centro de tu negocio. Reportes detallados, gestión de usuarios y roles, control financiero, métricas de rendimiento y trazabilidad completa de auditoría.',
-    icon: Briefcase,
-    gradient: 'from-indigo-500/20 to-indigo-700/10',
-  },
-];
-
-// Bento Card Component with enhanced hover animations
-function BentoCard({
-  feature,
-  index,
-  isMobile
-}: {
-  feature: typeof features[0];
-  index: number;
-  isMobile: boolean;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-  
-  // Spotlight effect logic
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30, scale: 0.95 }}
-      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{
-        duration: 0.8,
-        delay: index * 0.15,
-        ease: [0.215, 0.61, 0.355, 1]
-      }}
-      className="h-full relative group"
-    >
-      <TiltCard tiltAmount={isMobile ? 0 : 5} scale={isMobile ? 1 : 1.02} glareEnabled={!isMobile} className="h-full">
-        <div
-          onMouseMove={handleMouseMove}
-          className={`h-full relative glass rounded-2xl p-6 lg:p-8 flex flex-col justify-start border border-white/5 hover:border-green-500/50 transition-colors duration-500 overflow-hidden bg-gradient-to-br ${feature.gradient}`}
-        >
-          {/* Spotlight Effect */}
-          <motion.div
-            className="absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100 pointer-events-none"
-            style={{
-              background: useMotionTemplate`
-                radial-gradient(
-                  450px circle at ${mouseX}px ${mouseY}px,
-                  rgba(34, 197, 94, 0.15),
-                  transparent 80%
-                )
-              `,
-            }}
-          />
-
-          {/* Animated background gradient fallback class */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
-          {/* Content */}
-          <div className="relative z-10 h-full flex flex-col">
-            {/* Header */}
-            <div className="flex flex-col md:flex-row items-center md:items-start justify-start mb-4 gap-4 md:gap-0">
-              <motion.div
-                className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-sm"
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.5 }}
-              >
-                <feature.icon className="w-8 h-8 text-white" />
-              </motion.div>
-            </div>
-
-            {/* Title & Description */}
-            <motion.h3
-              className="text-2xl font-bold text-white mb-3 group-hover:text-green-300 transition-colors text-center md:text-left"
-            >
-              {feature.title}
-            </motion.h3>
-            <p className="text-slate-400 text-base leading-relaxed flex-grow group-hover:text-slate-300 transition-colors text-center md:text-left">
-              {feature.description}
-            </p>
-
-          </div>
-        </div>
-      </TiltCard>
-    </motion.div>
-  );
-}
+import { useRef } from 'react'
+import { 
+  Sprout, 
+  Stethoscope, 
+  Briefcase, 
+  Cpu, 
+  ShieldCheck 
+} from 'lucide-react'
 
 export function Features() {
-  const isMobile = useIsMobile();
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  });
-
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const containerRef = useRef<HTMLDivElement>(null)
 
   return (
-    <section id="features" className="relative py-32 overflow-hidden" ref={sectionRef}>
-      {/* Animated Background */}
-      <motion.div
-        className="absolute inset-0 grid-pattern opacity-30"
-        style={{ y: backgroundY }}
-      />
-
-      {/* Floating Orbs with enhanced animation */}
-      <motion.div
-        animate={{
-          x: [0, 50, 0],
-          y: [0, -30, 0],
-          scale: [1, 1.2, 1],
-          rotate: [0, 180, 360]
-        }}
-        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/4 right-1/4 w-80 h-80 rounded-full"
-        style={{
-          background: 'radial-gradient(circle, rgba(34, 197, 94, 0.10) 0%, rgba(34, 197, 94, 0.02) 50%, transparent 80%)',
-        }}
-      />
-      <motion.div
-        animate={{
-          x: [0, -40, 0],
-          y: [0, 40, 0],
-          scale: [1.2, 1, 1.2],
-          rotate: [360, 180, 0]
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute bottom-1/4 left-1/4 w-64 h-64 rounded-full"
-        style={{
-          background: 'radial-gradient(circle, rgba(22, 163, 74, 0.10) 0%, rgba(22, 163, 74, 0.02) 50%, transparent 80%)',
-        }}
-      />
-
-      {/* Connected particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 rounded-full bg-green-400/30"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              willChange: 'transform, opacity',
-            }}
-            animate={{
-              y: [0, -100, 0],
-              opacity: [0.2, 0.6, 0.2],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: 5 + Math.random() * 5,
-              delay: Math.random() * 2,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
-        ))}
+    <section id="features" ref={containerRef} className="relative z-10 py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
+      {/* Header */}
+      <div className="text-center max-w-3xl mx-auto mb-16">
+        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+          Diseñado específicamente para las exigencias del{' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+            Cannabis Medicinal
+          </span>
+        </h2>
+        <p className="mt-4 text-base sm:text-lg text-slate-400">
+          Un ecosistema cloud unificado que reemplaza múltiples programas desconectados, blindando la operación legal, agronómica y financiera de tu club.
+        </p>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Bento Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+        
+        {/* Card 1: Agronomía y Lotes (Gran Card, col 7) */}
+        <div className="md:col-span-7 p-7 sm:p-8 rounded-3xl bg-[#090e18]/85 border border-white/[0.08] hover:border-emerald-500/40 transition-all flex flex-col justify-between group relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-[90px] pointer-events-none -mr-20 -mt-20" />
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 rounded-2xl bg-emerald-500/15 text-emerald-400 group-hover:scale-110 transition-transform">
+                <Sprout className="w-7 h-7" />
+              </div>
+              <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+                Módulo Agronómico
+              </span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+              Gestión de Lotes, Genética & Madres
+            </h3>
+            <p className="text-sm text-slate-300 leading-relaxed max-w-lg mb-6">
+              Controla cada planta desde la selección del clon madre hasta la cosecha. Registra podas, trasplantes, formulaciones bio-nutricionales y pesos húmedo/seco con precisión de laboratorio.
+            </p>
+          </div>
 
-        <AnimatedMockups />
-
-        <div className="mt-24 md:mt-32" />
-
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          {/* Badge Hidden as Requested */}
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6"
-          >
-            Todo lo que Necesitas
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-slate-400 text-lg max-w-2xl mx-auto"
-          >
-            Un conjunto completo de herramientas diseñadas para el cultivo moderno de cannabis,
-            desde el seguimiento de semillas hasta los informes de cumplimiento.
-          </motion.p>
+          <div className="grid grid-cols-3 gap-3 pt-5 border-t border-white/[0.06] text-center">
+            <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.04]">
+              <div className="text-[10px] text-slate-400 font-mono uppercase">Linaje</div>
+              <div className="text-sm font-bold text-white font-mono mt-0.5">Árbol Genealógico</div>
+            </div>
+            <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.04]">
+              <div className="text-[10px] text-slate-400 font-mono uppercase">Pasaporte</div>
+              <div className="text-sm font-bold text-emerald-400 font-mono mt-0.5">QR Inviolable</div>
+            </div>
+            <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.04]">
+              <div className="text-[10px] text-slate-400 font-mono uppercase">Análisis</div>
+              <div className="text-sm font-bold text-teal-400 font-mono mt-0.5">HPLC / Cannabinoides</div>
+            </div>
+          </div>
         </div>
 
-        {/* Interactive Grid Container */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mt-20">
-          {features.map((feature, index) => (
-            <BentoCard 
-              key={feature.id} 
-              feature={feature} 
-              index={index} 
-              isMobile={isMobile} 
-            />
-          ))}
+        {/* Card 2: Validador REPROCANN (Col 5) */}
+        <div className="md:col-span-5 p-7 sm:p-8 rounded-3xl bg-[#090e18]/85 border border-white/[0.08] hover:border-emerald-500/40 transition-all flex flex-col justify-between group relative overflow-hidden">
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 rounded-2xl bg-teal-500/15 text-teal-400 group-hover:scale-110 transition-transform">
+                <Stethoscope className="w-7 h-7" />
+              </div>
+              <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-teal-500/10 text-teal-300 border border-teal-500/20">
+                Dispensario & Ley
+              </span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+              Validación REPROCANN Blindada
+            </h3>
+            <p className="text-sm text-slate-300 leading-relaxed mb-6">
+              Lectura automática del código QR del carnet oficial. El sistema calcula los gramos retirados en el mes y bloquea de inmediato si se excede el cupo legal de 40g o si el trámite venció.
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-black/40 border border-white/[0.04] flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <ShieldCheck className="w-5 h-5 text-emerald-400" />
+              <span className="text-xs font-semibold text-white">0% Entregas fuera de norma</span>
+            </div>
+            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md">
+              Firma Digital
+            </span>
+          </div>
         </div>
 
-        {/* Bottom CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-16 text-center"
-        >
-          <motion.div
-            className="inline-flex items-center gap-4 glass rounded-full px-6 py-3 cursor-pointer group"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <motion.div
-              className="flex items-center gap-2"
-              animate={{ x: [0, 3, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <Zap className="w-5 h-5 text-green-400" />
-              <span className="text-white font-medium">¿Listo para comenzar?</span>
-            </motion.div>
-            <motion.a
-              href="#pricing"
-              className="text-green-400 hover:text-green-300 font-medium flex items-center gap-1 transition-colors"
-              whileHover={{ x: 5 }}
-            >
-              Ver Precios
-              <TrendingUp className="w-4 h-4" />
-            </motion.a>
-          </motion.div>
-        </motion.div>
+        {/* Card 3: Telemetría IoT en Tiempo Real (Col 5) */}
+        <div className="md:col-span-5 p-7 sm:p-8 rounded-3xl bg-[#090e18]/85 border border-white/[0.08] hover:border-emerald-500/40 transition-all flex flex-col justify-between group relative overflow-hidden">
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 rounded-2xl bg-cyan-500/15 text-cyan-400 group-hover:scale-110 transition-transform">
+                <Cpu className="w-7 h-7" />
+              </div>
+              <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                Hardware IoT
+              </span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+              Telemetría de Sala & Alertas IoT
+            </h3>
+            <p className="text-sm text-slate-300 leading-relaxed mb-6">
+              Sincronización continua de VPD, temperatura, humedad y fotoperiodo. Si un sensor detecta un pico térmico o corte de ventilación, TrazAPP te alerta al WhatsApp en menos de 2 segundos.
+            </p>
+          </div>
+
+          <div className="flex items-center justify-between p-3.5 rounded-2xl bg-black/40 border border-white/[0.04] text-xs font-mono">
+            <span className="text-slate-400">Latencia de telemetría:</span>
+            <span className="text-emerald-400 font-bold">&lt; 200 ms</span>
+          </div>
+        </div>
+
+        {/* Card 4: Finanzas, Mercado Pago y Gobernanza (Col 7) */}
+        <div className="md:col-span-7 p-7 sm:p-8 rounded-3xl bg-[#090e18]/85 border border-white/[0.08] hover:border-emerald-500/40 transition-all flex flex-col justify-between group relative overflow-hidden">
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 rounded-2xl bg-emerald-500/15 text-emerald-400 group-hover:scale-110 transition-transform">
+                <Briefcase className="w-7 h-7" />
+              </div>
+              <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+                Gobernanza & Finanzas
+              </span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+              Cobro de Membresías & Libro Foliado
+            </h3>
+            <p className="text-sm text-slate-300 leading-relaxed max-w-lg mb-6">
+              Automatiza la cobranza mensual de aportes solidarios con Mercado Pago sin comisiones intermedias. Exporta con un click los balances y actas oficiales requeridas por ARICCAME e INASE.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 pt-5 border-t border-white/[0.06]">
+            <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.04]">
+              <div className="text-[10px] text-slate-400 font-mono uppercase">Cobro Automático</div>
+              <div className="text-sm font-bold text-emerald-400 font-mono mt-0.5">Mercado Pago 0% Fee</div>
+            </div>
+            <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.04]">
+              <div className="text-[10px] text-slate-400 font-mono uppercase">Auditoría INASE</div>
+              <div className="text-sm font-bold text-teal-400 font-mono mt-0.5">Libro Foliado PDF</div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
-  );
+  )
 }

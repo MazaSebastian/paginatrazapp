@@ -1,714 +1,201 @@
-import { useRef, useState } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { Check, X, Users, Building2, User, Sparkles, ArrowRight, Zap, Sprout, Stethoscope, Briefcase, Microscope } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { TiltCard } from '@/components/TiltCard';
-import { TextReveal } from '@/components/TextReveal';
-import { AnimatedCounter } from '@/components/AnimatedCounter';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Link } from 'react-router-dom';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useState } from 'react'
+import { Check, ArrowRight, ShieldCheck } from 'lucide-react'
+import { SpecularButton } from '@/components/ui/SpecularButton'
 
-const plans = [
-  {
-    id: 'individual',
-    name: 'Individual',
-    description: 'Perfecto para gestión de cultivo personal',
-    icon: User,
-    monthlyPrice: 45000,
-    yearlyPrice: 380,
-    popular: false,
-    categories: [
-      {
-        name: 'Módulo de Cultivo',
-        icon: Sprout,
-        features: [
-          { text: 'Gestión Integral', included: true },
-          { text: 'Esquejes y Clones', included: true },
-          { text: 'Control de Madres', included: true },
-          { text: 'Gestión de Stock', included: true },
-          { text: 'Dispositivos IoT', included: false },
-        ]
-      },
-      {
-        name: 'Growy (Inteligencia Artificial)',
-        icon: Sparkles,
-        features: [
-          { text: 'Asistente IA Growy', included: false },
-        ]
-      },
-      {
-        name: 'Módulo Médico & Dispensario',
-        icon: Stethoscope,
-        features: [
-          { text: 'Historias Clínicas', included: false },
-          { text: 'Seguimiento de Pacientes', included: false },
-          { text: 'Gestión de Dispensario', included: false },
-          { text: 'Recetas Médicas', included: false },
-        ]
-      },
-      {
-        name: 'Módulo de Laboratorio',
-        icon: Microscope,
-        features: [
-          { text: 'Seguimiento Lab', included: false },
-          { text: 'Extracciones y Resinas', included: false },
-          { text: 'Elaboración de Aceites', included: false },
-        ]
-      },
-      {
-        name: 'Módulo Administrativo',
-        icon: Briefcase,
-        features: [
-          { text: 'Control de Insumos', included: false },
-          { text: 'Registro de Gastos', included: false },
-          { text: 'Gestión de Socios', included: false },
-          { text: 'Métricas y Reportes', included: false },
-        ]
-      }
-    ],
-    cta: 'Contactar Ventas',
-    ctaVariant: 'outline' as const,
-    highlight: 'Ideal para comenzar',
-  },
-  {
-    id: 'team',
-    name: 'Equipo',
-    description: 'Para clubes y colectivos',
-    icon: Users,
-    monthlyPrice: 80000,
-    yearlyPrice: 650,
-    popular: false,
-    categories: [
-      {
-        name: 'Módulo de Cultivo',
-        icon: Sprout,
-        features: [
-          { text: 'Gestión Integral', included: true },
-          { text: 'Esquejes y Clones', included: true },
-          { text: 'Control de Madres', included: true },
-          { text: 'Gestión de Stock', included: true },
-          { text: 'Dispositivos IoT', included: true },
-        ]
-      },
-      {
-        name: 'Growy (Inteligencia Artificial)',
-        icon: Sparkles,
-        features: [
-          { text: 'Asistente IA Growy', included: false },
-        ]
-      },
-      {
-        name: 'Módulo Médico & Dispensario',
-        icon: Stethoscope,
-        features: [
-          { text: 'Historias Clínicas', included: false },
-          { text: 'Seguimiento de Pacientes', included: false },
-          { text: 'Gestión de Dispensario', included: false },
-          { text: 'Recetas Médicas', included: false },
-        ]
-      },
-      {
-        name: 'Módulo de Laboratorio',
-        icon: Microscope,
-        features: [
-          { text: 'Seguimiento Lab', included: false },
-          { text: 'Extracciones y Resinas', included: false },
-          { text: 'Elaboración de Aceites', included: false },
-        ]
-      },
-      {
-        name: 'Módulo Administrativo',
-        icon: Briefcase,
-        features: [
-          { text: 'Control de Insumos', included: true },
-          { text: 'Registro de Gastos', included: true },
-          { text: 'Gestión de Socios', included: true },
-          { text: 'Métricas y Reportes', included: true },
-        ]
-      }
-    ],
-    cta: 'Contactar Ventas',
-    ctaVariant: 'outline' as const,
-    highlight: 'Recomendado',
-  },
-  {
-    id: 'ngo',
-    name: 'ONG / Club',
-    description: 'Especializado para cumplimiento REPROCANN',
-    icon: Building2,
-    monthlyPrice: 180000,
-    yearlyPrice: 1600,
-    popular: false,
-    categories: [
-      {
-        name: 'Módulo de Cultivo',
-        icon: Sprout,
-        features: [
-          { text: 'Gestión Integral', included: true },
-          { text: 'Esquejes y Clones', included: true },
-          { text: 'Control de Madres', included: true },
-          { text: 'Gestión de Stock', included: true },
-          { text: 'Dispositivos IoT', included: true },
-        ]
-      },
-      {
-        name: 'Growy (Inteligencia Artificial)',
-        icon: Sparkles,
-        features: [
-          { text: 'Asistente IA Growy', included: false },
-        ]
-      },
-      {
-        name: 'Módulo Médico & Dispensario',
-        icon: Stethoscope,
-        features: [
-          { text: 'Historias Clínicas', included: true },
-          { text: 'Seguimiento de Pacientes', included: true },
-          { text: 'Gestión de Dispensario', included: true },
-          { text: 'Recetas Médicas', included: true },
-        ]
-      },
-      {
-        name: 'Módulo de Laboratorio',
-        icon: Microscope,
-        features: [
-          { text: 'Seguimiento Lab', included: true },
-          { text: 'Extracciones y Resinas', included: true },
-          { text: 'Elaboración de Aceites', included: true },
-        ]
-      },
-      {
-        name: 'Módulo Administrativo',
-        icon: Briefcase,
-        features: [
-          { text: 'Control de Insumos', included: true },
-          { text: 'Registro de Gastos', included: true },
-          { text: 'Gestión de Socios', included: true },
-          { text: 'Métricas y Reportes', included: true },
-        ]
-      }
-    ],
-    cta: 'Contactar Ventas',
-    ctaVariant: 'outline' as const,
-    highlight: 'Para organizaciones',
-  },
-  {
-    id: 'trazapp',
-    name: 'Plan TrazAPP',
-    description: 'La experiencia definitiva con Inteligencia Artificial',
-    icon: Sparkles,
-    monthlyPrice: 250000,
-    yearlyPrice: 1800,
-    popular: true,
-    categories: [
-      {
-        name: 'Módulo de Cultivo',
-        icon: Sprout,
-        features: [
-          { text: 'Gestión Integral', included: true },
-          { text: 'Esquejes y Clones', included: true },
-          { text: 'Control de Madres', included: true },
-          { text: 'Gestión de Stock', included: true },
-          { text: 'Dispositivos IoT', included: true },
-        ]
-      },
-      {
-        name: 'Growy (Inteligencia Artificial)',
-        icon: Sparkles,
-        features: [
-          { text: 'Asistente IA Growy', included: true },
-        ]
-      },
-      {
-        name: 'Módulo Médico & Dispensario',
-        icon: Stethoscope,
-        features: [
-          { text: 'Historias Clínicas', included: true },
-          { text: 'Seguimiento de Pacientes', included: true },
-          { text: 'Gestión de Dispensario', included: true },
-          { text: 'Recetas Médicas', included: true },
-        ]
-      },
-      {
-        name: 'Módulo de Laboratorio',
-        icon: Microscope,
-        features: [
-          { text: 'Seguimiento Lab', included: true },
-          { text: 'Extracciones y Resinas', included: true },
-          { text: 'Elaboración de Aceites', included: true },
-        ]
-      },
-      {
-        name: 'Módulo Administrativo',
-        icon: Briefcase,
-        features: [
-          { text: 'Control de Insumos', included: true },
-          { text: 'Registro de Gastos', included: true },
-          { text: 'Gestión de Socios', included: true },
-          { text: 'Métricas y Reportes', included: true },
-        ]
-      }
-    ],
-    cta: 'Contactar Ventas',
-    ctaVariant: 'default' as const,
-    highlight: 'Todo incluido + IA',
-  },
-];
-
-// Lightweight native accordion for mobile to prevent Framer Motion lag
-function MobileFeatureAccordionItem({ category, isCategoryDisabled }: { category: typeof plans[0]['categories'][0], isCategoryDisabled: boolean }) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <button
-      type="button"
-      onClick={() => setIsOpen(prev => !prev)}
-      className={`w-full text-left cursor-pointer border border-white/5 rounded-lg glass overflow-hidden transition-all duration-300 ${isCategoryDisabled ? 'opacity-60 grayscale border-transparent' : 'border-green-500/10'
-        } ${isOpen ? 'ring-1 ring-green-500/30' : ''}`}
-    >
-      <div
-        className="w-full flex items-center justify-between py-3 px-3 text-sm font-semibold"
-      >
-        <div className={`flex items-center gap-2 ${isCategoryDisabled ? 'text-slate-500' : 'text-slate-200'}`}>
-          <category.icon className={`w-4 h-4 ${isCategoryDisabled ? 'text-slate-500' : 'text-green-400'}`} />
-          {category.name}
-        </div>
-        <div className={`text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
-          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4">
-            <path d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
-          </svg>
-        </div>
-      </div>
-
-      <div
-        className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
-      >
-        <div className="overflow-hidden">
-          <div className="space-y-3 pt-1 pb-3 px-3">
-            {category.features.map((feature, j) => {
-              const isGrowy = feature.text === 'Asistente IA Growy';
-              
-              const featureContent = (
-                <div className={`flex items-center gap-3 ${isGrowy && feature.included ? 'cursor-pointer group/growy' : ''}`}>
-                  <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
-                    feature.included 
-                      ? isGrowy 
-                        ? 'bg-gradient-to-r from-emerald-400 to-cyan-400 shadow-[0_0_15px_rgba(52,211,153,0.4)] group-hover/growy:scale-110' 
-                        : 'bg-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.2)]'
-                      : 'bg-slate-800'
-                  }`}>
-                    {feature.included ? (
-                      isGrowy ? <Sparkles className="w-3 h-3 text-emerald-950" /> : <Check className="w-3 h-3 text-green-400" />
-                    ) : (
-                      <X className="w-3 h-3 text-slate-600" />
-                    )}
-                  </div>
-                  <span className={`text-xs transition-colors ${
-                    feature.included 
-                      ? isGrowy 
-                        ? 'text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300 font-bold group-hover/growy:from-emerald-200 group-hover/growy:to-cyan-200 border-b border-emerald-400/30 border-dashed'
-                        : 'text-slate-300' 
-                      : 'text-slate-600'
-                  }`}>
-                    {feature.text}
-                  </span>
-                </div>
-              );
-
-              if (isGrowy && feature.included) {
-                return (
-                  <Popover key={j}>
-                    <PopoverTrigger asChild>
-                      {featureContent}
-                    </PopoverTrigger>
-                    <PopoverContent side="top" className="w-72 glass border-emerald-500/30 p-4">
-                      <div className="flex gap-3 mb-2">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center shrink-0">
-                          <Sparkles className="w-4 h-4 text-emerald-950" />
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-sm text-white">Growy (IA)</h4>
-                          <p className="text-[10px] text-emerald-400 font-medium">Asistente Virtual Exclusivo</p>
-                        </div>
-                      </div>
-                      <p className="text-xs text-slate-300 leading-relaxed">
-                        Controla tu cultivo usando lenguaje natural. Growy puede ejecutar acciones por ti, analizar el clima, programar tareas y predecir tiempos de cosecha automáticamente.
-                      </p>
-                    </PopoverContent>
-                  </Popover>
-                );
-              }
-
-              return <div key={j}>{featureContent}</div>;
-            })}
-          </div>
-        </div>
-      </div>
-    </button>
-  );
+interface PricingProps {
+  onOpenDemo: () => void
 }
 
-// Pricing Card Component with enhanced animations
-function PricingCard({
-  plan,
-  isYearly,
-  index,
-  isMobile
-}: {
-  plan: typeof plans[0];
-  isYearly: boolean;
-  index: number;
-  isMobile: boolean;
-}) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-  const price = isYearly ? plan.yearlyPrice : plan.monthlyPrice;
+export function Pricing({ onOpenDemo }: PricingProps) {
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('annual')
+
+  const plans = [
+    {
+      name: 'Club Inicial',
+      tagline: 'Para clubes emergentes y proyectos de cultivo de hasta 50 socios.',
+      monthlyPrice: '$85.000',
+      annualPrice: '$68.000',
+      period: '/mes',
+      highlighted: false,
+      features: [
+        'Hasta 50 socios registrados con carnet',
+        '2 Salas de cultivo con telemetría IoT',
+        'Validación de QR REPROCANN en dispensario',
+        'Control estricto de cupo legal (40g/mes)',
+        'Trazabilidad por lotes (clon a curado)',
+        'Soporte técnico por WhatsApp',
+      ],
+      cta: 'Comenzar con Club Inicial',
+    },
+    {
+      name: 'Asociación Profesional',
+      tagline: 'El estándar elegido por las principales asociaciones cannábicas de Argentina.',
+      monthlyPrice: '$165.000',
+      annualPrice: '$132.000',
+      period: '/mes',
+      highlighted: true,
+      badge: 'MÁS ELEGIDO',
+      features: [
+        'Hasta 150 socios registrados',
+        'Salas de cultivo y secado ilimitadas',
+        'Asistente oficial WhatsApp con IA (Meta API)',
+        'Cobro automatizado de cuotas con Mercado Pago',
+        'Pasaporte genético con Hash SHA-256',
+        'Generación de Libro Foliado ARICCAME / INASE',
+        'Integración con balanzas de pesaje e impresoras',
+        'Onboarding y migración guiada sin costo',
+      ],
+      cta: 'Solicitar Demostración',
+    },
+    {
+      name: 'Productor Industrial & Redes',
+      tagline: 'Para productores a gran escala, laboratorios y federaciones multi-sede.',
+      monthlyPrice: 'Personalizado',
+      annualPrice: 'Personalizado',
+      period: '',
+      highlighted: false,
+      features: [
+        'Socios y pacientes ilimitados',
+        'Arquitectura Multi-Sede y Multi-Dispensario',
+        'Integración con ERPs y sistemas contables propios',
+        'Calibración de sensores IoT in-situ',
+        'SLA 99.9% de disponibilidad garantizada',
+        'Asesoría técnica y legal regulatoria dedicada',
+        'Servidor dedicado y backup cada 6 horas',
+      ],
+      cta: 'Hablar con Especialista Enterprise',
+    }
+  ]
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 50, scale: 0.9 }}
-      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{
-        duration: 0.6,
-        delay: index * 0.15,
-        ease: [0.34, 1.56, 0.64, 1]
-      }}
-      className={`relative ${plan.popular ? 'z-20' : 'z-10'}`}
-    >
-      <TiltCard tiltAmount={plan.popular ? 5 : 3} scale={1.01}>
-        <div
-          className={`relative rounded-2xl overflow-hidden ${plan.popular
-            ? 'border-2 border-green-500/50 shadow-green-lg shadow-2xl'
-            : 'border border-white/5'
+    <section id="precios" className="relative z-10 py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
+      {/* Background glow */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-emerald-500/10 blur-[130px] pointer-events-none -z-10" />
+
+      {/* Header */}
+      <div className="text-center max-w-3xl mx-auto mb-14">
+        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+          Planes a la medida del crecimiento de{' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+            tu asociación
+          </span>
+        </h2>
+        <p className="mt-4 text-base sm:text-lg text-slate-400">
+          Sin comisiones sobre las cuotas de tus socios. Migración guiada desde Excel o sistemas antiguos incluida.
+        </p>
+
+        {/* Toggle Mensual / Anual */}
+        <div className="mt-8 inline-flex items-center bg-[#0b121e] p-1.5 rounded-full border border-white/10 shadow-inner">
+          <button
+            onClick={() => setBillingCycle('monthly')}
+            className={`px-5 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
+              billingCycle === 'monthly'
+                ? 'bg-emerald-600 text-white shadow-md'
+                : 'text-slate-400 hover:text-white'
             }`}
-        >
-          {/* Popular Badge */}
-          {plan.popular && (
-            <motion.div
-              className="absolute top-0 left-0 right-0 bg-gradient-to-r from-green-500 to-green-600 py-2 text-center z-20"
-              initial={{ y: -40 }}
-              animate={{ y: 0 }}
-              transition={{ delay: 0.5, type: 'spring', stiffness: 200 }}
+          >
+            Facturación Mensual
+          </button>
+          <button
+            onClick={() => setBillingCycle('annual')}
+            className={`px-5 py-2 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              billingCycle === 'annual'
+                ? 'bg-emerald-600 text-white shadow-md'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <span>Pago Anual</span>
+            <span className="px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 text-[10px] font-black uppercase">
+              20% OFF
+            </span>
+          </button>
+        </div>
+      </div>
+
+      {/* Grid de Planes */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+        {plans.map((plan) => {
+          const price = billingCycle === 'annual' ? plan.annualPrice : plan.monthlyPrice
+          return (
+            <div
+              key={plan.name}
+              className={`p-7 sm:p-8 rounded-3xl flex flex-col justify-between relative transition-all duration-300 ${
+                plan.highlighted
+                  ? 'bg-[#091322]/95 border-2 border-emerald-500/60 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(16,185,129,0.2)] lg:-translate-y-2'
+                  : 'bg-[#090e18]/80 border border-white/[0.08] hover:border-emerald-500/30'
+              }`}
             >
-              <span className="text-sm font-medium text-white flex items-center justify-center gap-1">
-                <Sparkles className="w-4 h-4" />
-                Más Popular
-              </span>
-            </motion.div>
-          )}
-
-          <div className={`glass p-6 ${plan.popular ? 'pt-14' : ''} relative overflow-hidden`}>
-            {/* Glow effect for popular */}
-            {plan.popular && (
-              <motion.div
-                className="absolute inset-0 opacity-30"
-                animate={{
-                  background: [
-                    'radial-gradient(circle at 0% 0%, rgba(34, 197, 94, 0.3) 0%, transparent 50%)',
-                    'radial-gradient(circle at 100% 100%, rgba(34, 197, 94, 0.3) 0%, transparent 50%)',
-                    'radial-gradient(circle at 0% 0%, rgba(34, 197, 94, 0.3) 0%, transparent 50%)',
-                  ],
-                }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-              />
-            )}
-
-            {/* Plan Header */}
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-3 mb-4 relative z-10 text-center md:text-left">
-              <motion.div
-                className={`w-12 h-12 rounded-xl flex items-center justify-center ${plan.popular ? 'bg-green-500/20' : 'bg-white/5'
-                  }`}
-                whileHover={{ rotate: 360, scale: 1.1 }}
-                transition={{ duration: 0.5 }}
-              >
-                <plan.icon className={`w-6 h-6 ${plan.popular ? 'text-green-400' : 'text-slate-400'}`} />
-              </motion.div>
-              <div>
-                <h3 className="text-xl font-bold text-white">{plan.name}</h3>
-                <p className="text-xs text-slate-500">{plan.description}</p>
-              </div>
-            </div>
-
-            {/* Highlight text */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="text-xs text-green-400 mb-4 text-center md:text-left"
-            >
-              {plan.highlight}
-            </motion.p>
-
-            {/* Price with animation */}
-            <div className="mb-6 relative z-10 flex justify-center md:justify-start">
-              <div className="flex items-baseline gap-1">
-                <span className="text-slate-500 text-lg">{isYearly ? 'U$S' : '$'}</span>
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={price}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    transition={{ duration: 0.3 }}
-                    className="text-5xl font-bold text-white"
-                  >
-                    <AnimatedCounter value={price} duration={1.5} />
-                  </motion.span>
-                </AnimatePresence>
-                <span className="text-slate-500">/{isYearly ? 'año' : 'mes'}</span>
-              </div>
-            </div>
-
-            {/* CTA Button with enhanced hover */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="relative z-10"
-            >
-              <Link to={`/register?plan=${plan.id}`} className="block w-full">
-                <Button
-                  className={`w-full mb-6 relative overflow-hidden group ${plan.popular
-                    ? 'bg-green-500 hover:bg-green-600 text-white'
-                    : 'bg-white/5 hover:bg-white/10 text-white border border-white/5 hover:border-green-500/50'
-                    }`}
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    {plan.popular && (
-                      <motion.span
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-                      >
-                        <Zap className="w-4 h-4" />
-                      </motion.span>
-                    )}
-                    {plan.cta}
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                  {/* Shine effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
-                    initial={{ x: '-200%' }}
-                    whileHover={{ x: '200%' }}
-                    transition={{ duration: 0.8 }}
-                  />
-                </Button>
-              </Link>
-            </motion.div>
-
-            {/* Features List with Accordion */}
-            <div className="space-y-4 relative z-10">
-              <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2 text-center md:text-left">
-                Funciones por Módulo
-              </p>
-              {isMobile ? (
-                <div className="w-full space-y-4">
-                  {plan.categories.map((category, i) => {
-                    const isCategoryDisabled = category.features.every(f => !f.included);
-                    return (
-                      <MobileFeatureAccordionItem
-                        key={i}
-                        category={category}
-                        isCategoryDisabled={isCategoryDisabled}
-                      />
-                    );
-                  })}
+              {plan.badge && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black text-[10px] uppercase tracking-widest shadow-md">
+                  {plan.badge}
                 </div>
-              ) : (
-                <Accordion type="single" collapsible className="w-full space-y-2">
-                  {plan.categories.map((category, i) => {
-                    const isCategoryDisabled = category.features.every(f => !f.included);
-                    return (
-                      <AccordionItem
-                        value={`item-${i}`}
-                        key={i}
-                        className={`border border-white/5 rounded-lg glass overflow-hidden transition-all duration-300 ${isCategoryDisabled
-                          ? 'opacity-60 grayscale data-[state=open]:border-slate-700/50'
-                          : 'data-[state=open]:border-green-500/30'
-                          }`}
-                      >
-                        <AccordionTrigger className={`w-full hover:no-underline py-3 px-3 text-sm transition-colors ${isCategoryDisabled
-                          ? 'text-slate-500 hover:text-slate-400'
-                          : 'text-slate-300 hover:text-white hover:bg-white/5'
-                          }`}>
-                          <div className="flex items-center gap-2">
-                            <category.icon className={`w-4 h-4 ${isCategoryDisabled ? 'text-slate-500' : 'text-green-400'}`} />
-                            {category.name}
-                          </div>
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-4 pt-2 px-3 space-y-3">
-                          {category.features.map((feature, j) => {
-                            const isGrowy = feature.text === 'Asistente IA Growy';
-                            
-                            const featureContent = (
-                              <div className={`flex items-center gap-3 group/item ${isGrowy && feature.included ? 'cursor-pointer group/growy' : ''}`}>
-                                <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
-                                  feature.included
-                                    ? isGrowy
-                                      ? 'bg-gradient-to-r from-emerald-400 to-cyan-400 shadow-[0_0_15px_rgba(52,211,153,0.4)] group-hover/growy:scale-110'
-                                      : 'bg-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.2)]'
-                                    : 'bg-slate-800'
-                                }`}>
-                                  {feature.included ? (
-                                    isGrowy ? <Sparkles className="w-3 h-3 text-emerald-950" /> : <Check className="w-3 h-3 text-green-400" />
-                                  ) : (
-                                    <X className="w-3 h-3 text-slate-600" />
-                                  )}
-                                </div>
-                                <span className={`text-xs transition-all duration-300 ${
-                                  feature.included
-                                    ? isGrowy
-                                      ? 'text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300 font-bold border-b border-emerald-400/30 border-dashed group-hover/growy:from-emerald-200 group-hover/growy:to-cyan-200'
-                                      : 'group-hover/item:translate-x-1 text-slate-300 group-hover/item:text-green-300'
-                                    : 'text-slate-600'
-                                }`}>
-                                  {feature.text}
-                                </span>
-                              </div>
-                            );
-
-                            if (isGrowy && feature.included) {
-                              return (
-                                <Popover key={j}>
-                                  <PopoverTrigger asChild>
-                                    <div className="inline-block w-full">{featureContent}</div>
-                                  </PopoverTrigger>
-                                  <PopoverContent side="left" align="start" sideOffset={15} className="w-72 glass border-emerald-500/30 p-4 z-[100]">
-                                    <div className="flex gap-3 mb-2">
-                                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center shrink-0">
-                                        <Sparkles className="w-4 h-4 text-emerald-950" />
-                                      </div>
-                                      <div>
-                                        <h4 className="font-bold text-sm text-white">Growy (IA)</h4>
-                                        <p className="text-[10px] text-emerald-400 font-medium">Asistente Virtual Exclusivo</p>
-                                      </div>
-                                    </div>
-                                    <p className="text-xs text-slate-300 leading-relaxed">
-                                      Controla tu cultivo usando lenguaje natural. Growy puede ejecutar acciones por ti, analizar el clima, programar tareas y predecir tiempos de cosecha automáticamente.
-                                    </p>
-                                  </PopoverContent>
-                                </Popover>
-                              );
-                            }
-
-                            return <div key={j}>{featureContent}</div>;
-                          })}
-                        </AccordionContent>
-                      </AccordionItem>
-                    );
-                  })}
-                </Accordion>
               )}
+
+              <div>
+                <h3 className="text-xl font-bold text-white mb-1">{plan.name}</h3>
+                <p className="text-xs text-slate-400 mb-6 leading-relaxed">{plan.tagline}</p>
+
+                {/* Precio */}
+                <div className="flex items-baseline gap-1 mb-6 pb-6 border-b border-white/[0.08]">
+                  <span className="text-3xl sm:text-4xl font-black font-mono text-white tracking-tight">
+                    {price}
+                  </span>
+                  {plan.period && (
+                    <span className="text-xs text-slate-400 font-semibold">{plan.period}</span>
+                  )}
+                </div>
+
+                {/* Features List */}
+                <div className="space-y-3.5 mb-8">
+                  {plan.features.map((feature, i) => (
+                    <div key={i} className="flex items-start gap-3 text-xs text-slate-300">
+                      <div className="p-0.5 rounded-full bg-emerald-500/20 text-emerald-400 shrink-0 mt-0.5">
+                        <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                      </div>
+                      <span className="leading-snug">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <SpecularButton
+                  size="md"
+                  radius={16}
+                  tint={plan.highlighted ? '#059669' : '#0f172a'}
+                  tintOpacity={1}
+                  textColor="#ffffff"
+                  lineColor={plan.highlighted ? '#6ee7b7' : '#10b981'}
+                  baseColor={plan.highlighted ? '#047857' : '#1e293b'}
+                  intensity={1.3}
+                  shineSize={20}
+                  shineFade={45}
+                  thickness={1.5}
+                  speed={0.4}
+                  followMouse
+                  proximity={220}
+                  onClick={onOpenDemo}
+                  className={`w-full h-12 rounded-2xl font-bold text-xs uppercase tracking-wider cursor-pointer ${
+                    plan.highlighted
+                      ? 'shadow-lg shadow-emerald-600/30'
+                      : 'border border-white/10 hover:border-emerald-500/40'
+                  }`}
+                >
+                  <span className="flex items-center justify-center gap-2">
+                    {plan.cta}
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                </SpecularButton>
+
+                <div className="mt-3 text-center text-[11px] text-slate-500 flex items-center justify-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Sin costo de instalación inicial</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </TiltCard>
-    </motion.div>
-  );
-}
-
-export function Pricing() {
-  const [isYearly, setIsYearly] = useState(false);
-  const isMobile = useIsMobile();
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
-
-  return (
-    <section id="pricing" className="relative py-32 overflow-hidden" ref={sectionRef}>
-      {/* Background */}
-      <div className="absolute inset-0 grid-pattern opacity-30" />
-
-      {/* Animated glow orbs */}
-      <motion.div
-        animate={{
-          scale: [1, 1.3, 1],
-          opacity: [0.1, 0.3, 0.1],
-        }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full"
-        style={{
-          background: 'radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.02) 50%, transparent 80%)',
-        }}
-      />
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-12">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6"
-          >
-            <TextReveal delay={0.2} stagger={0.03}>
-              Elige tu Plan
-            </TextReveal>
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-slate-400 text-lg max-w-2xl mx-auto mb-8"
-          >
-            Desde cultivadores individuales hasta grandes ONGs, tenemos un plan que se adapta a tus necesidades
-            y garantiza cumplimiento total con las regulaciones.
-          </motion.p>
-
-          {/* Billing Toggle with animation */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="flex items-center justify-center gap-4"
-          >
-            <motion.span
-              className={`text-sm transition-colors ${!isYearly ? 'text-white' : 'text-slate-500'}`}
-              animate={{ scale: !isYearly ? 1.1 : 1 }}
-            >
-              Mensual
-            </motion.span>
-            <Switch
-              checked={isYearly}
-              onCheckedChange={setIsYearly}
-              className="data-[state=checked]:bg-green-500"
-            />
-            <motion.span
-              className={`text-sm transition-colors ${isYearly ? 'text-white' : 'text-slate-500'}`}
-              animate={{ scale: isYearly ? 1.1 : 1 }}
-            >
-              Anual
-            </motion.span>
-            <motion.span
-              className="px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-xs font-medium"
-              animate={{
-                scale: [1, 1.1, 1],
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              Ahorra 20%
-            </motion.span>
-          </motion.div>
-        </div>
-
-        {/* Pricing Cards */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {plans.map((plan, index) => (
-            <PricingCard
-              key={plan.id}
-              plan={plan}
-              isYearly={isYearly}
-              index={index}
-              isMobile={isMobile}
-            />
-          ))}
-        </div>
-
-
+          )
+        })}
       </div>
     </section>
-  );
+  )
 }
