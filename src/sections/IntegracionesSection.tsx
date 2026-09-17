@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { BlurText } from '@/components/ui/BlurText'
 import { 
   Bot, 
-  CreditCard, 
+  FlaskConical, 
   Cpu, 
   Scale, 
   Printer, 
@@ -19,11 +19,11 @@ export function IntegracionesSection() {
       badge: 'Protocolo Abierto'
     },
     {
-      category: 'Pasarela de Pagos',
-      name: 'Mercado Pago (0% Comisión TrazAPP)',
-      description: 'Cobro automatizado de cuotas societarias. El dinero ingresa 100% directo a la cuenta de tu club.',
-      icon: CreditCard,
-      badge: 'Cobro Directo'
+      category: 'Control de Calidad Farmacéutico',
+      name: 'Certificados de Análisis (COA & HPLC)',
+      description: 'Vinculación de cromatografías oficiales, perfiles de cannabinoides (THC/CBD), terpenos y ensayos microbiológicos por lote.',
+      icon: FlaskConical,
+      badge: 'Laboratorio HPLC'
     },
     {
       category: 'Hardware & Telemetría IoT',

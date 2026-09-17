@@ -60,7 +60,7 @@ export function InteractiveClubLedger() {
             </span>
           </div>
           <p className="text-xs text-slate-300 mt-1">
-            Cobro automatizado de membresías con Mercado Pago, costeo por gramo y generación del libro foliado para ARICCAME.
+            Gestión de aportes societarios de mantenimiento, costeo por gramo y generación del libro foliado para ARICCAME.
           </p>
         </div>
 
@@ -105,11 +105,11 @@ export function InteractiveClubLedger() {
 
         <div className="p-4 rounded-2xl bg-[#0f172a]/70 border border-white/[0.08]">
           <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
-            <span>Cobranzas Mes Actual</span>
+            <span>Aportes Mes Actual</span>
             <DollarSign className="w-4 h-4 text-teal-400" />
           </div>
           <div className="text-2xl sm:text-3xl font-black font-mono text-white">$4.820.000</div>
-          <div className="text-[11px] text-teal-300 mt-1">94% recaudado vía Mercado Pago</div>
+          <div className="text-[11px] text-teal-300 mt-1">94% recaudación al día</div>
         </div>
 
         <div className="p-4 rounded-2xl bg-[#0f172a]/70 border border-white/[0.08]">

@@ -231,7 +231,7 @@ export function InteractiveIoTRoom() {
             <div className="text-[11px] font-semibold mt-1 flex items-center gap-1">
               {isVpdOptimal ? (
                 <span className="text-emerald-400 flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3" /> Rango Óptimo Estomacal
+                  <CheckCircle2 className="w-3 h-3" /> Transpiración Foliar Óptima
                 </span>
               ) : (
                 <span className="text-amber-400 flex items-center gap-1">

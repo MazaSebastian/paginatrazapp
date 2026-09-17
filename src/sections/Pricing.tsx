@@ -41,7 +41,7 @@ export function Pricing({ onOpenDemo }: PricingProps) {
         'Hasta 150 socios registrados',
         'Salas de cultivo y secado ilimitadas',
         'Validación y retiro de cupo en dispensario',
-        'Cobro automatizado de cuotas con Mercado Pago',
+        'Gestión formal de aportes societarios y caja',
         'Pasaporte genético con Hash SHA-256',
         'Generación de Libro Foliado ARICCAME / INASE',
         'Integración con balanzas de pesaje e impresoras',

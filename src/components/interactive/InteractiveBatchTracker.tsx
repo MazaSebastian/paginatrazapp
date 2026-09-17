@@ -83,7 +83,7 @@ const BATCH_STAGES: BatchStage[] = [
       { label: 'Control Biológico', value: 'Ácaros Amblyseius sp.' },
       { label: 'Cero Plaguicidas', value: '100% Certificado' }
     ],
-    details: 'Maduración monitored por microscopía óptica (85% tricomas lechosos, 15% ámbar). Lavado de raíces controlado con agua de ósmosis inversa.'
+    details: 'Maduración monitoreada por microscopía óptica (85% tricomas lechosos, 15% ámbar). Lavado de raíces controlado con agua de ósmosis inversa.'
   },
   {
     id: 4,

@@ -152,17 +152,17 @@ export function Features() {
               </span>
             </div>
             <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
-              Cobro de Membresías & Libro Foliado
+              Gestión de Aportes & Libro Foliado
             </h3>
             <p className="text-sm text-slate-300 leading-relaxed max-w-lg mb-6">
-              Automatiza la cobranza mensual de aportes solidarios con Mercado Pago sin comisiones intermedias. Exporta con un click los balances y actas oficiales requeridas por ARICCAME e INASE.
+              Administra los aportes mensuales de sostenimiento societario con conciliación automática. Exporta con un clic los balances y actas oficiales requeridas por ARICCAME e INASE.
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-3 pt-5 border-t border-white/[0.06]">
             <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.04]">
-              <div className="text-[10px] text-slate-400 font-mono uppercase">Cobro Automático</div>
-              <div className="text-sm font-bold text-emerald-400 font-mono mt-0.5">Mercado Pago 0% Fee</div>
+              <div className="text-[10px] text-slate-400 font-mono uppercase">Conciliación</div>
+              <div className="text-sm font-bold text-emerald-400 font-mono mt-0.5">Aportes 100% Directos</div>
             </div>
             <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.04]">
               <div className="text-[10px] text-slate-400 font-mono uppercase">Auditoría INASE</div>

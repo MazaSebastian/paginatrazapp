@@ -80,7 +80,7 @@ export function TrazappCorporateLanding() {
               />
               <div className="mt-2 min-h-[44px] sm:min-h-[28px]">
                 <TextType
-                  text="Supervisá en tiempo real los parámetros críticos de tus salas: VPD estomacal, temperatura, humedad y fotoperiodo con alertas automáticas."
+                  text="Supervisá en tiempo real los parámetros críticos de tus salas: Déficit de Presión de Vapor (VPD), temperatura, humedad y fotoperiodo con alertas automáticas."
                   as="p"
                   className="text-sm text-slate-300 inline"
                   typingSpeed={16}
@@ -218,7 +218,7 @@ export function TrazappCorporateLanding() {
               />
               <div className="mt-2 min-h-[44px] sm:min-h-[28px]">
                 <TextType
-                  text="Cobranza mensual automatizada con Mercado Pago, cálculo del costo unitario por gramo y emisión del libro foliado para auditorías de ARICCAME e INASE."
+                  text="Gestión formal de aportes societarios, cálculo del costo unitario por gramo y emisión del libro foliado para auditorías de ARICCAME e INASE."
                   as="p"
                   className="text-sm text-slate-300 inline"
                   typingSpeed={16}

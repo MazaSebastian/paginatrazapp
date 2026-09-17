@@ -25,9 +25,9 @@ export function ComparisonSection({ onOpenDemo }: ComparisonSectionProps) {
       trazapp: 'Pasaporte genético digital con Hash criptográfico SHA-256 inalterable: desde el esqueje y nutrición hasta el perfil terpénico de flor seca.'
     },
     {
-      feature: 'Cobro de Cuotas y Cuotas Societarias',
-      traditional: 'Cobros caóticos en efectivo, planillas de Excel desactualizadas y socios que retiran sin estar al día con su aporte.',
-      trazapp: 'Cobranza automatizada con Mercado Pago. Envío automático de enlaces de pago por WhatsApp y conciliación bancaria instantánea.'
+      feature: 'Gestión de Aportes y Cuotas Societarias',
+      traditional: 'Cobros caóticos en efectivo, planillas desactualizadas y socios que retiran sin estar al día con su aporte.',
+      trazapp: 'Gestión formal de aportes societarios con conciliación bancaria instantánea y recibos institucionales automáticos.'
     },
     {
       feature: 'Auditorías e Inspecciones Oficiales',
