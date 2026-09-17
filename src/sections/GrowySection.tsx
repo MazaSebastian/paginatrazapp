@@ -98,29 +98,31 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
           Hardware Inteligente de Cultivo • Protocolo MCP
         </motion.div>
         
-        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight flex flex-wrap items-center justify-center gap-x-2">
+        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+          <span className="inline-block whitespace-nowrap mr-2.5">
+            <SplitText
+              text="Conocé a"
+              tag="span"
+              className="text-white mr-2"
+              delay={25}
+              duration={0.6}
+              splitType="chars"
+              from={{ opacity: 0, y: 35 }}
+              to={{ opacity: 1, y: 0 }}
+              rootMargin="-50px"
+            />
+            <motion.span
+              initial={{ opacity: 0, scale: 0.85, y: 25 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 inline-block"
+            >
+              Growy:
+            </motion.span>
+          </span>
           <SplitText
-            text="Conocé a"
-            tag="span"
-            className="text-white"
-            delay={25}
-            duration={0.6}
-            splitType="chars"
-            from={{ opacity: 0, y: 35 }}
-            to={{ opacity: 1, y: 0 }}
-            rootMargin="-50px"
-          />
-          <motion.span
-            initial={{ opacity: 0, scale: 0.85, y: 25 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 inline-block"
-          >
-            Growy
-          </motion.span>
-          <SplitText
-            text=": el copiloto físico de tu cultivo con Inteligencia Artificial"
+            text="el copiloto físico de tu cultivo con Inteligencia Artificial"
             tag="span"
             className="text-white"
             delay={18}
