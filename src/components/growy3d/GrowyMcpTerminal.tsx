@@ -65,9 +65,9 @@ export function GrowyMcpTerminal({
       specs: ['Panel OLED 6.5" 1080p', 'Respuesta <15ms', 'Cristal Gorilla Glass IP65 antidesgarro']
     },
     sensors: {
-      title: 'Matriz de Sensores Suelo & Atmósfera',
-      desc: 'Adquisición de datos en tiempo real: sonda de sustrato TDR para VWC (humedad volumétrica), conductividad eléctrica (EC) y temperatura de raíz. Sensores atmosféricos NDIR para CO₂ y fotodiodos para PPFD.',
-      specs: ['Sonda TDR de 3 agujas grado agro', 'Sensor NDIR de CO2 hasta 5000 ppm', 'VPD calculado por algoritmo Tetens']
+      title: 'Monitoreo Ambiental & Sustrato',
+      desc: 'Adquisición de datos en tiempo real: medición de humedad de suelo, humedad ambiental y temperatura ambiental. Cálculo dinámico de VPD para el control preciso de la transpiración biológica.',
+      specs: ['Humedad de suelo en tiempo real', 'Humedad y temperatura ambiental', 'VPD calculado por algoritmo Tetens']
     },
     mount: {
       title: 'Montaje Universal en Caño Estructural',

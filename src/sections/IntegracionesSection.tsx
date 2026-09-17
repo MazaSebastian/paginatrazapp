@@ -28,7 +28,7 @@ export function IntegracionesSection() {
     {
       category: 'Hardware & Telemetría IoT',
       name: 'Sensores Zigbee 3.0 & MQTT',
-      description: 'Compatibilidad con sensores de VPD, temperatura, humedad relativa, CO2 y humedad de sustrato.',
+      description: 'Compatibilidad con sensores de temperatura, humedad relativa ambiental, VPD y humedad de suelo.',
       icon: Cpu,
       badge: 'Mesh Industrial'
     },

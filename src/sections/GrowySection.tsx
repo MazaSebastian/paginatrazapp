@@ -28,8 +28,7 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
     hum: 65.6,
     vpd: 0.55,
     soilMoisture: 91.4,
-    plantsCount: 18,
-    co2: 780
+    plantsCount: 18
   })
 
   const [alertActive, setAlertActive] = useState(false)
@@ -45,8 +44,7 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
       hum: 88.2,
       vpd: 0.38,
       soilMoisture: 89.0,
-      plantsCount: 18,
-      co2: 920
+      plantsCount: 18
     })
   }
 
@@ -60,8 +58,7 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
       hum: 63.0,
       vpd: 0.62,
       soilMoisture: 22.0,
-      plantsCount: 18,
-      co2: 760
+      plantsCount: 18
     })
   }
 
@@ -75,8 +72,7 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
       hum: 65.6,
       vpd: 0.55,
       soilMoisture: 91.4,
-      plantsCount: 18,
-      co2: 780
+      plantsCount: 18
     })
   }
 
@@ -199,12 +195,12 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
           <div className="w-10 h-10 rounded-2xl bg-teal-500/15 text-teal-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
             <Wind className="w-5 h-5" />
           </div>
-          <h3 className="text-base font-bold text-white mb-2">Cálculo de VPD & CO₂</h3>
-          <p className="text-xs text-slate-400 leading-relaxed">
-            Sensor NDIR de CO₂ hasta 5000 ppm y cálculo dinámico de Déficit de Presión de Vapor en hojas para optimizar la transpiración vegetal.
+          <h3 className="text-base font-bold text-white mb-2">Cálculo Dinámico de VPD</h3>
+          <p className="text-xs text-slate-300 leading-relaxed">
+            Cálculo matemático en tiempo real a partir de la temperatura y humedad ambiental. Optimiza la transpiración vegetal y previene riesgos de hongos y estrés bioclimático.
           </p>
           <div className="mt-4 pt-3 border-t border-white/[0.06] text-[10px] font-mono text-teal-400">
-            Algoritmo Tetens en vivo
+            Algoritmo Tetens en tiempo real
           </div>
         </div>
 

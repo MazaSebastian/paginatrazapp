@@ -18,7 +18,6 @@ export interface GrowyScreenProps {
     vpd: number
     soilMoisture: number
     plantsCount: number
-    co2: number
   }
 }
 
