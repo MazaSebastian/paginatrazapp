@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { BlurText } from '@/components/ui/BlurText'
 import { 
   Bot, 
   CreditCard, 
@@ -57,15 +58,34 @@ export function IntegracionesSection() {
   return (
     <section id="integraciones" className="relative z-10 py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
       <div className="text-center max-w-3xl mx-auto mb-16">
-        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-          Integrado con el hardware y estándares{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight flex flex-wrap items-center justify-center gap-x-2">
+          <BlurText
+            text="Integrado con el hardware y estándares"
+            as="span"
+            className="text-white justify-center"
+            delay={50}
+            direction="top"
+            rootMargin="-50px"
+          />
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 inline-block"
+          >
             que ya utilizás
-          </span>
+          </motion.span>
         </h2>
-        <p className="mt-4 text-base sm:text-lg text-slate-400">
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.6, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-4 text-base sm:text-lg text-slate-400"
+        >
           TrazAPP se sincroniza con tus sensores, balanzas, impresoras de rótulos y pasarelas de pago para crear un flujo operativo sin fricciones.
-        </p>
+        </motion.p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

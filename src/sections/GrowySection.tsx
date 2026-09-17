@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { GrowyCanvas } from '@/components/growy3d/GrowyCanvas'
 import { GrowyMcpTerminal } from '@/components/growy3d/GrowyMcpTerminal'
+import { SplitText } from '@/components/ui/SplitText'
 import { 
   Sprout, 
   Wind, 
@@ -83,18 +85,62 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
       {/* Background glow sutil */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-emerald-500/10 blur-[150px] pointer-events-none -z-10" />
 
-      {/* Header de la Sección (Limpio y corporativo, sin badges AI Slop) */}
+      {/* Header de la Sección con animaciones de entrada fluidas (estilo Dental-IA) */}
       <div className="text-center max-w-4xl mx-auto mb-14">
-        <div className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-400 mb-2 flex items-center justify-center gap-1.5">
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-400 mb-2 flex items-center justify-center gap-1.5"
+        >
           <Bot className="w-4 h-4" />
           Hardware Inteligente de Cultivo • Protocolo MCP
-        </div>
-        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-          Conocé a <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Growy</span>: el copiloto físico de tu cultivo con Inteligencia Artificial
+        </motion.div>
+        
+        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight flex flex-wrap items-center justify-center gap-x-2">
+          <SplitText
+            text="Conocé a"
+            tag="span"
+            className="text-white"
+            delay={25}
+            duration={0.6}
+            splitType="chars"
+            from={{ opacity: 0, y: 35 }}
+            to={{ opacity: 1, y: 0 }}
+            rootMargin="-50px"
+          />
+          <motion.span
+            initial={{ opacity: 0, scale: 0.85, y: 25 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 inline-block"
+          >
+            Growy
+          </motion.span>
+          <SplitText
+            text=": el copiloto físico de tu cultivo con Inteligencia Artificial"
+            tag="span"
+            className="text-white"
+            delay={18}
+            duration={0.6}
+            splitType="chars"
+            from={{ opacity: 0, y: 35 }}
+            to={{ opacity: 1, y: 0 }}
+            rootMargin="-50px"
+          />
         </h2>
-        <p className="mt-4 text-base sm:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed">
+
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.6, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-4 text-base sm:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed"
+        >
           Diseñado para montarse directamente en los caños de tu sala o carpa técnica. Monitorea sustrato y atmósfera en tiempo real, interactúa mediante su rostro ciberpunk biofílico y expone el control biológico a modelos como <span className="text-emerald-400 font-semibold">Gemini</span> y <span className="text-emerald-400 font-semibold">Claude</span> a través del protocolo abierto <span className="text-teal-300 font-semibold font-mono">MCP (Model Context Protocol)</span>.
-        </p>
+        </motion.p>
       </div>
 
       {/* Visor 3D Interactivo + Terminal de Simulación MCP (Split Screen) */}

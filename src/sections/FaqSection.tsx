@@ -4,6 +4,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import { motion } from 'framer-motion'
+import { BlurText } from '@/components/ui/BlurText'
 import { PhoneCall } from 'lucide-react'
 
 interface FaqSectionProps {
@@ -37,15 +39,34 @@ export function FaqSection({ onOpenDemo }: FaqSectionProps) {
   return (
     <section className="relative z-10 py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto border-t border-white/[0.08]">
       <div className="text-center max-w-3xl mx-auto mb-16">
-        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-          Respuestas técnicas &{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight flex flex-wrap items-center justify-center gap-x-2">
+          <BlurText
+            text="Respuestas técnicas &"
+            as="span"
+            className="text-white justify-center"
+            delay={70}
+            direction="top"
+            rootMargin="-50px"
+          />
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 inline-block"
+          >
             normativas
-          </span>
+          </motion.span>
         </h2>
-        <p className="mt-4 text-base sm:text-lg text-slate-400">
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.6, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-4 text-base sm:text-lg text-slate-400"
+        >
           Todo lo que tu equipo directivo y legal necesita saber antes de implementar TrazAPP.
-        </p>
+        </motion.p>
       </div>
 
       <div className="bg-[#090e18]/80 border border-white/[0.08] rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl">

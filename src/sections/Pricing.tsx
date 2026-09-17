@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { SplitText } from '@/components/ui/SplitText'
 import { Check, ArrowRight, ShieldCheck } from 'lucide-react'
 import { SpecularButton } from '@/components/ui/SpecularButton'
 
@@ -74,15 +76,37 @@ export function Pricing({ onOpenDemo }: PricingProps) {
 
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto mb-14">
-        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-          Planes a la medida del crecimiento de{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight flex flex-wrap items-center justify-center gap-x-2">
+          <SplitText
+            text="Planes a la medida del crecimiento de"
+            tag="span"
+            className="text-white"
+            delay={24}
+            duration={0.6}
+            splitType="chars"
+            from={{ opacity: 0, y: 35 }}
+            to={{ opacity: 1, y: 0 }}
+            rootMargin="-50px"
+          />
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 inline-block"
+          >
             tu asociación
-          </span>
+          </motion.span>
         </h2>
-        <p className="mt-4 text-base sm:text-lg text-slate-400">
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-4 text-base sm:text-lg text-slate-400"
+        >
           Sin comisiones sobre las cuotas de tus socios. Migración guiada desde Excel o sistemas antiguos incluida.
-        </p>
+        </motion.p>
 
         {/* Toggle Mensual / Anual */}
         <div className="mt-8 inline-flex items-center bg-[#0b121e] p-1.5 rounded-full border border-white/10 shadow-inner">

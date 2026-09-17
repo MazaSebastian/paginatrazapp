@@ -8,8 +8,8 @@ export interface SplitTextProps {
   duration?: number // seconds per character
   ease?: any
   splitType?: 'chars' | 'words'
-  from?: { opacity?: number; y?: number; x?: number; scale?: number }
-  to?: { opacity?: number; y?: number; x?: number; scale?: number }
+  from?: Record<string, any>
+  to?: Record<string, any>
   threshold?: number
   rootMargin?: string
   textAlign?: 'left' | 'center' | 'right' | 'justify'
@@ -42,7 +42,7 @@ export function SplitText({
   return (
     <Component
       ref={containerRef as any}
-      className={`inline-block ${className}`}
+      className={`${className.includes('inline') || className.includes('block') || className.includes('flex') ? '' : 'inline-block '}${className}`.trim()}
       style={{ textAlign }}
     >
       {words.map((word, wordIndex) => {

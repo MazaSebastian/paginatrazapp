@@ -1,4 +1,6 @@
 import { useRef } from 'react'
+import { motion } from 'framer-motion'
+import { BlurText } from '@/components/ui/BlurText'
 import { 
   Sprout, 
   Stethoscope, 
@@ -14,15 +16,34 @@ export function Features() {
     <section id="features" ref={containerRef} className="relative z-10 py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto mb-16">
-        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-          Diseñado específicamente para las exigencias del{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+        <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight flex flex-wrap items-center justify-center gap-x-2">
+          <BlurText
+            text="Diseñado específicamente para las exigencias del"
+            as="span"
+            className="text-white justify-center"
+            delay={50}
+            direction="top"
+            rootMargin="-50px"
+          />
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 inline-block"
+          >
             Cannabis Medicinal
-          </span>
+          </motion.span>
         </h2>
-        <p className="mt-4 text-base sm:text-lg text-slate-400">
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.6, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-4 text-base sm:text-lg text-slate-400"
+        >
           Un ecosistema cloud unificado que reemplaza múltiples programas desconectados, blindando la operación legal, agronómica y financiera de tu club.
-        </p>
+        </motion.p>
       </div>
 
       {/* Bento Grid */}
