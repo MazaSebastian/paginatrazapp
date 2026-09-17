@@ -14,7 +14,7 @@ export function IntegracionesSection() {
     {
       category: 'Inteligencia & Telemetría',
       name: 'Protocolo Abierto MCP (AI Copilot)',
-      description: 'Conexión nativa con modelos de IA como Gemini y Claude para telemetría ambiental y soporte agronómico.',
+      description: 'Conexión nativa con modelos de IA como Claude, Gemini y ChatGPT/Codex para telemetría ambiental y soporte agronómico.',
       icon: Bot,
       badge: 'Protocolo Abierto'
     },

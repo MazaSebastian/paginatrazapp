@@ -137,7 +137,7 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
           transition={{ duration: 0.6, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
           className="mt-4 text-base sm:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed"
         >
-          Diseñado para montarse directamente en los caños de tu sala o carpa técnica. Monitorea sustrato y atmósfera en tiempo real y expone el control biológico a modelos como <span className="text-emerald-400 font-semibold">Gemini</span> y <span className="text-emerald-400 font-semibold">Claude</span> a través del protocolo abierto <span className="text-teal-300 font-semibold font-mono">MCP</span>.
+          Diseñado para montarse directamente en los caños de tu sala o carpa técnica. Monitorea sustrato y atmósfera en tiempo real y expone el control biológico a modelos como <span className="text-emerald-400 font-semibold">Claude</span>, <span className="text-emerald-400 font-semibold">Gemini</span> y <span className="text-emerald-400 font-semibold">ChatGPT / Codex</span> a través del protocolo abierto <span className="text-teal-300 font-semibold font-mono">MCP</span>.
         </motion.p>
       </div>
 
@@ -228,7 +228,7 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
             Permite a agentes de IA consultar telemetría, crear tareas de contingencia en TrazAPP y sugerir cambios de fotoperiodo en lenguaje natural.
           </p>
           <div className="mt-4 pt-3 border-t border-white/[0.06] text-[10px] font-mono text-emerald-400">
-            Compatible Claude & Gemini
+            Compatible con Claude, Gemini y ChatGPT/Codex
           </div>
         </div>
       </div>

@@ -76,7 +76,7 @@ export function GrowyMcpTerminal({
     },
     mcp: {
       title: 'Agente Autónomo & Protocolo MCP',
-      desc: 'Growy implementa un servidor de MCP local que expone la sala a LLMs (Gemini, Claude, GPT). Permite diagnósticos en lenguaje natural, apertura de tareas automáticas y transiciones de lote sin intervención manual.',
+      desc: 'Growy implementa un servidor de MCP local que expone la sala a LLMs (Claude, Gemini, ChatGPT/Codex). Permite diagnósticos en lenguaje natural, apertura de tareas automáticas y transiciones de lote sin intervención manual.',
       specs: ['Protocolo MCP v1.0', 'Cifrado mTLS extremo a extremo', 'Fallback offline con buffer local SQLite']
     }
   }
