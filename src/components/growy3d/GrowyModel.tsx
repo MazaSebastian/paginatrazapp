@@ -33,7 +33,8 @@ export function GrowyModel({
   useFrame((state) => {
     if (groupRef.current) {
       const t = state.clock.getElapsedTime()
-      groupRef.current.position.y = Math.sin(t * 1.1) * 0.025
+      // Micro-vibración técnica casi imperceptible
+      groupRef.current.position.y = 0.1 + Math.sin(t * 1.2) * 0.008
 
       // Vector normal frontal de Growy (apunta hacia adelante en el eje +Z)
       const frontNormal = new THREE.Vector3(0, 0, 1)
@@ -57,7 +58,7 @@ export function GrowyModel({
     }
   })
 
-  // Textura procedural de polímero técnico impreso en 3D
+  // Textura procedural de polímero técnico resistente impreso en 3D
   const technicalPolymerTexture = useMemo(() => {
     if (typeof document === 'undefined') return null
     const canvas = document.createElement('canvas')
@@ -72,9 +73,9 @@ export function GrowyModel({
     for (let x = 0; x < 64; x += 16) {
       for (let y = 0; y < 64; y += 16) {
         if ((x / 16 + y / 16) % 2 === 0) {
-          ctx.fillStyle = '#181e28'
+          ctx.fillStyle = '#171d26'
           ctx.fillRect(x, y, 16, 16)
-          ctx.fillStyle = '#222938'
+          ctx.fillStyle = '#202734'
           ctx.fillRect(x + 2, y + 2, 12, 12)
         }
       }
@@ -87,16 +88,16 @@ export function GrowyModel({
     return texture
   }, [])
 
-  // Materiales PBR 100% opacos (sin transparencia que genere artefactos de z-buffer)
+  // Materiales PBR 100% opacos
   const materials = useMemo(() => {
     return {
       graphiteBody: new THREE.MeshStandardMaterial({
-        color: '#131720',
-        roughness: 0.55,
+        color: '#12161f',
+        roughness: 0.52,
         metalness: 0.2,
       }),
       carbonPlate: new THREE.MeshStandardMaterial({
-        color: '#171c26',
+        color: '#161b24',
         map: technicalPolymerTexture || undefined,
         roughness: 0.45,
         metalness: 0.35,
@@ -106,18 +107,13 @@ export function GrowyModel({
         metalness: 0.95,
         roughness: 0.18,
       }),
-      aluminumPipe: new THREE.MeshStandardMaterial({
-        color: '#8b9bb4',
-        metalness: 0.88,
-        roughness: 0.22,
-      }),
       rubberClamp: new THREE.MeshStandardMaterial({
         color: '#0d1017',
         roughness: 0.75,
         metalness: 0.1,
       }),
       screenGlass: new THREE.MeshStandardMaterial({
-        color: '#03050a',
+        color: '#020408',
         roughness: 0.12,
         metalness: 0.1,
       }),
@@ -129,102 +125,89 @@ export function GrowyModel({
       glowEmerald: new THREE.MeshStandardMaterial({
         color: '#10b981',
         emissive: '#10b981',
-        emissiveIntensity: 0.9,
+        emissiveIntensity: 1.0,
         roughness: 0.2,
       }),
       technicalLabel: new THREE.MeshStandardMaterial({
-        color: '#2a3444',
-        metalness: 0.8,
-        roughness: 0.3,
+        color: '#242e3d',
+        metalness: 0.82,
+        roughness: 0.28,
+      }),
+      aluminumCNC: new THREE.MeshStandardMaterial({
+        color: '#475569',
+        metalness: 0.92,
+        roughness: 0.25,
       })
     }
   }, [technicalPolymerTexture])
 
-  // Coordenadas de los 6 tornillos Allen esquineros frontales
-  const screwPositions: [number, number, number][] = [
-    [-1.5, 1.15, 0.56],
-    [1.5, 1.15, 0.56],
-    [-1.5, -1.15, 0.56],
-    [1.5, -1.15, 0.56],
-    [-1.5, 0.1, 0.56],
-    [1.5, 0.1, 0.56],
-  ]
-
   return (
-    <group ref={groupRef} position={[0, 0.25, 0]}>
-      {/* ── CAÑO ESTRUCTURAL DE SALA (TENT POLE / MOUNTING PIPE) ────── */}
-      <mesh position={[0, 0.35, -1.05]} rotation={[0, 0, Math.PI / 2]} material={materials.aluminumPipe}>
-        <cylinderGeometry args={[0.22, 0.22, 7.5, 32]} />
-      </mesh>
-
-      {/* ── ABRAZADERAS TRASERAS DE MONTAJE (DUAL HEAVY CLAMPS) ─────── */}
-      {[-0.85, 0.85].map((xPos, idx) => (
-        <group key={idx} position={[xPos, 0.35, -0.65]}>
-          {/* Anillo de la abrazadera */}
-          <mesh rotation={[0, 0, Math.PI / 2]} material={materials.rubberClamp}>
-            <cylinderGeometry args={[0.32, 0.32, 0.24, 24]} />
+    <group ref={groupRef} position={[0, 0.1, 0.6]}>
+      {/* ──────────────────────────────────────────────────────────── */}
+      {/* 1. ABRAZADERAS TRASERAS DE MONTAJE AL CAÑO (DUAL HEAVY CLAMPS) */}
+      {/* Abrazan directamente el travesaño frontal en z = 0           */}
+      {/* ──────────────────────────────────────────────────────────── */}
+      {[-0.46, 0.46].map((xPos, idx) => (
+        <group key={idx} position={[xPos, 0, 0]}>
+          {/* Anillo de la abrazadera alrededor del caño */}
+          <mesh rotation={[0, 0, Math.PI / 2]} material={materials.aluminumCNC}>
+            <cylinderGeometry args={[0.072, 0.072, 0.12, 24]} />
           </mesh>
-          {/* Brazo de anclaje a la carcasa */}
-          <mesh position={[0, -0.15, 0.22]} material={materials.graphiteBody}>
-            <boxGeometry args={[0.24, 0.35, 0.38]} />
+          {/* Brazo de anclaje que une el caño con la carcasa */}
+          <mesh position={[0, 0, 0.08]} material={materials.graphiteBody}>
+            <boxGeometry args={[0.11, 0.18, 0.14]} />
           </mesh>
-          {/* Tornillo pasante de ajuste */}
-          <mesh position={[0, 0.32, 0]} material={materials.allenScrew}>
-            <cylinderGeometry args={[0.06, 0.06, 0.35, 16]} />
+          {/* Tornillo Allen de ajuste */}
+          <mesh position={[0, 0.075, 0]} material={materials.allenScrew}>
+            <cylinderGeometry args={[0.016, 0.016, 0.08, 12]} />
           </mesh>
         </group>
       ))}
 
-      {/* ── CUERPO PRINCIPAL OPACO (CARCASA INDUSTRIAL GRAFITO) ─────── */}
-      <mesh position={[0, 0, 0]} material={materials.graphiteBody}>
-        <boxGeometry args={[3.2, 2.6, 1.05]} />
+      {/* ──────────────────────────────────────────────────────────── */}
+      {/* 2. CHASIS PRINCIPAL DE GROWY (TAMAÑO INDUSTRIAL REALISTA)     */}
+      {/* ──────────────────────────────────────────────────────────── */}
+      
+      {/* Placa trasera sólida totalmente opaca (evita cualquier artefacto) */}
+      <mesh position={[0, 0, 0.14]} rotation={[0, Math.PI, 0]} material={materials.graphiteBody}>
+        <boxGeometry args={[1.48, 1.25, 0.04]} />
       </mesh>
 
-      {/* ── PLACA SUPERIOR DE FIBRA DE CARBONO ──────────────────────── */}
-      <mesh position={[0, 1.31, 0]} rotation={[-Math.PI / 2, 0, 0]} material={materials.carbonPlate}>
-        <planeGeometry args={[3.1, 0.95]} />
+      {/* Placa técnica metálica grabada en láser en el dorso */}
+      <mesh position={[0, -0.15, 0.118]} rotation={[0, Math.PI, 0]} material={materials.technicalLabel}>
+        <boxGeometry args={[0.85, 0.32, 0.008]} />
       </mesh>
-
-      {/* ── PARTE TRASERA: PANEL SÓLIDO TOTALMENTE OPACO ─────────────── */}
-      <mesh position={[0, 0, -0.53]} rotation={[0, Math.PI, 0]} material={materials.carbonPlate}>
-        <planeGeometry args={[3.05, 2.45]} />
-      </mesh>
-
-      {/* Placa técnica metálica trasera grabada en láser */}
-      <mesh position={[0, -0.45, -0.54]} rotation={[0, Math.PI, 0]} material={materials.technicalLabel}>
-        <boxGeometry args={[1.8, 0.7, 0.015]} />
-      </mesh>
-
-      {/* Rotulado técnico impreso sobre la placa trasera */}
       {cameraIsBehind && (
-        <Html position={[0, -0.45, -0.56]} rotation={[0, Math.PI, 0]} transform distanceFactor={2.5}>
-          <div className="text-center font-mono text-[8px] text-slate-300 select-none bg-black/40 p-2 rounded border border-white/10">
-            <div className="text-emerald-400 font-bold text-[9px]">GROWY INDUSTRIAL CONTROLLER</div>
-            <div className="text-slate-400 text-[7.5px] mt-0.5">MODEL G1-PRO • MCP v1.0 EMBEDDED</div>
-            <div className="text-slate-500 text-[7px]">IP65 RATED • 24V DC • TRAZAPP BIOTECH</div>
+        <Html position={[0, -0.15, 0.112]} rotation={[0, Math.PI, 0]} transform distanceFactor={1.8}>
+          <div className="text-center font-mono text-[7px] text-slate-300 select-none bg-black/75 p-1.5 rounded border border-white/10 shadow-lg">
+            <div className="text-emerald-400 font-bold text-[8px]">GROWY INDUSTRIAL CONTROLLER</div>
+            <div className="text-slate-400 text-[6.5px] mt-0.5">MODEL G1-PRO • TRAZAPP BIOTECH</div>
+            <div className="text-slate-500 text-[6px]">IP65 • 24V DC • MCP v1.0 EMBEDDED</div>
           </div>
         </Html>
       )}
 
-      {/* ── PANEL FRONTAL SUPERIOR (BEZEL PANTALLA) ─────────────────── */}
-      <mesh position={[0, 0.32, 0.53]} material={materials.carbonPlate}>
-        <planeGeometry args={[2.9, 1.7]} />
-      </mesh>
-
-      {/* ── PANTALLA TÁCTIL (OCULTADA AUTOMÁTICAMENTE AL MIRAR DE ATRÁS) ── */}
-      <group position={[0, 0.32, 0.54]}>
-        {/* Vidrio frontal 100% opaco con marco negro */}
-        <mesh material={materials.screenGlass}>
-          <planeGeometry args={[2.7, 1.5]} />
+      {/* ──────────────────────────────────────────────────────────── */}
+      {/* 3. MÓDULO SUPERIOR: PANTALLA TÁCTIL (COMO EN LAS FOTOS)       */}
+      {/* ──────────────────────────────────────────────────────────── */}
+      <group position={[0, 0.22, 0.18]}>
+        {/* Carcasa del bisel de pantalla */}
+        <mesh material={materials.carbonPlate}>
+          <boxGeometry args={[1.42, 0.74, 0.08]} />
         </mesh>
 
-        {/* El contenido HTML interactivo SOLO se renderiza cuando la cámara mira de frente */}
+        {/* Marco de cristal frontal */}
+        <mesh position={[0, 0, 0.042]} material={materials.screenGlass}>
+          <planeGeometry args={[1.32, 0.66]} />
+        </mesh>
+
+        {/* Pantalla digital interactiva (ocultada por dot-product al ver de atrás) */}
         {screenVisible && (
           <Html
             transform
-            distanceFactor={1.9}
-            position={[0, 0, 0.015]}
-            className="w-[380px] h-[220px] rounded-xl overflow-hidden shadow-2xl pointer-events-auto"
+            distanceFactor={1.25}
+            position={[0, 0, 0.048]}
+            className="w-[360px] h-[190px] rounded-lg overflow-hidden shadow-2xl pointer-events-auto"
           >
             <GrowyScreenContent
               mode={mode}
@@ -237,68 +220,72 @@ export function GrowyModel({
         )}
       </group>
 
-      {/* ── VISERA FRONTAL INFERIOR CON REJILLAS DE VENTILACIÓN ─────── */}
-      <group position={[0, -0.85, 0.45]}>
+      {/* ──────────────────────────────────────────────────────────── */}
+      {/* 4. MÓDULO MEDIO: BOTÓN CENTRAL Y REJILLAS ESPIRALES (FOTO REAL) */}
+      {/* ──────────────────────────────────────────────────────────── */}
+      <group position={[0, -0.26, 0.18]}>
         <mesh material={materials.graphiteBody}>
-          <boxGeometry args={[3.0, 0.72, 0.35]} />
-        </mesh>
-        <mesh position={[0, 0, 0.18]} material={materials.carbonPlate}>
-          <planeGeometry args={[2.8, 0.65]} />
+          <boxGeometry args={[1.42, 0.26, 0.08]} />
         </mesh>
 
-        {/* Dial central con anillo de fibra de carbono */}
-        <mesh position={[0, 0, 0.22]} rotation={[Math.PI / 2, 0, 0]} material={materials.allenScrew}>
-          <cylinderGeometry args={[0.22, 0.22, 0.12, 32]} />
+        {/* Botón táctil central iluminado */}
+        <mesh position={[0, 0, 0.045]} material={materials.allenScrew}>
+          <boxGeometry args={[0.16, 0.14, 0.02]} />
         </mesh>
-        <mesh position={[0, 0, 0.29]} material={materials.glowEmerald}>
-          <circleGeometry args={[0.07, 16]} />
+        <mesh position={[0, 0, 0.056]} material={materials.glowEmerald}>
+          <circleGeometry args={[0.035, 16]} />
         </mesh>
 
-        {/* Rejillas circulares concéntricas de sensores (Izquierda y Derecha) */}
-        {[-0.85, 0.85].map((xPos, idx) => (
-          <group key={idx} position={[xPos, 0, 0.19]}>
+        {/* Rejillas espirales de ventilación / sensores (Izquierda y Derecha) */}
+        {[-0.42, 0.42].map((xPos, idx) => (
+          <group key={idx} position={[xPos, 0, 0.045]}>
             <mesh material={materials.sensorVent}>
-              <ringGeometry args={[0.05, 0.12, 24]} />
+              <ringGeometry args={[0.025, 0.055, 20]} />
             </mesh>
             <mesh material={materials.sensorVent}>
-              <ringGeometry args={[0.16, 0.22, 24]} />
-            </mesh>
-            <mesh material={materials.sensorVent}>
-              <ringGeometry args={[0.25, 0.29, 24]} />
+              <ringGeometry args={[0.075, 0.105, 20]} />
             </mesh>
           </group>
         ))}
       </group>
 
-      {/* ── TORNILLERÍA ALLEN VISTA METÁLICA ────────────────────────── */}
-      {screwPositions.map((pos, idx) => (
-        <group key={idx} position={pos}>
-          <mesh rotation={[Math.PI / 2, 0, 0]} material={materials.allenScrew}>
-            <cylinderGeometry args={[0.075, 0.075, 0.08, 16]} />
+      {/* ──────────────────────────────────────────────────────────── */}
+      {/* 5. MÓDULO INFERIOR: PLACA ARTICULADA CON DEFLECTORES           */}
+      {/* Idéntico al bracket inferior visible en growy-photo-screen.jpg*/}
+      {/* ──────────────────────────────────────────────────────────── */}
+      <group position={[0, -0.52, 0.17]}>
+        {/* Bisagras de conexión */}
+        {[-0.35, 0.35].map((xHinge, i) => (
+          <mesh key={i} position={[xHinge, 0.12, 0.02]} rotation={[0, 0, Math.PI / 2]} material={materials.allenScrew}>
+            <cylinderGeometry args={[0.02, 0.02, 0.08, 12]} />
           </mesh>
-          <mesh position={[0, 0, 0.045]} rotation={[Math.PI / 2, 0, 0]} material={materials.rubberClamp}>
-            <cylinderGeometry args={[0.04, 0.04, 0.02, 6]} />
-          </mesh>
-        </group>
-      ))}
+        ))}
 
-      {/* ── TOMA INFERIOR DE SONDA DE SUELO (CONECTOR INDUSTRIAL M12) ── */}
-      <group position={[0, -1.35, 0]}>
-        <mesh position={[0, 0, 0]} material={materials.allenScrew}>
-          <cylinderGeometry args={[0.14, 0.14, 0.22, 16]} />
+        {/* Placa deflectora inferior */}
+        <mesh material={materials.graphiteBody}>
+          <boxGeometry args={[1.4, 0.3, 0.04]} />
         </mesh>
-        <mesh position={[0, -0.2, 0]} material={materials.rubberClamp}>
-          <cylinderGeometry args={[0.06, 0.06, 0.25, 16]} />
+
+        {/* Rejillas circulares de la placa inferior */}
+        {[-0.42, 0.42].map((xPos, idx) => (
+          <mesh key={idx} position={[xPos, 0, 0.022]} material={materials.sensorVent}>
+            <ringGeometry args={[0.04, 0.09, 20]} />
+          </mesh>
+        ))}
+
+        {/* Conector M12 inferior para la sonda de suelo */}
+        <mesh position={[0, -0.16, 0]} material={materials.allenScrew}>
+          <cylinderGeometry args={[0.03, 0.03, 0.05, 12]} />
         </mesh>
       </group>
 
       {/* ──────────────────────────────────────────────────────────── */}
-      {/* MICRO-BEACONS INTERACTIVOS HIGH-END (PULSO SUTIL + EXPAND HOVER) */}
+      {/* 6. MICRO-BEACONS INTERACTIVOS (HOVER EXPAND)                 */}
       {/* ──────────────────────────────────────────────────────────── */}
 
-      {/* 1. Hotspot Pantalla: Sólo visible desde el frente */}
+      {/* 1. Hotspot Pantalla */}
       {screenVisible && (
-        <Html position={[0, 1.45, 0.6]} center distanceFactor={3.2}>
+        <Html position={[0, 0.65, 0.22]} center distanceFactor={2.4}>
           <div
             onMouseEnter={() => setHoveredHotspot('screen')}
             onMouseLeave={() => setHoveredHotspot(null)}
@@ -307,13 +294,13 @@ export function GrowyModel({
           >
             <div className={`relative flex items-center justify-center rounded-full transition-all duration-200 ${
               activeHotspot === 'screen'
-                ? 'w-7 h-7 bg-emerald-400 text-black shadow-lg shadow-emerald-400/50 scale-110'
-                : 'w-6 h-6 bg-black/85 border border-emerald-400/60 text-emerald-300 hover:scale-110 hover:border-emerald-300'
+                ? 'w-6 h-6 bg-emerald-400 text-black shadow-lg shadow-emerald-400/50 scale-110'
+                : 'w-5 h-5 bg-black/85 border border-emerald-400/60 text-emerald-300 hover:scale-110 hover:border-emerald-300'
             }`}>
-              <span className="text-[10px] font-mono font-bold leading-none">+</span>
+              <span className="text-[9px] font-mono font-bold leading-none">+</span>
               <span className="absolute inset-0 rounded-full border border-emerald-400/30 animate-ping [animation-duration:3s]" />
             </div>
-            <div className={`overflow-hidden transition-all duration-200 ease-out whitespace-nowrap rounded-full font-mono text-[9.5px] font-bold px-2.5 py-1 backdrop-blur-md border ${
+            <div className={`overflow-hidden transition-all duration-200 ease-out whitespace-nowrap rounded-full font-mono text-[9px] font-bold px-2 py-0.5 backdrop-blur-md border ${
               activeHotspot === 'screen' || hoveredHotspot === 'screen'
                 ? 'max-w-[180px] opacity-100 bg-emerald-500 text-black border-emerald-400 shadow-md'
                 : 'max-w-0 opacity-0 -translate-x-2 pointer-events-none p-0 border-transparent'
@@ -324,9 +311,9 @@ export function GrowyModel({
         </Html>
       )}
 
-      {/* 2. Hotspot Sensores Ambientales: En la visera frontal */}
+      {/* 2. Hotspot Sensores Ambientales */}
       {screenVisible && (
-        <Html position={[1.35, -0.85, 0.6]} center distanceFactor={3.2}>
+        <Html position={[0.68, -0.26, 0.22]} center distanceFactor={2.4}>
           <div
             onMouseEnter={() => setHoveredHotspot('sensors')}
             onMouseLeave={() => setHoveredHotspot(null)}
@@ -335,13 +322,13 @@ export function GrowyModel({
           >
             <div className={`relative flex items-center justify-center rounded-full transition-all duration-200 ${
               activeHotspot === 'sensors'
-                ? 'w-7 h-7 bg-emerald-400 text-black shadow-lg shadow-emerald-400/50 scale-110'
-                : 'w-6 h-6 bg-black/85 border border-emerald-400/60 text-emerald-300 hover:scale-110 hover:border-emerald-300'
+                ? 'w-6 h-6 bg-emerald-400 text-black shadow-lg shadow-emerald-400/50 scale-110'
+                : 'w-5 h-5 bg-black/85 border border-emerald-400/60 text-emerald-300 hover:scale-110 hover:border-emerald-300'
             }`}>
-              <span className="text-[10px] font-mono font-bold leading-none">+</span>
+              <span className="text-[9px] font-mono font-bold leading-none">+</span>
               <span className="absolute inset-0 rounded-full border border-emerald-400/30 animate-ping [animation-duration:3.5s]" />
             </div>
-            <div className={`overflow-hidden transition-all duration-200 ease-out whitespace-nowrap rounded-full font-mono text-[9.5px] font-bold px-2.5 py-1 backdrop-blur-md border ${
+            <div className={`overflow-hidden transition-all duration-200 ease-out whitespace-nowrap rounded-full font-mono text-[9px] font-bold px-2 py-0.5 backdrop-blur-md border ${
               activeHotspot === 'sensors' || hoveredHotspot === 'sensors'
                 ? 'max-w-[180px] opacity-100 bg-emerald-500 text-black border-emerald-400 shadow-md'
                 : 'max-w-0 opacity-0 -translate-x-2 pointer-events-none p-0 border-transparent'
@@ -352,9 +339,9 @@ export function GrowyModel({
         </Html>
       )}
 
-      {/* 3. Hotspot Protocolo MCP: Centro inferior */}
+      {/* 3. Hotspot Protocolo MCP */}
       {screenVisible && (
-        <Html position={[0, -1.8, 0.4]} center distanceFactor={3.2}>
+        <Html position={[0, -0.74, 0.2]} center distanceFactor={2.4}>
           <div
             onMouseEnter={() => setHoveredHotspot('mcp')}
             onMouseLeave={() => setHoveredHotspot(null)}
@@ -363,13 +350,13 @@ export function GrowyModel({
           >
             <div className={`relative flex items-center justify-center rounded-full transition-all duration-200 ${
               activeHotspot === 'mcp'
-                ? 'w-7 h-7 bg-emerald-400 text-black shadow-lg shadow-emerald-400/50 scale-110'
-                : 'w-6 h-6 bg-black/85 border border-emerald-400/60 text-emerald-300 hover:scale-110 hover:border-emerald-300'
+                ? 'w-6 h-6 bg-emerald-400 text-black shadow-lg shadow-emerald-400/50 scale-110'
+                : 'w-5 h-5 bg-black/85 border border-emerald-400/60 text-emerald-300 hover:scale-110 hover:border-emerald-300'
             }`}>
-              <span className="text-[10px] font-mono font-bold leading-none">+</span>
+              <span className="text-[9px] font-mono font-bold leading-none">+</span>
               <span className="absolute inset-0 rounded-full border border-emerald-400/30 animate-ping [animation-duration:4s]" />
             </div>
-            <div className={`overflow-hidden transition-all duration-200 ease-out whitespace-nowrap rounded-full font-mono text-[9.5px] font-bold px-2.5 py-1 backdrop-blur-md border ${
+            <div className={`overflow-hidden transition-all duration-200 ease-out whitespace-nowrap rounded-full font-mono text-[9px] font-bold px-2 py-0.5 backdrop-blur-md border ${
               activeHotspot === 'mcp' || hoveredHotspot === 'mcp'
                 ? 'max-w-[180px] opacity-100 bg-emerald-500 text-black border-emerald-400 shadow-md'
                 : 'max-w-0 opacity-0 -translate-x-2 pointer-events-none p-0 border-transparent'
@@ -380,9 +367,9 @@ export function GrowyModel({
         </Html>
       )}
 
-      {/* 4. Hotspot Montaje: Sólo visible cuando se mira desde ATRÁS */}
+      {/* 4. Hotspot Montaje: Visible desde ATRÁS */}
       {cameraIsBehind && (
-        <Html position={[0, 0.9, -0.8]} center distanceFactor={3.2}>
+        <Html position={[0, 0.25, -0.15]} center distanceFactor={2.4}>
           <div
             onMouseEnter={() => setHoveredHotspot('mount')}
             onMouseLeave={() => setHoveredHotspot(null)}
@@ -391,13 +378,13 @@ export function GrowyModel({
           >
             <div className={`relative flex items-center justify-center rounded-full transition-all duration-200 ${
               activeHotspot === 'mount'
-                ? 'w-7 h-7 bg-emerald-400 text-black shadow-lg shadow-emerald-400/50 scale-110'
-                : 'w-6 h-6 bg-black/85 border border-emerald-400/60 text-emerald-300 hover:scale-110 hover:border-emerald-300'
+                ? 'w-6 h-6 bg-emerald-400 text-black shadow-lg shadow-emerald-400/50 scale-110'
+                : 'w-5 h-5 bg-black/85 border border-emerald-400/60 text-emerald-300 hover:scale-110 hover:border-emerald-300'
             }`}>
-              <span className="text-[10px] font-mono font-bold leading-none">+</span>
+              <span className="text-[9px] font-mono font-bold leading-none">+</span>
               <span className="absolute inset-0 rounded-full border border-emerald-400/30 animate-ping [animation-duration:3s]" />
             </div>
-            <div className={`overflow-hidden transition-all duration-200 ease-out whitespace-nowrap rounded-full font-mono text-[9.5px] font-bold px-2.5 py-1 backdrop-blur-md border ${
+            <div className={`overflow-hidden transition-all duration-200 ease-out whitespace-nowrap rounded-full font-mono text-[9px] font-bold px-2 py-0.5 backdrop-blur-md border ${
               activeHotspot === 'mount' || hoveredHotspot === 'mount'
                 ? 'max-w-[180px] opacity-100 bg-emerald-500 text-black border-emerald-400 shadow-md'
                 : 'max-w-0 opacity-0 -translate-x-2 pointer-events-none p-0 border-transparent'
@@ -410,4 +397,3 @@ export function GrowyModel({
     </group>
   )
 }
-

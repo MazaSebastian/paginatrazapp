@@ -42,21 +42,25 @@ export function GrowyCanvas({
   const handleResetCamera = (view: 'front' | 'back' | 'iso' | 'bed' | 'probe') => {
     if (!controlsRef.current) return
     if (view === 'front') {
-      controlsRef.current.reset()
+      controlsRef.current.target.set(0, 0.1, 0.6)
       controlsRef.current.setAzimuthalAngle(0)
       controlsRef.current.setPolarAngle(Math.PI / 2)
     } else if (view === 'back') {
+      controlsRef.current.target.set(0, 0.1, 0.6)
       controlsRef.current.setAzimuthalAngle(Math.PI)
       controlsRef.current.setPolarAngle(Math.PI / 2)
     } else if (view === 'iso') {
+      controlsRef.current.target.set(0, 0.05, -1.0)
       controlsRef.current.setAzimuthalAngle(Math.PI / 4)
-      controlsRef.current.setPolarAngle(Math.PI / 2.7)
+      controlsRef.current.setPolarAngle(Math.PI / 2.6)
     } else if (view === 'bed') {
-      controlsRef.current.setAzimuthalAngle(0.18)
-      controlsRef.current.setPolarAngle(Math.PI / 2.4)
+      controlsRef.current.target.set(0, -0.05, -1.8)
+      controlsRef.current.setAzimuthalAngle(0.24)
+      controlsRef.current.setPolarAngle(Math.PI / 2.3)
     } else if (view === 'probe') {
+      controlsRef.current.target.set(0.65, -0.42, 0.1)
       controlsRef.current.setAzimuthalAngle(0.35)
-      controlsRef.current.setPolarAngle(Math.PI / 2.1)
+      controlsRef.current.setPolarAngle(Math.PI / 2.15)
     }
   }
 
@@ -157,15 +161,15 @@ export function GrowyCanvas({
         <>
           {/* Canvas Three.js con Entorno de Cultivo Completo */}
           <Canvas
-            camera={{ position: [0, 0.4, 6.2], fov: 44 }}
+            camera={{ position: [0.22, 0.46, 2.75], fov: 48 }}
             className="w-full h-full cursor-grab active:cursor-grabbing"
           >
             {/* Iluminación base de la sala de cultivo */}
             <ambientLight intensity={0.65} />
-            <directionalLight position={[5, 8, 6]} intensity={1.2} color="#ffffff" />
-            <directionalLight position={[-5, -2, -4]} intensity={0.6} color="#059669" />
-            <pointLight position={[0, 1.8, 3]} intensity={0.8} color="#34d399" />
-            <pointLight position={[0, -2, -2]} intensity={0.5} color="#06b6d4" />
+            <directionalLight position={[4, 7, 5]} intensity={1.3} color="#ffffff" />
+            <directionalLight position={[-4, -1, -3]} intensity={0.6} color="#059669" />
+            <pointLight position={[0, 1.4, 1.8]} intensity={0.9} color="#34d399" />
+            <pointLight position={[0, -0.6, -1.8]} intensity={0.6} color="#06b6d4" />
 
             <Suspense fallback={null}>
               {/* Entorno de cultivo real: Cama B2, living soil, canopia, red trellis, luminaria LED y sonda */}
@@ -188,22 +192,23 @@ export function GrowyCanvas({
 
               {/* Sombra de contacto en la base de la sala técnica */}
               <ContactShadows
-                position={[0, -2.85, 0]}
-                opacity={0.7}
-                scale={12}
-                blur={2.2}
-                far={5}
+                position={[0, -1.38, -2.55]}
+                opacity={0.65}
+                scale={10}
+                blur={2.0}
+                far={4.5}
                 color="#022c22"
               />
             </Suspense>
 
             <OrbitControls
               ref={controlsRef}
+              target={[0, 0.05, -0.9]}
               enablePan={false}
               enableZoom={true}
-              minDistance={2.4}
-              maxDistance={9.5}
-              maxPolarAngle={Math.PI / 1.75}
+              minDistance={1.6}
+              maxDistance={7.5}
+              maxPolarAngle={Math.PI / 1.8}
               minPolarAngle={Math.PI / 3.8}
               dampingFactor={0.06}
               rotateSpeed={0.8}
