@@ -13,7 +13,8 @@ import {
   Video, 
   Box, 
   Camera, 
-  Radio
+  Sparkles, 
+  Film
 } from 'lucide-react'
 
 interface GrowyCanvasProps {
@@ -37,7 +38,9 @@ export function GrowyCanvas({
 }: GrowyCanvasProps) {
   const controlsRef = useRef<OrbitControlsImpl>(null)
   const [viewMode, setViewMode] = useState<'3d' | 'footage'>('3d')
-  const [selectedMedia, setSelectedMedia] = useState<'video1' | 'video2' | 'photo_front' | 'photo_screen' | 'photo_probe'>('video1')
+  const [selectedMedia, setSelectedMedia] = useState<
+    'showreel' | 'video1_pro' | 'video2_pro' | 'photo_screen' | 'photo_canopy' | 'photo_probe' | 'photo_front'
+  >('showreel')
 
   const handleResetCamera = (view: 'front' | 'back' | 'iso' | 'bed' | 'probe') => {
     if (!controlsRef.current) return
@@ -146,10 +149,12 @@ export function GrowyCanvas({
             </button>
           </div>
         ) : (
-          /* Indicador de transmisión en vivo / footage real */
-          <div className="pointer-events-auto flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/80 border border-emerald-500/30 backdrop-blur-md shadow-lg text-[11px] font-mono text-emerald-300">
-            <Radio className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
-            <span className="font-bold text-white">SALA B2 • METRAJE REAL</span>
+          /* Indicador de transmisión y post-producción comercial */
+          <div className="pointer-events-auto flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/85 border border-emerald-500/40 backdrop-blur-md shadow-xl text-[11px] font-mono">
+            <span className="inline-block w-2 h-2 rounded-full bg-rose-500 animate-ping mr-0.5" />
+            <span className="font-bold text-white tracking-wider">REC ● 4K 60FPS</span>
+            <span className="text-slate-500 hidden sm:inline">|</span>
+            <span className="text-emerald-400 font-semibold hidden sm:inline">CINEMATIC REC.709</span>
           </div>
         )}
       </div>
@@ -239,61 +244,92 @@ export function GrowyCanvas({
         /* ────────────────────────────────────────────────────────── */
         /* MODO CASO REAL: REPRODUCTOR CINEMATOGRÁFICO CON TELEMETRÍA */
         /* ────────────────────────────────────────────────────────── */
-        <div className="relative w-full h-full flex flex-col justify-between p-4 sm:p-6 overflow-hidden">
-          {/* Media de fondo (Video en loop o Foto en alta resolución) */}
+        <div className="relative w-full h-full flex flex-col justify-between p-4 sm:p-6 overflow-hidden select-none">
+          {/* Media de fondo (Montaje Comercial Showreel o tomas macro) */}
           <div className="absolute inset-0 z-0 bg-black">
-            {selectedMedia === 'video1' && (
+            {selectedMedia === 'showreel' && (
               <video
-                src="/footage/growy-facility-1.mp4"
+                key="showreel"
+                src="/footage/growy-commercial-showreel.mp4"
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="w-full h-full object-cover opacity-90"
+                className="w-full h-full object-cover opacity-95 transition-opacity duration-500"
               />
             )}
-            {selectedMedia === 'video2' && (
+            {selectedMedia === 'video1_pro' && (
               <video
-                src="/footage/growy-facility-2.mp4"
+                key="video1_pro"
+                src="/footage/growy-facility-1-pro.mp4"
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="w-full h-full object-cover opacity-90"
+                className="w-full h-full object-cover opacity-95 transition-opacity duration-500"
               />
             )}
-            {selectedMedia === 'photo_front' && (
-              <img
-                src="/footage/growy-photo-front.jpg"
-                alt="Growy Montaje Frontal"
-                className="w-full h-full object-cover opacity-90"
+            {selectedMedia === 'video2_pro' && (
+              <video
+                key="video2_pro"
+                src="/footage/growy-facility-2-pro.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover opacity-95 transition-opacity duration-500"
               />
             )}
             {selectedMedia === 'photo_screen' && (
               <img
                 src="/footage/growy-photo-screen.jpg"
-                alt="Growy Pantalla TrazAPP Sense"
-                className="w-full h-full object-cover opacity-90"
+                alt="Growy Pantalla TrazAPP Sense 4K"
+                className="w-full h-full object-cover opacity-95 transition-opacity duration-500"
+              />
+            )}
+            {selectedMedia === 'photo_canopy' && (
+              <img
+                src="/footage/growy-photo-canopy.jpg"
+                alt="Sensor en Canopia de Floración"
+                className="w-full h-full object-cover opacity-95 transition-opacity duration-500"
               />
             )}
             {selectedMedia === 'photo_probe' && (
               <img
                 src="/footage/growy-photo-probe.jpg"
                 alt="Sonda de suelo en Living Soil"
-                className="w-full h-full object-cover opacity-90"
+                className="w-full h-full object-cover opacity-95 transition-opacity duration-500"
+              />
+            )}
+            {selectedMedia === 'photo_front' && (
+              <img
+                src="/footage/growy-photo-front.jpg"
+                alt="Growy Montaje Frontal"
+                className="w-full h-full object-cover opacity-95 transition-opacity duration-500"
               />
             )}
 
+            {/* Corner Viewfinder Brackets (Estilo cámara cinematográfica profesional) */}
+            <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-emerald-400/50 pointer-events-none" />
+            <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-emerald-400/50 pointer-events-none" />
+            <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-emerald-400/50 pointer-events-none" />
+            <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-emerald-400/50 pointer-events-none" />
+
             {/* Viñeta cinematográfica y gradiente técnico */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/60 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-transparent to-black/65 pointer-events-none" />
           </div>
 
           {/* Telemetría HUD superpuesta en el video */}
           <div className="relative z-10 pt-14 sm:pt-16 flex flex-wrap items-center justify-between gap-3 pointer-events-none">
             <div className="bg-black/80 border border-emerald-500/30 p-3 rounded-2xl backdrop-blur-md shadow-2xl">
-              <div className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                Telemetría en Vivo • Sala Comercial
+              <div className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider flex items-center justify-between gap-3">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  Telemetría en Vivo • Sala Comercial B2
+                </span>
+                <span className="text-slate-400 text-[9px] border border-white/10 px-1.5 py-0.5 rounded">
+                  0.5x STEADYCAM
+                </span>
               </div>
               <div className="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
                 <div>
@@ -317,7 +353,7 @@ export function GrowyCanvas({
 
             {/* Badge de Genéticas de la Cama */}
             <div className="bg-black/80 border border-white/10 px-3 py-2 rounded-xl backdrop-blur-md text-[11px] font-mono text-right hidden sm:block">
-              <span className="text-slate-400 text-[10px] block">LOTE COMERCIAL</span>
+              <span className="text-slate-400 text-[10px] block">LOTE COMERCIAL ACTIVO</span>
               <span className="text-emerald-400 font-bold">27 PLANTAS EN CAMA B2</span>
               <div className="text-[9px] text-slate-400 mt-0.5">Monkey Mintz • Toronja • PBB</div>
             </div>
@@ -327,77 +363,77 @@ export function GrowyCanvas({
           <div className="relative z-10 my-auto flex flex-col gap-2 items-start pointer-events-auto">
             <button
               onClick={() => onSelectHotspot('mount')}
-              className="px-3 py-1.5 rounded-full bg-black/80 hover:bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-bold backdrop-blur-md transition-all shadow-lg flex items-center gap-1.5 cursor-pointer"
+              className="px-3 py-1.5 rounded-full bg-black/80 hover:bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-bold backdrop-blur-md transition-all shadow-lg flex items-center gap-1.5 cursor-pointer hover:scale-105"
             >
               <Crosshair className="w-3.5 h-3.5 text-emerald-400" />
               <span>[+] Fijación en Caño Estructural de Sala</span>
             </button>
             <button
               onClick={() => onSelectHotspot('soil_probe')}
-              className="px-3 py-1.5 rounded-full bg-black/80 hover:bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-mono font-bold backdrop-blur-md transition-all shadow-lg flex items-center gap-1.5 cursor-pointer"
+              className="px-3 py-1.5 rounded-full bg-black/80 hover:bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-mono font-bold backdrop-blur-md transition-all shadow-lg flex items-center gap-1.5 cursor-pointer hover:scale-105"
             >
               <Crosshair className="w-3.5 h-3.5 text-cyan-400" />
               <span>[+] Sonda Industrial XZ-LMUS-SM-TM en Living Soil</span>
             </button>
           </div>
 
-          {/* Barra inferior: Selector de tomas de video y fotos */}
+          {/* Barra inferior: Selector de tomas de video y fotos comerciales */}
           <div className="relative z-10 flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-white/10 pointer-events-auto">
-            <div className="flex flex-wrap items-center gap-1.5 bg-black/80 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md">
+            <div className="flex flex-wrap items-center gap-1.5 bg-black/85 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md">
               <button
-                onClick={() => setSelectedMedia('video1')}
-                className={`px-3 py-1 rounded-xl text-xs font-mono font-semibold transition-all cursor-pointer flex items-center gap-1 ${
-                  selectedMedia === 'video1'
-                    ? 'bg-emerald-500 text-black font-bold shadow-md'
-                    : 'text-slate-300 hover:text-white hover:bg-white/10'
+                onClick={() => setSelectedMedia('showreel')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  selectedMedia === 'showreel'
+                    ? 'bg-gradient-to-r from-emerald-500 to-teal-400 text-black shadow-lg shadow-emerald-500/30'
+                    : 'text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30'
                 }`}
               >
-                <Video className="w-3 h-3" />
-                <span>Video 1: Cama B2</span>
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Showreel Comercial</span>
               </button>
               <button
-                onClick={() => setSelectedMedia('video2')}
-                className={`px-3 py-1 rounded-xl text-xs font-mono font-semibold transition-all cursor-pointer flex items-center gap-1 ${
-                  selectedMedia === 'video2'
+                onClick={() => setSelectedMedia('video1_pro')}
+                className={`px-2.5 py-1.5 rounded-xl text-xs font-mono font-semibold transition-all cursor-pointer flex items-center gap-1 ${
+                  selectedMedia === 'video1_pro'
                     ? 'bg-emerald-500 text-black font-bold shadow-md'
                     : 'text-slate-300 hover:text-white hover:bg-white/10'
                 }`}
               >
-                <Video className="w-3 h-3" />
-                <span>Video 2: Recorrido</span>
-              </button>
-              <button
-                onClick={() => setSelectedMedia('photo_front')}
-                className={`px-2.5 py-1 rounded-xl text-xs font-mono transition-all cursor-pointer flex items-center gap-1 ${
-                  selectedMedia === 'photo_front'
-                    ? 'bg-emerald-500 text-black font-bold shadow-md'
-                    : 'text-slate-300 hover:text-white hover:bg-white/10'
-                }`}
-              >
-                <Camera className="w-3 h-3" />
-                <span>Foto Montaje</span>
+                <Film className="w-3 h-3" />
+                <span>Corredor B2</span>
               </button>
               <button
                 onClick={() => setSelectedMedia('photo_screen')}
-                className={`px-2.5 py-1 rounded-xl text-xs font-mono transition-all cursor-pointer flex items-center gap-1 ${
+                className={`px-2.5 py-1.5 rounded-xl text-xs font-mono transition-all cursor-pointer flex items-center gap-1 ${
                   selectedMedia === 'photo_screen'
                     ? 'bg-emerald-500 text-black font-bold shadow-md'
                     : 'text-slate-300 hover:text-white hover:bg-white/10'
                 }`}
               >
                 <Camera className="w-3 h-3" />
-                <span>Foto Pantalla</span>
+                <span>Pantalla 4K</span>
+              </button>
+              <button
+                onClick={() => setSelectedMedia('photo_canopy')}
+                className={`px-2.5 py-1.5 rounded-xl text-xs font-mono transition-all cursor-pointer flex items-center gap-1 ${
+                  selectedMedia === 'photo_canopy'
+                    ? 'bg-emerald-500 text-black font-bold shadow-md'
+                    : 'text-slate-300 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                <Sprout className="w-3 h-3" />
+                <span>Canopia & Sensor</span>
               </button>
               <button
                 onClick={() => setSelectedMedia('photo_probe')}
-                className={`px-2.5 py-1 rounded-xl text-xs font-mono transition-all cursor-pointer flex items-center gap-1 ${
+                className={`px-2.5 py-1.5 rounded-xl text-xs font-mono transition-all cursor-pointer flex items-center gap-1 ${
                   selectedMedia === 'photo_probe'
                     ? 'bg-emerald-500 text-black font-bold shadow-md'
                     : 'text-slate-300 hover:text-white hover:bg-white/10'
                 }`}
               >
                 <Camera className="w-3 h-3" />
-                <span>Foto Sonda</span>
+                <span>Sonda Suelo</span>
               </button>
             </div>
 
