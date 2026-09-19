@@ -156,7 +156,9 @@ export function GrowyScreenContent({
 
   return (
     <div 
-      className="w-full h-full bg-[#050811] text-slate-100 font-mono select-none overflow-hidden flex flex-col justify-between p-2.5 sm:p-3 relative border border-emerald-500/25 rounded-md"
+      onPointerDown={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+      className="w-full h-full bg-[#050811] text-slate-100 font-mono select-none overflow-hidden flex flex-col justify-between p-2.5 relative border border-emerald-500/25 rounded-md"
       style={{
         boxShadow: alertActive 
           ? 'inset 0 0 45px rgba(225,29,72,0.35)' 
@@ -177,7 +179,11 @@ export function GrowyScreenContent({
       {/* ──────────────────────────────────────────────────────────── */}
       {mode === 'face' ? (
         <div 
-          onClick={onToggleMode}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation()
+            onToggleMode()
+          }}
           className="flex-1 flex flex-col justify-between relative z-10 cursor-pointer group"
           title="Hacé clic en la pantalla para abrir TRAZAPP SENSE"
         >
@@ -278,8 +284,13 @@ export function GrowyScreenContent({
           <div className="flex items-center justify-between pb-1.5 border-b border-white/[0.12]">
             <div className="flex items-center gap-2">
               <button 
-                onClick={onToggleMode}
-                className="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-slate-200 cursor-pointer font-bold text-[10px] flex items-center gap-1 transition-colors"
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onToggleMode()
+                }}
+                className="px-2.5 py-1 rounded bg-white/15 hover:bg-white/25 text-white cursor-pointer font-bold text-[10px] flex items-center gap-1 transition-all select-none active:scale-95"
                 title="Volver a los ojos de Growy"
               >
                 <span>👁️</span>
@@ -290,44 +301,67 @@ export function GrowyScreenContent({
               </span>
             </div>
 
-            {/* Selector de Pestañas (Tabs) */}
-            <div className="flex items-center gap-1 bg-black/60 p-0.5 rounded-lg border border-white/10">
+            {/* Selector de Pestañas (Tabs) con hit area amplia y stopPropagation */}
+            <div 
+              onPointerDown={(e) => e.stopPropagation()}
+              className="flex items-center gap-1.5 bg-black/75 p-1 rounded-lg border border-white/20 shadow-inner"
+            >
               <button
-                onClick={() => { setActiveTab('lote'); setSelectedPlantId(null); }}
-                className={`px-2 py-0.5 rounded text-[9.5px] font-bold transition-all cursor-pointer ${
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setActiveTab('lote')
+                  setSelectedPlantId(null)
+                }}
+                className={`px-3 py-1 rounded-md text-[10px] font-bold transition-all cursor-pointer select-none active:scale-95 flex items-center gap-1 ${
                   activeTab === 'lote' 
-                    ? 'bg-cyan-500 text-black shadow-sm' 
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-cyan-400 text-black shadow-md font-extrabold ring-1 ring-cyan-300' 
+                    : 'text-slate-300 hover:text-white hover:bg-white/10'
                 }`}
               >
-                INFO LOTE
+                <span>🧬</span>
+                <span>INFO LOTE</span>
               </button>
               <button
-                onClick={() => setActiveTab('mapa')}
-                className={`px-2 py-0.5 rounded text-[9.5px] font-bold transition-all cursor-pointer ${
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setActiveTab('mapa')
+                }}
+                className={`px-3 py-1 rounded-md text-[10px] font-bold transition-all cursor-pointer select-none active:scale-95 flex items-center gap-1 ${
                   activeTab === 'mapa' 
-                    ? 'bg-emerald-500 text-black shadow-sm' 
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-emerald-400 text-black shadow-md font-extrabold ring-1 ring-emerald-300' 
+                    : 'text-slate-300 hover:text-white hover:bg-white/10'
                 }`}
               >
-                MAPA PLANTAS
+                <span>🗺️</span>
+                <span>MAPA PLANTAS</span>
               </button>
               <button
-                onClick={() => { setActiveTab('resumen'); setSelectedPlantId(null); }}
-                className={`px-2 py-0.5 rounded text-[9.5px] font-bold transition-all cursor-pointer ${
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setActiveTab('resumen')
+                  setSelectedPlantId(null)
+                }}
+                className={`px-3 py-1 rounded-md text-[10px] font-bold transition-all cursor-pointer select-none active:scale-95 flex items-center gap-1 ${
                   activeTab === 'resumen' 
-                    ? 'bg-teal-500 text-black shadow-sm' 
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-teal-400 text-black shadow-md font-extrabold ring-1 ring-teal-300' 
+                    : 'text-slate-300 hover:text-white hover:bg-white/10'
                 }`}
               >
-                AMBIENTE
+                <span>📊</span>
+                <span>AMBIENTE</span>
               </button>
             </div>
 
             {/* Estado Superior Derecho */}
             <div className="flex items-center gap-2 text-[10px]">
               <span className="text-slate-400">{currentTime}</span>
-              <span className="flex items-center gap-1 text-emerald-400 font-bold bg-emerald-500/15 border border-emerald-500/30 px-1.5 py-0.5 rounded text-[9px]">
+              <span className="flex items-center gap-1 text-emerald-400 font-bold bg-emerald-500/15 border border-emerald-500/30 px-2 py-1 rounded text-[9.5px]">
                 <Wifi className="w-2.5 h-2.5" />
                 <span>ONLINE</span>
               </span>
@@ -390,11 +424,13 @@ export function GrowyScreenContent({
                   {Object.values(STRAINS).map((s) => (
                     <div 
                       key={s.name}
-                      onClick={() => {
+                      onPointerDown={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        e.stopPropagation()
                         setSelectedStrainFilter(s.name)
                         setActiveTab('mapa')
                       }}
-                      className="group flex flex-col bg-white/[0.04] hover:bg-white/[0.08] p-1 rounded border border-white/5 transition-all cursor-pointer"
+                      className="group flex flex-col bg-white/[0.04] hover:bg-white/[0.08] active:scale-[0.99] p-1 rounded border border-white/5 hover:border-white/20 transition-all cursor-pointer select-none"
                     >
                       <div className="flex items-center justify-between text-[9px] mb-0.5">
                         <div className="flex items-center gap-1.5 truncate">
@@ -421,11 +457,16 @@ export function GrowyScreenContent({
               <div className="pt-1 border-t border-white/[0.08] flex items-center justify-between text-[9.5px]">
                 <span className="text-slate-400">Trazabilidad criptográfica conectada a TrazAPP Cloud</span>
                 <button
-                  onClick={() => setActiveTab('mapa')}
-                  className="px-2.5 py-0.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[9px] flex items-center gap-1 transition-colors cursor-pointer"
+                  type="button"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setActiveTab('mapa')
+                  }}
+                  className="px-3 py-1 rounded bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-[9.5px] flex items-center gap-1.5 transition-all cursor-pointer active:scale-95 shadow-md shadow-emerald-500/25"
                 >
-                  <span>VER EN MAPA INTERACTIVO</span>
-                  <ChevronRight className="w-3 h-3" />
+                  <span>🗺️ VER EN MAPA INTERACTIVO</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>
@@ -440,10 +481,15 @@ export function GrowyScreenContent({
               <div className="flex items-center justify-between pb-1 text-[9px]">
                 <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
                   <button
-                    onClick={() => setSelectedStrainFilter('ALL')}
-                    className={`px-1.5 py-0.5 rounded text-[8px] font-bold cursor-pointer transition-colors ${
+                    type="button"
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setSelectedStrainFilter('ALL')
+                    }}
+                    className={`px-2 py-0.5 rounded text-[8.5px] font-bold cursor-pointer transition-all active:scale-95 ${
                       selectedStrainFilter === 'ALL' 
-                        ? 'bg-emerald-500 text-black' 
+                        ? 'bg-emerald-400 text-black font-extrabold shadow-sm' 
                         : 'bg-white/10 text-slate-300 hover:bg-white/20'
                     }`}
                   >
@@ -452,10 +498,15 @@ export function GrowyScreenContent({
                   {Object.values(STRAINS).map((s) => (
                     <button
                       key={s.name}
-                      onClick={() => setSelectedStrainFilter(s.name)}
-                      className={`px-1.5 py-0.5 rounded text-[8px] font-medium cursor-pointer transition-colors flex items-center gap-1 ${
+                      type="button"
+                      onPointerDown={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setSelectedStrainFilter(s.name)
+                      }}
+                      className={`px-2 py-0.5 rounded text-[8.5px] font-medium cursor-pointer transition-all active:scale-95 flex items-center gap-1 ${
                         selectedStrainFilter === s.name 
-                          ? 'text-black font-bold' 
+                          ? 'text-black font-bold shadow-sm' 
                           : 'bg-white/5 text-slate-400 hover:text-white'
                       }`}
                       style={{
@@ -494,9 +545,13 @@ export function GrowyScreenContent({
                   return (
                     <div
                       key={p.id}
-                      onClick={() => setSelectedPlantId(isSelected ? null : p.id)}
-                      className={`p-1 rounded-md border flex flex-col items-center justify-between text-center transition-all cursor-pointer ${bgGlow} ${statusBorder} ${
-                        isFiltered ? 'opacity-25 scale-95' : 'opacity-100 hover:scale-105'
+                      onPointerDown={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setSelectedPlantId(isSelected ? null : p.id)
+                      }}
+                      className={`p-1 rounded-md border flex flex-col items-center justify-between text-center transition-all cursor-pointer select-none ${bgGlow} ${statusBorder} ${
+                        isFiltered ? 'opacity-25 scale-95' : 'opacity-100 hover:scale-105 active:scale-90'
                       }`}
                     >
                       {/* Cabecera de celda: ID + Color de cepa */}
@@ -672,7 +727,10 @@ export function GrowyScreenContent({
                   <span>Sincronizado vía protocolo MCP con TrazAPP</span>
                 </div>
                 <button
-                  onClick={() => {
+                  type="button"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation()
                     setShowIncidenceModal(true)
                     setTimeout(() => {
                       setIncidenceRegistered(true)
@@ -682,9 +740,9 @@ export function GrowyScreenContent({
                       }, 1800)
                     }, 1200)
                   }}
-                  className="px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[9px] flex items-center gap-1 cursor-pointer transition-colors shadow-sm shadow-emerald-500/20"
+                  className="px-3 py-1 rounded bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-[9.5px] flex items-center gap-1.5 cursor-pointer transition-all active:scale-95 shadow-md shadow-emerald-500/25"
                 >
-                  <Plus className="w-3 h-3" />
+                  <Plus className="w-3.5 h-3.5" />
                   <span>REGISTRAR TAREA / INCIDENCIA</span>
                 </button>
               </div>
