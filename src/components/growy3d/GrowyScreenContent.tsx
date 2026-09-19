@@ -29,7 +29,7 @@ export function GrowyScreenContent({
   telemetry
 }: GrowyScreenProps) {
   const [blink, setBlink] = useState(false)
-  const [selectedStrain, setSelectedStrain] = useState('Lemon Cherry')
+  const [selectedStrain, setSelectedStrain] = useState('Monkey Mintz')
   const [currentTime, setCurrentTime] = useState('14:32:05')
   const [showIncidenceModal, setShowIncidenceModal] = useState(false)
   const [incidenceRegistered, setIncidenceRegistered] = useState(false)
@@ -52,7 +52,7 @@ export function GrowyScreenContent({
     return () => clearInterval(blinkInterval)
   }, [])
 
-  // Grilla de 18 macetas (3x6)
+  // Grilla real de 27 plantas en Cama B2 (3 filas x 9 columnas)
   const plants = [
     { id: 'A1', status: 'optimal', vwc: '42%' },
     { id: 'A2', status: 'optimal', vwc: '41%' },
@@ -60,18 +60,27 @@ export function GrowyScreenContent({
     { id: 'A4', status: 'optimal', vwc: '43%' },
     { id: 'A5', status: 'optimal', vwc: '40%' },
     { id: 'A6', status: 'optimal', vwc: '42%' },
+    { id: 'A7', status: 'optimal', vwc: '41%' },
+    { id: 'A8', status: 'optimal', vwc: '44%' },
+    { id: 'A9', status: 'optimal', vwc: '40%' },
     { id: 'B1', status: 'optimal', vwc: '44%' },
     { id: 'B2', status: alertActive ? 'warning' : 'optimal', vwc: alertActive ? '25%' : '41%' },
     { id: 'B3', status: 'optimal', vwc: '43%' },
     { id: 'B4', status: 'optimal', vwc: '38%' },
     { id: 'B5', status: 'optimal', vwc: '40%' },
     { id: 'B6', status: 'optimal', vwc: '42%' },
+    { id: 'B7', status: 'optimal', vwc: '43%' },
+    { id: 'B8', status: 'optimal', vwc: '39%' },
+    { id: 'B9', status: 'optimal', vwc: '41%' },
     { id: 'C1', status: 'optimal', vwc: '41%' },
     { id: 'C2', status: 'optimal', vwc: '40%' },
     { id: 'C3', status: 'optimal', vwc: '43%' },
     { id: 'C4', status: 'optimal', vwc: '42%' },
     { id: 'C5', status: 'optimal', vwc: '41%' },
     { id: 'C6', status: 'optimal', vwc: '44%' },
+    { id: 'C7', status: 'optimal', vwc: '42%' },
+    { id: 'C8', status: 'optimal', vwc: '40%' },
+    { id: 'C9', status: 'optimal', vwc: '43%' },
   ]
 
   return (
@@ -213,17 +222,17 @@ export function GrowyScreenContent({
           </div>
 
           {/* Subheader: Lote y Conteo */}
-          <div className="flex items-center justify-between py-1.5">
-            <div>
-              <span className="text-slate-400 text-[9px]">MAPA DE SALA: </span>
-              <span className="text-white font-bold">18 MACETAS</span>
+          <div className="flex items-center justify-between py-1 border-b border-white/[0.05]">
+            <div className="flex items-center gap-1.5">
+              <span className="text-slate-400 text-[8px] uppercase tracking-wider">DISTRIBUCIÓN DE GENÉTICAS | B2:</span>
+              <span className="text-emerald-300 font-bold text-[9px] bg-emerald-500/20 px-1.5 py-0.2 rounded">27 PLANTAS</span>
             </div>
             <div className="flex items-center gap-1">
-              {['Lemon Cherry', 'ZOAP', 'Papaya'].map((strain) => (
+              {['Monkey Mintz', 'Peanut Butter', 'Charlotte', 'White Widow'].map((strain) => (
                 <button
                   key={strain}
                   onClick={() => setSelectedStrain(strain)}
-                  className={`px-1.5 py-0.5 rounded text-[8px] transition-colors cursor-pointer ${
+                  className={`px-1 py-0.5 rounded text-[7.5px] transition-colors cursor-pointer ${
                     selectedStrain === strain 
                       ? 'bg-emerald-500 text-black font-bold' 
                       : 'bg-black/50 text-slate-400 hover:text-white'
@@ -235,8 +244,8 @@ export function GrowyScreenContent({
             </div>
           </div>
 
-          {/* Grid de 18 macetas */}
-          <div className="grid grid-cols-6 gap-1 my-1 flex-1 items-center">
+          {/* Grid de 27 plantas en Cama B2 (9 columnas x 3 filas) */}
+          <div className="grid grid-cols-9 gap-0.5 my-1 flex-1 items-center">
             {plants.map((plant) => {
               let bg = 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300'
               if (plant.status === 'dry') {
@@ -248,19 +257,19 @@ export function GrowyScreenContent({
               return (
                 <div
                   key={plant.id}
-                  className={`p-1 rounded border flex flex-col items-center justify-center text-center ${bg}`}
+                  className={`p-0.5 rounded border flex flex-col items-center justify-center text-center ${bg}`}
                 >
-                  <span className="text-[9px] font-bold">{plant.id}</span>
-                  <span className="text-[7px] text-slate-400 font-mono">{plant.vwc}</span>
+                  <span className="text-[7.5px] font-bold leading-tight">{plant.id}</span>
+                  <span className="text-[6.5px] text-slate-400 font-mono leading-none">{plant.vwc}</span>
                 </div>
               )
             })}
           </div>
 
           {/* Footer de acción rápida */}
-          <div className="pt-2 border-t border-white/[0.08] flex items-center justify-between">
+          <div className="pt-1.5 border-t border-white/[0.08] flex items-center justify-between">
             <div className="text-[8px] text-slate-400">
-              Lote: <span className="text-emerald-300 font-bold">{selectedStrain} #B4</span>
+              Lote: <span className="text-emerald-300 font-bold">{selectedStrain} • CAMA B2</span>
             </div>
             <button
               onClick={() => {

@@ -28,7 +28,7 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
     hum: 65.6,
     vpd: 0.55,
     soilMoisture: 91.4,
-    plantsCount: 18
+    plantsCount: 27
   })
 
   const [alertActive, setAlertActive] = useState(false)
@@ -44,7 +44,7 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
       hum: 88.2,
       vpd: 0.38,
       soilMoisture: 89.0,
-      plantsCount: 18
+      plantsCount: 27
     })
   }
 
@@ -58,7 +58,7 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
       hum: 63.0,
       vpd: 0.62,
       soilMoisture: 22.0,
-      plantsCount: 18
+      plantsCount: 27
     })
   }
 
@@ -72,7 +72,7 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
       hum: 65.6,
       vpd: 0.55,
       soilMoisture: 91.4,
-      plantsCount: 18
+      plantsCount: 27
     })
   }
 

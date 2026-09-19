@@ -61,17 +61,22 @@ export function GrowyMcpTerminal({
   const hotspotInfo: Record<string, { title: string; desc: string; specs: string[] }> = {
     screen: {
       title: 'Pantalla Táctil TrazAPP SENSE',
-      desc: 'Panel OLED multitáctil capacitivo integrado. Permite alternar entre el Face Mode (rostro IA biofílico con telemetría viva) y el Sense Mode (mapa de 18 macetas, registro de incidencias y estado de Supabase sin necesidad de teléfono móvil).',
-      specs: ['Panel OLED 6.5" 1080p', 'Respuesta <15ms', 'Cristal Gorilla Glass IP65 antidesgarro']
+      desc: 'Panel OLED multitáctil capacitivo integrado. Permite alternar entre el Face Mode (rostro IA biofílico con telemetría viva) y el Sense Mode (mapa de 27 plantas en Cama B2, genéticas activas y registro de incidencias sin teléfono).',
+      specs: ['Panel OLED 6.5" 1080p', 'Respuesta táctil industrial', 'Apto condensación y humedad']
     },
     sensors: {
       title: 'Monitoreo Ambiental & Sustrato',
       desc: 'Adquisición de datos en tiempo real: medición de humedad de suelo, humedad ambiental y temperatura ambiental. Cálculo dinámico de VPD para el control preciso de la transpiración biológica.',
       specs: ['Humedad de suelo en tiempo real', 'Humedad y temperatura ambiental', 'VPD calculado por algoritmo Tetens']
     },
+    soil_probe: {
+      title: 'Sonda Industrial de Sustrato (XZ-LMUS-SM-TM)',
+      desc: 'Sonda de inserción directa de grado industrial para living soil y camas técnicas. Púas de acero inoxidable 316L con medición de contenido volumétrico de agua (VWC) y temperatura radicular en tiempo real.',
+      specs: ['Púas de acero inoxidable 316L', 'Conexión por cable blindado M12', 'Lectura VWC 0-100% y Temp -40°C a 80°C']
+    },
     mount: {
       title: 'Montaje Universal en Caño Estructural',
-      desc: 'Doble abrazadera industrial mecanizada en aluminio 6061 con recubrimiento de polímero amortiguador. Diseñada para anclarse a tubos estructurales de 16mm a 32mm típicos de salas profesionales y armarios de cultivo.',
+      desc: 'Doble abrazadera industrial mecanizada con recubrimiento amortiguador. Diseñada para anclarse a tubos estructurales de 16mm a 32mm típicos de salas profesionales y armarios de cultivo.',
       specs: ['Tornillos de ajuste Allen M6', 'Carga máxima 12 kg', 'Aislación contra vibración de extractores']
     },
     mcp: {
