@@ -2,6 +2,7 @@ import { Suspense, useRef, useState, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, ContactShadows } from '@react-three/drei'
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
+import { Vector3 } from 'three'
 import { GrowyModel } from './GrowyModel'
 import { GrowBedEnvironment } from './GrowBedEnvironment'
 import type { GrowyScreenProps } from './GrowyScreenContent'
@@ -9,17 +10,12 @@ import {
   Eye, 
   LayoutGrid, 
   Sprout, 
-  Crosshair, 
+  Crosshair,
   Video, 
   Box, 
   Camera, 
   Sparkles, 
-  Film,
-  Compass,
-  Copy,
-  Check,
-  Save,
-  RotateCcw
+  Film
 } from 'lucide-react'
 
 interface GrowyCanvasProps {
@@ -30,6 +26,27 @@ interface GrowyCanvasProps {
   telemetry: GrowyScreenProps['telemetry']
   activeHotspot: string | null
   onSelectHotspot: (hotspot: string) => void
+}
+
+type CameraPresetKey = 'panoramic' | 'front'
+
+interface CameraPreset {
+  name: string
+  position: [number, number, number]
+  target: [number, number, number]
+}
+
+const CAMERA_PRESETS: Record<CameraPresetKey, CameraPreset> = {
+  panoramic: {
+    name: 'Panorámica B2',
+    position: [-3.27, 2.83, 5.34],
+    target: [-0.2, -0.15, -2]
+  },
+  front: {
+    name: 'Foco Growy',
+    position: [0, 0.12, 1.9],
+    target: [0, 0.08, 0.6]
+  }
 }
 
 export function GrowyCanvas({
@@ -47,154 +64,46 @@ export function GrowyCanvas({
     'showreel' | 'video1_pro' | 'video2_pro' | 'photo_screen' | 'photo_canopy' | 'photo_probe' | 'photo_front'
   >('showreel')
 
-type CameraPresetKey = 'panoramic' | 'front' | 'probe' | 'iso' | 'back'
+  const [activeView, setActiveView] = useState<CameraPresetKey>('panoramic')
 
-interface CameraPreset {
-  name: string
-  position: [number, number, number]
-  target: [number, number, number]
-}
-
-const DEFAULT_PRESETS: Record<CameraPresetKey, CameraPreset> = {
-  panoramic: {
-    name: 'Panorámica B2',
-    position: [-3.27, 2.83, 5.34],
-    target: [-0.2, -0.15, -2]
-  },
-  front: {
-    name: 'Foco Growy',
-    position: [0, 0.12, 1.9],
-    target: [0, 0.08, 0.6]
-  },
-  probe: {
-    name: 'Sonda Suelo',
-    position: [1.45, -0.12, 0.8],
-    target: [0.65, -0.42, 0.1]
-  },
-  iso: {
-    name: 'Ángulo Opuesto',
-    position: [-3.7, 2.0, 1.6],
-    target: [-0.2, -0.15, -2.0]
-  },
-  back: {
-    name: 'Caño Montaje',
-    position: [0, 0.15, -0.8],
-    target: [0, 0.08, 0.6]
-  }
-}
-
-  // Presets configurados (cargados de localStorage si existen)
-  const [presets, setPresets] = useState<Record<CameraPresetKey, CameraPreset>>(() => {
-    try {
-      const saved = localStorage.getItem('growy_cam_all_presets')
-      if (saved) return { ...DEFAULT_PRESETS, ...JSON.parse(saved) }
-    } catch (e) {
-      console.error(e)
-    }
-    return DEFAULT_PRESETS
-  })
-
-  const [activeCalibratingView, setActiveCalibratingView] = useState<CameraPresetKey>('front')
-  const [showCalibrator, setShowCalibrator] = useState(true)
-  const [copiedSingle, setCopiedSingle] = useState(false)
-  const [copiedAll, setCopiedAll] = useState(false)
-  const [savedSuccess, setSavedSuccess] = useState(false)
-  const [camMetrics, setCamMetrics] = useState({
-    pos: [-3.27, 2.83, 5.34],
-    target: [-0.2, -0.15, -2],
-    distance: 8.5
-  })
-
-  // Escuchar movimientos de la cámara en vivo
-  const handleControlsChange = () => {
+  // Suave interpolación entre posiciones y objetivos de cámara
+  const handleSwitchView = (viewKey: CameraPresetKey) => {
+    setActiveView(viewKey)
     if (!controlsRef.current) return
-    const cam = controlsRef.current.object
-    const tgt = controlsRef.current.target
-    const dx = cam.position.x - tgt.x
-    const dy = cam.position.y - tgt.y
-    const dz = cam.position.z - tgt.z
-    const dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
-    setCamMetrics({
-      pos: [
-        Number(cam.position.x.toFixed(2)),
-        Number(cam.position.y.toFixed(2)),
-        Number(cam.position.z.toFixed(2))
-      ],
-      target: [
-        Number(tgt.x.toFixed(2)),
-        Number(tgt.y.toFixed(2)),
-        Number(tgt.z.toFixed(2))
-      ],
-      distance: Number(dist.toFixed(2))
-    })
-  }
+    const targetPreset = CAMERA_PRESETS[viewKey]
 
-  // Guardar la vista activa en presets y localStorage
-  const handleSaveActiveView = () => {
-    const updated: Record<CameraPresetKey, CameraPreset> = {
-      ...presets,
-      [activeCalibratingView]: {
-        ...presets[activeCalibratingView],
-        position: camMetrics.pos,
-        target: camMetrics.target
+    const startPos = controlsRef.current.object.position.clone()
+    const startTarget = controlsRef.current.target.clone()
+    const endPos = new Vector3(...targetPreset.position)
+    const endTarget = new Vector3(...targetPreset.target)
+
+    const startTime = performance.now()
+    const duration = 650 // ms
+
+    const animateCamera = (currentTime: number) => {
+      const elapsed = currentTime - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      // Easing cúbico para desaceleración natural
+      const ease = 1 - Math.pow(1 - progress, 3)
+
+      controlsRef.current?.object.position.lerpVectors(startPos, endPos, ease)
+      controlsRef.current?.target.lerpVectors(startTarget, endTarget, ease)
+      controlsRef.current?.update()
+
+      if (progress < 1) {
+        requestAnimationFrame(animateCamera)
       }
     }
-    setPresets(updated)
-    localStorage.setItem('growy_cam_all_presets', JSON.stringify(updated))
-    setSavedSuccess(true)
-    setTimeout(() => setSavedSuccess(false), 2500)
-  }
-
-  // Copiar solo los parámetros de la vista que se está calibrando
-  const handleCopySingle = () => {
-    const text = `${presets[activeCalibratingView].name} (${activeCalibratingView}): position: [${camMetrics.pos.join(', ')}], target: [${camMetrics.target.join(', ')}]`
-    navigator.clipboard.writeText(text)
-    setCopiedSingle(true)
-    setTimeout(() => setCopiedSingle(false), 2000)
-  }
-
-  // Copiar todas las 5 vistas calibradas en formato compacto
-  const handleCopyAll = () => {
-    const lines = (Object.keys(presets) as CameraPresetKey[]).map((k) => {
-      const p = presets[k]
-      return `${p.name} (${k}): position: [${p.position.join(', ')}], target: [${p.target.join(', ')}]`
-    })
-    navigator.clipboard.writeText(lines.join('\n'))
-    setCopiedAll(true)
-    setTimeout(() => setCopiedAll(false), 2500)
-  }
-
-  // Restablecer todas a valores iniciales
-  const handleResetToFactory = () => {
-    localStorage.removeItem('growy_cam_all_presets')
-    setPresets(DEFAULT_PRESETS)
-    if (controlsRef.current) {
-      controlsRef.current.target.set(...DEFAULT_PRESETS.panoramic.target)
-      controlsRef.current.object.position.set(...DEFAULT_PRESETS.panoramic.position)
-      controlsRef.current.update()
-      handleControlsChange()
-    }
-  }
-
-  // Cambiar de vista y mover la cámara instantáneamente
-  const handleSwitchView = (viewKey: CameraPresetKey) => {
-    setActiveCalibratingView(viewKey)
-    if (!controlsRef.current) return
-    const targetPreset = presets[viewKey] || DEFAULT_PRESETS[viewKey]
-    controlsRef.current.target.set(...targetPreset.target)
-    controlsRef.current.object.position.set(...targetPreset.position)
-    controlsRef.current.update()
-    handleControlsChange()
+    requestAnimationFrame(animateCamera)
   }
 
   // Al cargar la vista 3D, iniciar en la panorámica B2
   useEffect(() => {
     if (viewMode === '3d' && controlsRef.current) {
-      const p = presets.panoramic || DEFAULT_PRESETS.panoramic
+      const p = CAMERA_PRESETS[activeView] || CAMERA_PRESETS.panoramic
       controlsRef.current.target.set(...p.target)
       controlsRef.current.object.position.set(...p.position)
       controlsRef.current.update()
-      handleControlsChange()
     }
   }, [viewMode])
 
@@ -245,205 +154,32 @@ const DEFAULT_PRESETS: Record<CameraPresetKey, CameraPreset> = {
 
         {/* Controles de cámara en modo 3D */}
         {viewMode === '3d' && (
-          <div className="pointer-events-auto flex items-center gap-1 bg-black/75 p-1 rounded-full border border-white/10 backdrop-blur-md shadow-md">
+          <div className="pointer-events-auto flex items-center gap-1.5 bg-black/75 p-1 rounded-full border border-white/10 backdrop-blur-md shadow-md">
             <button
               onClick={() => handleSwitchView('panoramic')}
-              className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-bold transition-colors cursor-pointer flex items-center gap-1 ${
-                activeCalibratingView === 'panoramic'
-                  ? 'bg-emerald-500 text-black shadow-md'
+              className={`px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                activeView === 'panoramic'
+                  ? 'bg-emerald-500 text-black shadow-md shadow-emerald-500/25'
                   : 'text-slate-300 hover:text-white hover:bg-white/10'
               }`}
             >
-              <Sprout className="w-3 h-3 text-emerald-400" />
+              <Sprout className="w-3.5 h-3.5" />
               <span>Panorámica B2</span>
             </button>
             <button
               onClick={() => handleSwitchView('front')}
-              className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-bold transition-colors cursor-pointer ${
-                activeCalibratingView === 'front'
-                  ? 'bg-emerald-500 text-black shadow-md'
+              className={`px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                activeView === 'front'
+                  ? 'bg-emerald-500 text-black shadow-md shadow-emerald-500/25'
                   : 'text-slate-300 hover:text-white hover:bg-white/10'
               }`}
             >
-              Foco Growy
-            </button>
-            <button
-              onClick={() => handleSwitchView('probe')}
-              className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-bold transition-colors cursor-pointer flex items-center gap-1 ${
-                activeCalibratingView === 'probe'
-                  ? 'bg-cyan-500 text-black shadow-md'
-                  : 'text-slate-300 hover:text-white hover:bg-white/10'
-              }`}
-            >
-              <Crosshair className="w-3 h-3 text-cyan-400" />
-              <span>Sonda</span>
-            </button>
-            <button
-              onClick={() => handleSwitchView('iso')}
-              className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-bold transition-colors cursor-pointer ${
-                activeCalibratingView === 'iso'
-                  ? 'bg-emerald-500 text-black shadow-md'
-                  : 'text-slate-300 hover:text-white hover:bg-white/10'
-              }`}
-            >
-              Ángulo Opuesto
-            </button>
-            <button
-              onClick={() => handleSwitchView('back')}
-              className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-bold transition-colors cursor-pointer ${
-                activeCalibratingView === 'back'
-                  ? 'bg-emerald-500 text-black shadow-md'
-                  : 'text-slate-300 hover:text-white hover:bg-white/10'
-              }`}
-            >
-              Caño
-            </button>
-            <div className="w-px h-3.5 bg-white/20 mx-0.5" />
-            <button
-              onClick={() => setShowCalibrator(!showCalibrator)}
-              className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-bold transition-all cursor-pointer flex items-center gap-1 ${
-                showCalibrator
-                  ? 'bg-emerald-500 text-black shadow-md'
-                  : 'text-emerald-400 hover:text-white hover:bg-emerald-500/20'
-              }`}
-            >
-              <Compass className="w-3 h-3" />
-              <span>Calibrador 3D</span>
+              <Eye className="w-3.5 h-3.5" />
+              <span>Foco Growy</span>
             </button>
           </div>
         )}
       </div>
-
-      {/* Panel Flotante Calibrador Multivista en Tiempo Real */}
-      {viewMode === '3d' && showCalibrator && (
-        <div className="absolute top-16 right-4 z-20 pointer-events-auto bg-black/95 border border-emerald-500/50 rounded-2xl p-3.5 backdrop-blur-xl shadow-2xl font-mono text-xs w-[310px] max-w-[92vw] animate-in fade-in duration-200">
-          <div className="flex items-center justify-between pb-2 border-b border-white/10 text-[11px]">
-            <span className="text-emerald-400 font-bold flex items-center gap-1.5">
-              <Compass className="w-3.5 h-3.5 text-emerald-400" />
-              CALIBRADOR MULTIVISTA
-            </span>
-            <button
-              onClick={() => setShowCalibrator(false)}
-              className="text-slate-400 hover:text-white px-1.5 py-0.5 rounded text-[10px] cursor-pointer"
-            >
-              ✕
-            </button>
-          </div>
-
-          {/* Selector de la vista que se está calibrando */}
-          <div className="mt-2.5">
-            <span className="text-slate-400 text-[9px] uppercase tracking-wider block mb-1">
-              Seleccionar vista a calibrar:
-            </span>
-            <div className="grid grid-cols-2 gap-1 bg-white/5 p-1 rounded-xl border border-white/10 text-[10px]">
-              {(Object.keys(DEFAULT_PRESETS) as CameraPresetKey[]).map((key) => {
-                const isActive = activeCalibratingView === key
-                return (
-                  <button
-                    key={key}
-                    onClick={() => handleSwitchView(key)}
-                    className={`px-2 py-1 rounded-lg text-left truncate transition-all cursor-pointer ${
-                      isActive
-                        ? 'bg-emerald-500 text-black font-bold shadow-md'
-                        : 'text-slate-300 hover:text-white hover:bg-white/10'
-                    }`}
-                  >
-                    {DEFAULT_PRESETS[key].name}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
-          <div className="mt-2.5 p-2 rounded-xl bg-white/5 border border-white/10 space-y-1.5 text-[10px]">
-            <div className="flex justify-between text-emerald-400 font-bold">
-              <span>CALIBRANDO:</span>
-              <span className="uppercase">{presets[activeCalibratingView]?.name}</span>
-            </div>
-
-            <div>
-              <span className="text-slate-400 block text-[9px]">POSICIÓN (X, Y, Z):</span>
-              <div className="text-emerald-300 font-bold select-all bg-black/60 px-1.5 py-0.5 rounded">
-                [{camMetrics.pos[0]}, {camMetrics.pos[1]}, {camMetrics.pos[2]}]
-              </div>
-            </div>
-
-            <div>
-              <span className="text-slate-400 block text-[9px]">PUNTO FOCAL / TARGET:</span>
-              <div className="text-cyan-300 font-bold select-all bg-black/60 px-1.5 py-0.5 rounded">
-                [{camMetrics.target[0]}, {camMetrics.target[1]}, {camMetrics.target[2]}]
-              </div>
-            </div>
-
-            <div className="flex justify-between text-slate-400 pt-0.5">
-              <span>Distancia: <strong className="text-white">{camMetrics.distance} m</strong></span>
-              <span>FOV: <strong className="text-white">45°</strong></span>
-            </div>
-          </div>
-
-          {/* Botones de acción */}
-          <div className="pt-2.5 flex flex-col gap-1.5">
-            <button
-              onClick={handleSaveActiveView}
-              className="w-full py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-md text-[11px]"
-            >
-              {savedSuccess ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-black" />
-                  <span>¡Guardado para {presets[activeCalibratingView]?.name}!</span>
-                </>
-              ) : (
-                <>
-                  <Save className="w-3.5 h-3.5" />
-                  <span>💾 Guardar como {presets[activeCalibratingView]?.name}</span>
-                </>
-              )}
-            </button>
-
-            <button
-              onClick={handleCopySingle}
-              className="w-full py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-white/10 text-[10px]"
-            >
-              {copiedSingle ? (
-                <>
-                  <Check className="w-3 h-3 text-emerald-400" />
-                  <span className="text-emerald-400">¡Copiado para {presets[activeCalibratingView]?.name}!</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="w-3 h-3" />
-                  <span>📋 Copiar Parámetros de esta Vista</span>
-                </>
-              )}
-            </button>
-
-            <button
-              onClick={handleCopyAll}
-              className="w-full py-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-emerald-500/30 text-[10px]"
-            >
-              {copiedAll ? (
-                <>
-                  <Check className="w-3 h-3 text-emerald-300" />
-                  <span className="text-emerald-300">¡Todas las 5 Vistas Copiadas!</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="w-3 h-3" />
-                  <span>📋 Copiar TODAS las Vistas (Resumen Completo)</span>
-                </>
-              )}
-            </button>
-
-            <button
-              onClick={handleResetToFactory}
-              className="w-full py-0.5 text-slate-400 hover:text-rose-400 flex items-center justify-center gap-1 transition-all cursor-pointer text-[9px] pt-1"
-            >
-              <RotateCcw className="w-2.5 h-2.5" />
-              <span>Restablecer todas a fábrica</span>
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* ──────────────────────────────────────────────────────────── */}
       {/* CUERPO PRINCIPAL: VISOR 3D vs REPRODUCTOR DE METRAJE REAL    */}
@@ -497,13 +233,12 @@ const DEFAULT_PRESETS: Record<CameraPresetKey, CameraPreset> = {
               target={[-0.2, -0.15, -2]}
               enablePan={false}
               enableZoom={true}
-              minDistance={1.6}
-              maxDistance={8.5}
+              minDistance={1.1}
+              maxDistance={9.5}
               maxPolarAngle={Math.PI / 1.8}
               minPolarAngle={Math.PI / 3.8}
               dampingFactor={0.06}
               rotateSpeed={0.8}
-              onChange={handleControlsChange}
             />
           </Canvas>
 
