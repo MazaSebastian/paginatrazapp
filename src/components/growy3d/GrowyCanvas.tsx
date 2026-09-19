@@ -1,4 +1,4 @@
-import { Suspense, useRef, useState } from 'react'
+import { Suspense, useRef, useState, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, ContactShadows } from '@react-three/drei'
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
@@ -46,8 +46,8 @@ export function GrowyCanvas({
     if (!controlsRef.current) return
     const camera = controlsRef.current.object
     if (view === 'panoramic') {
-      controlsRef.current.target.set(0, -0.05, -1.4)
-      camera.position.set(2.8, 1.85, 2.8)
+      controlsRef.current.target.set(-0.2, -0.15, -2.0)
+      camera.position.set(3.7, 2.0, 1.6)
       controlsRef.current.update()
     } else if (view === 'front') {
       controlsRef.current.target.set(0, 0.08, 0.6)
@@ -62,11 +62,20 @@ export function GrowyCanvas({
       camera.position.set(0, 0.15, -0.8)
       controlsRef.current.update()
     } else if (view === 'iso') {
-      controlsRef.current.target.set(0, -0.05, -1.4)
-      camera.position.set(-2.8, 1.85, 2.8)
+      controlsRef.current.target.set(-0.2, -0.15, -2.0)
+      camera.position.set(-3.7, 2.0, 1.6)
       controlsRef.current.update()
     }
   }
+
+  // Garantizar que la simulación inicie o regrese siempre exactamente con la perspectiva panorámica del cultivo
+  useEffect(() => {
+    if (viewMode === '3d' && controlsRef.current) {
+      controlsRef.current.target.set(-0.2, -0.15, -2.0)
+      controlsRef.current.object.position.set(3.7, 2.0, 1.6)
+      controlsRef.current.update()
+    }
+  }, [viewMode])
 
   return (
     <div className="relative w-full h-[540px] sm:h-[640px] rounded-3xl bg-gradient-to-b from-[#0a0f1c] via-[#060913] to-[#04060d] border border-white/[0.08] overflow-hidden shadow-2xl flex flex-col justify-between">
@@ -159,7 +168,7 @@ export function GrowyCanvas({
         <>
           {/* Canvas Three.js con Entorno de Cultivo Completo */}
           <Canvas
-            camera={{ position: [2.8, 1.85, 2.8], fov: 45 }}
+            camera={{ position: [3.7, 2.0, 1.6], fov: 45 }}
             className="w-full h-full cursor-grab active:cursor-grabbing"
           >
             {/* Iluminación base de la sala de cultivo */}
@@ -201,7 +210,7 @@ export function GrowyCanvas({
 
             <OrbitControls
               ref={controlsRef}
-              target={[0, -0.05, -1.4]}
+              target={[-0.2, -0.15, -2.0]}
               enablePan={false}
               enableZoom={true}
               minDistance={1.6}
