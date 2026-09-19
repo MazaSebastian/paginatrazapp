@@ -14,7 +14,12 @@ import {
   Box, 
   Camera, 
   Sparkles, 
-  Film
+  Film,
+  Compass,
+  Copy,
+  Check,
+  Save,
+  RotateCcw
 } from 'lucide-react'
 
 interface GrowyCanvasProps {
@@ -42,38 +47,130 @@ export function GrowyCanvas({
     'showreel' | 'video1_pro' | 'video2_pro' | 'photo_screen' | 'photo_canopy' | 'photo_probe' | 'photo_front'
   >('showreel')
 
+  const [showCalibrator, setShowCalibrator] = useState(true)
+  const [copied, setCopied] = useState(false)
+  const [savedSuccess, setSavedSuccess] = useState(false)
+  const [camMetrics, setCamMetrics] = useState({
+    pos: [3.7, 2.0, 1.6],
+    target: [-0.2, -0.15, -2.0],
+    distance: 5.72
+  })
+
+  // Escuchar movimientos de la cámara en vivo
+  const handleControlsChange = () => {
+    if (!controlsRef.current) return
+    const cam = controlsRef.current.object
+    const tgt = controlsRef.current.target
+    const dx = cam.position.x - tgt.x
+    const dy = cam.position.y - tgt.y
+    const dz = cam.position.z - tgt.z
+    const dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
+    setCamMetrics({
+      pos: [
+        Number(cam.position.x.toFixed(2)),
+        Number(cam.position.y.toFixed(2)),
+        Number(cam.position.z.toFixed(2))
+      ],
+      target: [
+        Number(tgt.x.toFixed(2)),
+        Number(tgt.y.toFixed(2)),
+        Number(tgt.z.toFixed(2))
+      ],
+      distance: Number(dist.toFixed(2))
+    })
+  }
+
+  // Guardar en localStorage como el nuevo default del usuario
+  const handleSaveAsDefault = () => {
+    localStorage.setItem('growy_cam_custom_default', JSON.stringify({
+      position: camMetrics.pos,
+      target: camMetrics.target
+    }))
+    setSavedSuccess(true)
+    setTimeout(() => setSavedSuccess(false), 3000)
+  }
+
+  const handleCopyParams = () => {
+    const text = `position: [${camMetrics.pos.join(', ')}], target: [${camMetrics.target.join(', ')}]`
+    navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleResetToFactory = () => {
+    localStorage.removeItem('growy_cam_custom_default')
+    if (controlsRef.current) {
+      controlsRef.current.target.set(-0.2, -0.15, -2.0)
+      controlsRef.current.object.position.set(3.7, 2.0, 1.6)
+      controlsRef.current.update()
+      handleControlsChange()
+    }
+  }
+
   const handleResetCamera = (view: 'panoramic' | 'front' | 'back' | 'probe' | 'iso') => {
     if (!controlsRef.current) return
     const camera = controlsRef.current.object
     if (view === 'panoramic') {
+      const saved = localStorage.getItem('growy_cam_custom_default')
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved)
+          controlsRef.current.target.set(parsed.target[0], parsed.target[1], parsed.target[2])
+          camera.position.set(parsed.position[0], parsed.position[1], parsed.position[2])
+          controlsRef.current.update()
+          handleControlsChange()
+          return
+        } catch (e) {
+          console.error(e)
+        }
+      }
       controlsRef.current.target.set(-0.2, -0.15, -2.0)
       camera.position.set(3.7, 2.0, 1.6)
       controlsRef.current.update()
+      handleControlsChange()
     } else if (view === 'front') {
       controlsRef.current.target.set(0, 0.08, 0.6)
       camera.position.set(0, 0.12, 1.9)
       controlsRef.current.update()
+      handleControlsChange()
     } else if (view === 'probe') {
       controlsRef.current.target.set(0.65, -0.42, 0.1)
       camera.position.set(1.45, -0.12, 0.8)
       controlsRef.current.update()
+      handleControlsChange()
     } else if (view === 'back') {
       controlsRef.current.target.set(0, 0.08, 0.6)
       camera.position.set(0, 0.15, -0.8)
       controlsRef.current.update()
+      handleControlsChange()
     } else if (view === 'iso') {
       controlsRef.current.target.set(-0.2, -0.15, -2.0)
       camera.position.set(-3.7, 2.0, 1.6)
       controlsRef.current.update()
+      handleControlsChange()
     }
   }
 
-  // Garantizar que la simulación inicie o regrese siempre exactamente con la perspectiva panorámica del cultivo
+  // Garantizar que la simulación inicie o regrese siempre con la perspectiva preferida del usuario
   useEffect(() => {
     if (viewMode === '3d' && controlsRef.current) {
+      const saved = localStorage.getItem('growy_cam_custom_default')
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved)
+          controlsRef.current.target.set(parsed.target[0], parsed.target[1], parsed.target[2])
+          controlsRef.current.object.position.set(parsed.position[0], parsed.position[1], parsed.position[2])
+          controlsRef.current.update()
+          handleControlsChange()
+          return
+        } catch (e) {
+          console.error(e)
+        }
+      }
       controlsRef.current.target.set(-0.2, -0.15, -2.0)
       controlsRef.current.object.position.set(3.7, 2.0, 1.6)
       controlsRef.current.update()
+      handleControlsChange()
     }
   }, [viewMode])
 
@@ -157,9 +254,104 @@ export function GrowyCanvas({
             >
               Caño
             </button>
+            <div className="w-px h-3.5 bg-white/20 mx-0.5" />
+            <button
+              onClick={() => setShowCalibrator(!showCalibrator)}
+              className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                showCalibrator
+                  ? 'bg-emerald-500 text-black shadow-md'
+                  : 'text-emerald-400 hover:text-white hover:bg-emerald-500/20'
+              }`}
+            >
+              <Compass className="w-3 h-3" />
+              <span>Calibrador 3D</span>
+            </button>
           </div>
         )}
       </div>
+
+      {/* Panel Flotante Calibrador de Perspectiva en Tiempo Real */}
+      {viewMode === '3d' && showCalibrator && (
+        <div className="absolute top-16 right-4 z-20 pointer-events-auto bg-black/90 border border-emerald-500/40 rounded-2xl p-3.5 backdrop-blur-md shadow-2xl font-mono text-xs max-w-[290px] animate-in fade-in duration-200">
+          <div className="flex items-center justify-between pb-2 border-b border-white/10 text-[11px]">
+            <span className="text-emerald-400 font-bold flex items-center gap-1.5">
+              <Compass className="w-3.5 h-3.5 text-emerald-400" />
+              MEDIDOR DE PERSPECTIVA
+            </span>
+            <button
+              onClick={() => setShowCalibrator(false)}
+              className="text-slate-400 hover:text-white px-1.5 py-0.5 rounded text-[10px] cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
+
+          <div className="mt-2.5 space-y-2 text-[11px]">
+            <div>
+              <span className="text-slate-400 text-[10px] block">POSICIÓN CÁMARA (X, Y, Z):</span>
+              <div className="bg-white/5 px-2 py-1 rounded border border-white/10 text-emerald-300 font-bold select-all">
+                [{camMetrics.pos[0]}, {camMetrics.pos[1]}, {camMetrics.pos[2]}]
+              </div>
+            </div>
+
+            <div>
+              <span className="text-slate-400 text-[10px] block">PUNTO FOCAL / TARGET:</span>
+              <div className="bg-white/5 px-2 py-1 rounded border border-white/10 text-cyan-300 font-bold select-all">
+                [{camMetrics.target[0]}, {camMetrics.target[1]}, {camMetrics.target[2]}]
+              </div>
+            </div>
+
+            <div className="flex justify-between text-[10px] text-slate-400 pt-0.5">
+              <span>DISTANCIA: <strong className="text-white">{camMetrics.distance} m</strong></span>
+              <span>FOV: <strong className="text-white">45°</strong></span>
+            </div>
+
+            <div className="pt-2 flex flex-col gap-1.5">
+              <button
+                onClick={handleSaveAsDefault}
+                className="w-full py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-lg hover:scale-102"
+              >
+                {savedSuccess ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-black" />
+                    <span>¡Guardado como Vista Inicial!</span>
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-3.5 h-3.5" />
+                    <span>Fijar este Ángulo como Inicial</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                onClick={handleCopyParams}
+                className="w-full py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-white/10 text-[10px]"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-3 h-3 text-emerald-400" />
+                    <span className="text-emerald-400">¡Coordenadas Copiadas!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3 h-3" />
+                    <span>Copiar Parámetros para el Chat</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                onClick={handleResetToFactory}
+                className="w-full py-1 text-slate-400 hover:text-rose-400 flex items-center justify-center gap-1 transition-all cursor-pointer text-[10px]"
+              >
+                <RotateCcw className="w-2.5 h-2.5" />
+                <span>Restablecer calibración de fábrica</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ──────────────────────────────────────────────────────────── */}
       {/* CUERPO PRINCIPAL: VISOR 3D vs REPRODUCTOR DE METRAJE REAL    */}
@@ -219,6 +411,7 @@ export function GrowyCanvas({
               minPolarAngle={Math.PI / 3.8}
               dampingFactor={0.06}
               rotateSpeed={0.8}
+              onChange={handleControlsChange}
             />
           </Canvas>
 
