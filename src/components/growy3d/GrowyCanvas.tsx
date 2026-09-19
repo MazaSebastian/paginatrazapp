@@ -15,11 +15,7 @@ import {
   Box, 
   Camera, 
   Sparkles, 
-  Film,
-  Copy,
-  Check,
-  Save,
-  RotateCcw
+  Film
 } from 'lucide-react'
 
 interface GrowyCanvasProps {
@@ -48,7 +44,7 @@ const CAMERA_PRESETS: Record<CameraPresetKey, CameraPreset> = {
   },
   front: {
     name: 'Foco Growy',
-    position: [0, 0.12, 1.9],
+    position: [0, 0.19, 4.23],
     target: [0, 0.08, 0.6]
   }
 }
@@ -69,54 +65,12 @@ export function GrowyCanvas({
   >('showreel')
 
   const [activeView, setActiveView] = useState<CameraPresetKey>('panoramic')
-  const [copied, setCopied] = useState(false)
-  const [savedSuccess, setSavedSuccess] = useState(false)
-
-  const [presets, setPresets] = useState<Record<CameraPresetKey, CameraPreset>>(() => {
-    try {
-      const saved = localStorage.getItem('growy_cam_presets_v2')
-      if (saved) return { ...CAMERA_PRESETS, ...JSON.parse(saved) }
-    } catch (e) {
-      console.error(e)
-    }
-    return CAMERA_PRESETS
-  })
-
-  const [camMetrics, setCamMetrics] = useState({
-    pos: [-3.27, 2.83, 5.34],
-    target: [-0.2, -0.15, -2],
-    distance: 8.5
-  })
-
-  // Monitoreo en tiempo real de coordenadas mientras el usuario mueve el mouse
-  const handleControlsChange = () => {
-    if (!controlsRef.current) return
-    const cam = controlsRef.current.object
-    const tgt = controlsRef.current.target
-    const dx = cam.position.x - tgt.x
-    const dy = cam.position.y - tgt.y
-    const dz = cam.position.z - tgt.z
-    const dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
-    setCamMetrics({
-      pos: [
-        Number(cam.position.x.toFixed(2)),
-        Number(cam.position.y.toFixed(2)),
-        Number(cam.position.z.toFixed(2))
-      ],
-      target: [
-        Number(tgt.x.toFixed(2)),
-        Number(tgt.y.toFixed(2)),
-        Number(tgt.z.toFixed(2))
-      ],
-      distance: Number(dist.toFixed(2))
-    })
-  }
 
   // Suave interpolación entre posiciones y objetivos de cámara
   const handleSwitchView = (viewKey: CameraPresetKey) => {
     setActiveView(viewKey)
     if (!controlsRef.current) return
-    const targetPreset = presets[viewKey] || CAMERA_PRESETS[viewKey]
+    const targetPreset = CAMERA_PRESETS[viewKey]
 
     const startPos = controlsRef.current.object.position.clone()
     const startTarget = controlsRef.current.target.clone()
@@ -134,7 +88,6 @@ export function GrowyCanvas({
       controlsRef.current?.object.position.lerpVectors(startPos, endPos, ease)
       controlsRef.current?.target.lerpVectors(startTarget, endTarget, ease)
       controlsRef.current?.update()
-      handleControlsChange()
 
       if (progress < 1) {
         requestAnimationFrame(animateCamera)
@@ -143,55 +96,18 @@ export function GrowyCanvas({
     requestAnimationFrame(animateCamera)
   }
 
-  const handleSaveActiveView = () => {
-    const updated = {
-      ...presets,
-      [activeView]: {
-        ...presets[activeView],
-        position: camMetrics.pos as [number, number, number],
-        target: camMetrics.target as [number, number, number]
-      }
-    }
-    setPresets(updated)
-    localStorage.setItem('growy_cam_presets_v2', JSON.stringify(updated))
-    setSavedSuccess(true)
-    setTimeout(() => setSavedSuccess(false), 2200)
-  }
-
-  const handleCopyCoordinates = () => {
-    const text = `${presets[activeView].name} (${activeView}): position: [${camMetrics.pos.join(', ')}], target: [${camMetrics.target.join(', ')}]`
-    navigator.clipboard.writeText(text)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
-  const handleResetActivePreset = () => {
-    const updated = {
-      ...presets,
-      [activeView]: CAMERA_PRESETS[activeView]
-    }
-    setPresets(updated)
-    localStorage.setItem('growy_cam_presets_v2', JSON.stringify(updated))
-    handleSwitchView(activeView)
-  }
-
   // Al cargar la vista 3D, iniciar en la panorámica B2
   useEffect(() => {
     if (viewMode === '3d' && controlsRef.current) {
-      const p = presets[activeView] || CAMERA_PRESETS[activeView] || CAMERA_PRESETS.panoramic
+      const p = CAMERA_PRESETS[activeView] || CAMERA_PRESETS.panoramic
       controlsRef.current.target.set(...p.target)
       controlsRef.current.object.position.set(...p.position)
       controlsRef.current.update()
-      handleControlsChange()
     }
   }, [viewMode])
 
   return (
-    <div className="w-full flex flex-col gap-3">
-      {/* ──────────────────────────────────────────────────────────── */}
-      {/* VISOR PRINCIPAL 3D (100% LIMPIO, CERO MODALES ENCIMA)         */}
-      {/* ──────────────────────────────────────────────────────────── */}
-      <div className="relative w-full h-[540px] sm:h-[640px] rounded-3xl bg-gradient-to-b from-[#0a0f1c] via-[#060913] to-[#04060d] border border-white/[0.08] overflow-hidden shadow-2xl flex flex-col justify-between">
+    <div className="relative w-full h-[540px] sm:h-[640px] rounded-3xl bg-gradient-to-b from-[#0a0f1c] via-[#060913] to-[#04060d] border border-white/[0.08] overflow-hidden shadow-2xl flex flex-col justify-between">
       {/* Grid sutil de fondo de sala técnica */}
       <div 
         className="absolute inset-0 opacity-15 pointer-events-none"
@@ -314,16 +230,14 @@ export function GrowyCanvas({
             <OrbitControls
               ref={controlsRef}
               target={[-0.2, -0.15, -2]}
-              enablePan={true}
-              panSpeed={0.9}
+              enablePan={false}
               enableZoom={true}
-              minDistance={0.3}
-              maxDistance={12}
+              minDistance={1.2}
+              maxDistance={9.5}
               maxPolarAngle={Math.PI / 1.8}
               minPolarAngle={Math.PI / 3.8}
               dampingFactor={0.06}
               rotateSpeed={0.8}
-              onChange={handleControlsChange}
             />
           </Canvas>
 
@@ -540,88 +454,6 @@ export function GrowyCanvas({
               <Box className="w-3.5 h-3.5" />
               <span>Volver a Simulación 3D</span>
             </button>
-          </div>
-        </div>
-      )}
-      </div>
-
-      {/* ──────────────────────────────────────────────────────────── */}
-      {/* DOCK EXTERNO DE CALIBRACIÓN (100% FUERA DEL 3D, NADA ENCIMA) */}
-      {/* ──────────────────────────────────────────────────────────── */}
-      {viewMode === '3d' && (
-        <div className="w-full bg-[#080d1a]/95 border border-emerald-500/40 rounded-2xl p-3 sm:p-4 shadow-xl text-xs font-mono backdrop-blur-md transition-all">
-          <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-white/10">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
-              <span className="text-slate-200 font-bold">CALIBRADOR EXTERNO DE CÁMARA</span>
-              <span className="text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30 text-[10px] font-bold">
-                EN VIVO: {presets[activeView]?.name.toUpperCase()}
-              </span>
-            </div>
-            <div className="text-[11px] text-slate-400">
-              <span className="text-emerald-300 font-semibold">Distancia:</span> {camMetrics.distance} m
-              <span className="mx-2 text-white/20">|</span>
-              <span className="text-slate-400">🖱️ Izq: Rotar • Der: Desplazar (Pan) • Rueda: Zoom</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2.5 items-center">
-            {/* Posición */}
-            <div className="bg-black/60 p-2 rounded-xl border border-white/10">
-              <span className="text-slate-400 text-[9px] block uppercase font-bold">Posición Cámara [X, Y, Z]</span>
-              <span className="text-emerald-300 font-bold select-all text-xs">
-                [{camMetrics.pos[0]}, {camMetrics.pos[1]}, {camMetrics.pos[2]}]
-              </span>
-            </div>
-
-            {/* Target */}
-            <div className="bg-black/60 p-2 rounded-xl border border-white/10">
-              <span className="text-slate-400 text-[9px] block uppercase font-bold">Punto Focal Target [X, Y, Z]</span>
-              <span className="text-cyan-300 font-bold select-all text-xs">
-                [{camMetrics.target[0]}, {camMetrics.target[1]}, {camMetrics.target[2]}]
-              </span>
-            </div>
-
-            {/* Acciones */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handleCopyCoordinates}
-                className="flex-1 py-2 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-md text-xs active:scale-95"
-              >
-                {copied ? (
-                  <>
-                    <Check className="w-3.5 h-3.5" />
-                    <span>¡Copiado!</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-3.5 h-3.5" />
-                    <span>📋 Copiar Coordenadas</span>
-                  </>
-                )}
-              </button>
-
-              <button
-                onClick={handleSaveActiveView}
-                title="Guardar esta vista para navegarla en esta sesión"
-                className="py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 hover:text-white flex items-center justify-center gap-1 transition-all cursor-pointer border border-white/10 text-xs"
-              >
-                {savedSuccess ? (
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
-                ) : (
-                  <Save className="w-3.5 h-3.5" />
-                )}
-                <span className="hidden md:inline">{savedSuccess ? 'Guardado' : 'Guardar'}</span>
-              </button>
-
-              <button
-                onClick={handleResetActivePreset}
-                title="Restablecer a valores de fábrica"
-                className="py-2 px-2.5 rounded-xl bg-white/5 hover:bg-rose-500/20 text-slate-400 hover:text-rose-300 flex items-center justify-center transition-all cursor-pointer border border-white/10 text-xs"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-              </button>
-            </div>
           </div>
         </div>
       )}
