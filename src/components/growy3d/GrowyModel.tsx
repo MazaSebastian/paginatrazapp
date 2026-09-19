@@ -205,9 +205,9 @@ export function GrowyModel({
         {screenVisible && (
           <Html
             transform
-            distanceFactor={1.25}
+            distanceFactor={1.875}
             position={[0, 0, 0.048]}
-            className="w-[360px] h-[190px] rounded-lg overflow-hidden shadow-2xl pointer-events-auto"
+            className="w-[540px] h-[270px] rounded-lg overflow-hidden shadow-2xl pointer-events-auto select-none"
           >
             <GrowyScreenContent
               mode={mode}
