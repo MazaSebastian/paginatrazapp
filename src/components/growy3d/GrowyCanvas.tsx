@@ -113,7 +113,7 @@ export function GrowyCanvas({
         </div>
 
         {/* Controles de cámara en modo 3D */}
-        {viewMode === '3d' ? (
+        {viewMode === '3d' && (
           <div className="pointer-events-auto flex items-center gap-1 bg-black/75 p-1 rounded-full border border-white/10 backdrop-blur-md shadow-md">
             <button
               onClick={() => handleResetCamera('bed')}
@@ -147,14 +147,6 @@ export function GrowyCanvas({
             >
               Caño
             </button>
-          </div>
-        ) : (
-          /* Indicador de transmisión y post-producción comercial */
-          <div className="pointer-events-auto flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/85 border border-emerald-500/40 backdrop-blur-md shadow-xl text-[11px] font-mono">
-            <span className="inline-block w-2 h-2 rounded-full bg-rose-500 animate-ping mr-0.5" />
-            <span className="font-bold text-white tracking-wider">REC ● 4K 60FPS</span>
-            <span className="text-slate-500 hidden sm:inline">|</span>
-            <span className="text-emerald-400 font-semibold hidden sm:inline">CINEMATIC REC.709</span>
           </div>
         )}
       </div>
@@ -309,27 +301,16 @@ export function GrowyCanvas({
               />
             )}
 
-            {/* Corner Viewfinder Brackets (Estilo cámara cinematográfica profesional) */}
-            <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-emerald-400/50 pointer-events-none" />
-            <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-emerald-400/50 pointer-events-none" />
-            <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-emerald-400/50 pointer-events-none" />
-            <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-emerald-400/50 pointer-events-none" />
-
-            {/* Viñeta cinematográfica y gradiente técnico */}
+            {/* Viñeta sutil y gradiente de contraste */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-transparent to-black/65 pointer-events-none" />
           </div>
 
           {/* Telemetría HUD superpuesta en el video */}
           <div className="relative z-10 pt-14 sm:pt-16 flex flex-wrap items-center justify-between gap-3 pointer-events-none">
             <div className="bg-black/80 border border-emerald-500/30 p-3 rounded-2xl backdrop-blur-md shadow-2xl">
-              <div className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider flex items-center justify-between gap-3">
-                <span className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  Telemetría en Vivo • Sala Comercial B2
-                </span>
-                <span className="text-slate-400 text-[9px] border border-white/10 px-1.5 py-0.5 rounded">
-                  0.5x STEADYCAM
-                </span>
+              <div className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                Telemetría en Vivo • Sala Comercial B2
               </div>
               <div className="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
                 <div>
