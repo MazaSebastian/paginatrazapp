@@ -42,28 +42,29 @@ export function GrowyCanvas({
     'showreel' | 'video1_pro' | 'video2_pro' | 'photo_screen' | 'photo_canopy' | 'photo_probe' | 'photo_front'
   >('showreel')
 
-  const handleResetCamera = (view: 'front' | 'back' | 'iso' | 'bed' | 'probe') => {
+  const handleResetCamera = (view: 'panoramic' | 'front' | 'back' | 'probe' | 'iso') => {
     if (!controlsRef.current) return
-    if (view === 'front') {
-      controlsRef.current.target.set(0, 0.1, 0.6)
-      controlsRef.current.setAzimuthalAngle(0)
-      controlsRef.current.setPolarAngle(Math.PI / 2)
-    } else if (view === 'back') {
-      controlsRef.current.target.set(0, 0.1, 0.6)
-      controlsRef.current.setAzimuthalAngle(Math.PI)
-      controlsRef.current.setPolarAngle(Math.PI / 2)
-    } else if (view === 'iso') {
-      controlsRef.current.target.set(0, 0.05, -1.0)
-      controlsRef.current.setAzimuthalAngle(Math.PI / 4)
-      controlsRef.current.setPolarAngle(Math.PI / 2.6)
-    } else if (view === 'bed') {
-      controlsRef.current.target.set(0, -0.05, -1.8)
-      controlsRef.current.setAzimuthalAngle(0.24)
-      controlsRef.current.setPolarAngle(Math.PI / 2.3)
+    const camera = controlsRef.current.object
+    if (view === 'panoramic') {
+      controlsRef.current.target.set(0, -0.05, -1.4)
+      camera.position.set(2.8, 1.85, 2.8)
+      controlsRef.current.update()
+    } else if (view === 'front') {
+      controlsRef.current.target.set(0, 0.08, 0.6)
+      camera.position.set(0, 0.12, 1.9)
+      controlsRef.current.update()
     } else if (view === 'probe') {
       controlsRef.current.target.set(0.65, -0.42, 0.1)
-      controlsRef.current.setAzimuthalAngle(0.35)
-      controlsRef.current.setPolarAngle(Math.PI / 2.15)
+      camera.position.set(1.45, -0.12, 0.8)
+      controlsRef.current.update()
+    } else if (view === 'back') {
+      controlsRef.current.target.set(0, 0.08, 0.6)
+      camera.position.set(0, 0.15, -0.8)
+      controlsRef.current.update()
+    } else if (view === 'iso') {
+      controlsRef.current.target.set(0, -0.05, -1.4)
+      camera.position.set(-2.8, 1.85, 2.8)
+      controlsRef.current.update()
     }
   }
 
@@ -116,11 +117,11 @@ export function GrowyCanvas({
         {viewMode === '3d' && (
           <div className="pointer-events-auto flex items-center gap-1 bg-black/75 p-1 rounded-full border border-white/10 backdrop-blur-md shadow-md">
             <button
-              onClick={() => handleResetCamera('bed')}
+              onClick={() => handleResetCamera('panoramic')}
               className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold text-slate-300 hover:text-white hover:bg-emerald-500/20 hover:text-emerald-300 transition-colors cursor-pointer flex items-center gap-1"
             >
               <Sprout className="w-3 h-3 text-emerald-400" />
-              <span>Cama B2</span>
+              <span>Panorámica B2</span>
             </button>
             <button
               onClick={() => handleResetCamera('front')}
@@ -139,7 +140,7 @@ export function GrowyCanvas({
               onClick={() => handleResetCamera('iso')}
               className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
             >
-              360°
+              Ángulo Opuesto
             </button>
             <button
               onClick={() => handleResetCamera('back')}
@@ -158,7 +159,7 @@ export function GrowyCanvas({
         <>
           {/* Canvas Three.js con Entorno de Cultivo Completo */}
           <Canvas
-            camera={{ position: [0.22, 0.46, 2.75], fov: 48 }}
+            camera={{ position: [2.8, 1.85, 2.8], fov: 45 }}
             className="w-full h-full cursor-grab active:cursor-grabbing"
           >
             {/* Iluminación base de la sala de cultivo */}
@@ -200,11 +201,11 @@ export function GrowyCanvas({
 
             <OrbitControls
               ref={controlsRef}
-              target={[0, 0.05, -0.9]}
+              target={[0, -0.05, -1.4]}
               enablePan={false}
               enableZoom={true}
               minDistance={1.6}
-              maxDistance={7.5}
+              maxDistance={8.5}
               maxPolarAngle={Math.PI / 1.8}
               minPolarAngle={Math.PI / 3.8}
               dampingFactor={0.06}
