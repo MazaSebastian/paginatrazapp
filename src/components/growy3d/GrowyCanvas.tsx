@@ -47,13 +47,13 @@ export function GrowyCanvas({
     'showreel' | 'video1_pro' | 'video2_pro' | 'photo_screen' | 'photo_canopy' | 'photo_probe' | 'photo_front'
   >('showreel')
 
-  const [showCalibrator, setShowCalibrator] = useState(true)
+  const [showCalibrator, setShowCalibrator] = useState(false)
   const [copied, setCopied] = useState(false)
   const [savedSuccess, setSavedSuccess] = useState(false)
   const [camMetrics, setCamMetrics] = useState({
-    pos: [3.7, 2.0, 1.6],
-    target: [-0.2, -0.15, -2.0],
-    distance: 5.72
+    pos: [-3.27, 2.83, 5.34],
+    target: [-0.2, -0.15, -2],
+    distance: 8.5
   })
 
   // Escuchar movimientos de la cámara en vivo
@@ -100,8 +100,8 @@ export function GrowyCanvas({
   const handleResetToFactory = () => {
     localStorage.removeItem('growy_cam_custom_default')
     if (controlsRef.current) {
-      controlsRef.current.target.set(-0.2, -0.15, -2.0)
-      controlsRef.current.object.position.set(3.7, 2.0, 1.6)
+      controlsRef.current.target.set(-0.2, -0.15, -2)
+      controlsRef.current.object.position.set(-3.27, 2.83, 5.34)
       controlsRef.current.update()
       handleControlsChange()
     }
@@ -124,8 +124,8 @@ export function GrowyCanvas({
           console.error(e)
         }
       }
-      controlsRef.current.target.set(-0.2, -0.15, -2.0)
-      camera.position.set(3.7, 2.0, 1.6)
+      controlsRef.current.target.set(-0.2, -0.15, -2)
+      camera.position.set(-3.27, 2.83, 5.34)
       controlsRef.current.update()
       handleControlsChange()
     } else if (view === 'front') {
@@ -167,8 +167,8 @@ export function GrowyCanvas({
           console.error(e)
         }
       }
-      controlsRef.current.target.set(-0.2, -0.15, -2.0)
-      controlsRef.current.object.position.set(3.7, 2.0, 1.6)
+      controlsRef.current.target.set(-0.2, -0.15, -2)
+      controlsRef.current.object.position.set(-3.27, 2.83, 5.34)
       controlsRef.current.update()
       handleControlsChange()
     }
@@ -360,7 +360,7 @@ export function GrowyCanvas({
         <>
           {/* Canvas Three.js con Entorno de Cultivo Completo */}
           <Canvas
-            camera={{ position: [3.7, 2.0, 1.6], fov: 45 }}
+            camera={{ position: [-3.27, 2.83, 5.34], fov: 45 }}
             className="w-full h-full cursor-grab active:cursor-grabbing"
           >
             {/* Iluminación base de la sala de cultivo */}
@@ -402,7 +402,7 @@ export function GrowyCanvas({
 
             <OrbitControls
               ref={controlsRef}
-              target={[-0.2, -0.15, -2.0]}
+              target={[-0.2, -0.15, -2]}
               enablePan={false}
               enableZoom={true}
               minDistance={1.6}
