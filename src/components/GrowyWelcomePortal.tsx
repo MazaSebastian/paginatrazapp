@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sparkles, ArrowRight, Volume2, VolumeX, ShieldCheck, Activity, Cpu } from 'lucide-react'
+import { Sparkles, ArrowRight, Volume2, VolumeX, ShieldCheck, Activity, Cpu, Mouse, ChevronDown } from 'lucide-react'
 import { playAppleBootChime, playHapticTap } from '@/utils/appleBootAudio'
 
 interface GrowyWelcomePortalProps {
@@ -34,7 +34,19 @@ export function GrowyWelcomePortal({ isOpen, onClose }: GrowyWelcomePortalProps)
     return () => clearInterval(interval)
   }, [isOpen, latentMetrics.length])
 
-  // Seguimiento suave del cursor del mouse
+  // Bloquear el scroll nativo del body para evitar confusión visual con la scrollbar
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isOpen])
+
+  // Seguimiento suave del cursor del mouse y eventos de entrada (scroll, wheel, teclas, touch)
   useEffect(() => {
     if (!isOpen) return
 
@@ -45,18 +57,45 @@ export function GrowyWelcomePortal({ isOpen, onClose }: GrowyWelcomePortalProps)
       setMousePos({ x: nx, y: ny })
     }
 
+    // Si el usuario intenta scrollear con rueda o trackpad -> Abre TrazAPP OS inmediatamente
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) > 8 || Math.abs(e.deltaX) > 8) {
+        handleEnterApp()
+      }
+    }
+
+    // Si el usuario presiona Enter, Espacio, Flecha Abajo o Escape -> Entra
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (['Escape', 'Enter', ' ', 'ArrowDown', 'PageDown'].includes(e.key)) {
+        e.preventDefault()
+        handleEnterApp()
+      }
+    }
+
+    // Si el usuario en móvil desliza el dedo -> Entra
+    let touchStartY = 0
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY
+    }
+    const handleTouchMove = (e: TouchEvent) => {
+      const touchDeltaY = Math.abs(e.touches[0].clientY - touchStartY)
+      if (touchDeltaY > 15) {
         handleEnterApp()
       }
     }
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
+    window.addEventListener('wheel', handleWheel, { passive: true })
     window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('touchstart', handleTouchStart, { passive: true })
+    window.addEventListener('touchmove', handleTouchMove, { passive: true })
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('wheel', handleWheel)
       window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('touchstart', handleTouchStart)
+      window.removeEventListener('touchmove', handleTouchMove)
     }
   }, [isOpen])
 
@@ -124,8 +163,9 @@ export function GrowyWelcomePortal({ isOpen, onClose }: GrowyWelcomePortalProps)
             filter: 'blur(26px)',
             transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
           }}
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-between p-4 sm:p-8 bg-[#040711] text-white select-none overflow-hidden"
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-between p-4 sm:p-8 bg-[#040711] text-white select-none overflow-hidden cursor-pointer"
           style={{ perspective: 1200 }}
+          onClick={handleEnterApp}
         >
           {/* Fondo espacial profundo con luz radial bioluminiscente */}
           <div 
@@ -332,9 +372,15 @@ export function GrowyWelcomePortal({ isOpen, onClose }: GrowyWelcomePortalProps)
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
 
-              <span className="mt-3 text-[11px] font-mono text-slate-400 tracking-wider flex items-center gap-1.5">
-                <span>O PRESIONÁ CUALQUIER PARTE DE LA PANTALLA</span>
-              </span>
+              <motion.div
+                animate={{ y: [0, 4, 0] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                className="mt-4 flex items-center gap-2 text-xs font-mono text-emerald-300 bg-emerald-950/60 border border-emerald-500/35 px-4 py-1.5 rounded-full shadow-lg shadow-black/50"
+              >
+                <Mouse className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+                <span>Hacé clic o scrolleá para ingresar</span>
+                <ChevronDown className="w-3.5 h-3.5 text-emerald-400" />
+              </motion.div>
             </motion.div>
           </div>
 
