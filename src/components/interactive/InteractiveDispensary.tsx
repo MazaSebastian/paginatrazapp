@@ -81,20 +81,20 @@ export function InteractiveDispensary() {
   return (
     <div className="w-full max-w-6xl mx-auto rounded-3xl bg-[#090e18]/90 border border-emerald-500/20 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_35px_rgba(16,185,129,0.12)] p-4 sm:p-7 text-white relative overflow-hidden">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-6 border-b border-white/[0.08]">
-        <div>
-          <div className="flex items-center gap-2">
+      <div className="flex flex-col items-center justify-center text-center gap-3 pb-6 border-b border-white/[0.08]">
+        <div className="flex flex-col items-center justify-center text-center">
+          <div className="flex items-center justify-center gap-2">
             <span className="px-2.5 py-1 text-[11px] font-mono uppercase bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 rounded-lg font-bold">
               DISPENSARIO SEGURO & CERTIFICACIÓN REPROCANN
             </span>
           </div>
-          <p className="text-xs text-slate-300 mt-1">
+          <p className="text-xs text-slate-300 mt-1 max-w-xl mx-auto text-center">
             Entrega asistida a socios registrados con validación automática de cupo legal mensual y trazabilidad de lote.
           </p>
         </div>
 
         {/* Member Switcher for Demo */}
-        <div className="flex items-center bg-[#0d1526] p-1 rounded-2xl border border-white/10">
+        <div className="flex items-center justify-center bg-[#0d1526] p-1 rounded-2xl border border-white/10 mx-auto">
           {SAMPLE_MEMBERS.map((m, idx) => (
             <button
               key={m.id}
@@ -116,15 +116,15 @@ export function InteractiveDispensary() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
         {/* Columna Izquierda: Ficha del Paciente / Socio */}
-        <div className="lg:col-span-5 p-5 rounded-2xl bg-[#0f172a]/80 border border-white/[0.08] flex flex-col justify-between">
-          <div>
-            <div className="flex items-start justify-between gap-3 mb-4">
-              <div>
+        <div className="lg:col-span-5 p-5 rounded-2xl bg-[#0f172a]/80 border border-white/[0.08] flex flex-col justify-between items-center text-center">
+          <div className="w-full flex flex-col items-center text-center">
+            <div className="flex flex-col items-center justify-center gap-2 mb-4 text-center w-full">
+              <div className="text-center">
                 <span className="text-[10px] font-mono text-slate-400 uppercase">Socio Activo</span>
-                <h4 className="text-lg font-bold text-white">{member.name}</h4>
-                <div className="text-xs text-slate-300 font-mono mt-0.5">{member.reprocannNumber}</div>
+                <h4 className="text-lg font-bold text-white text-center">{member.name}</h4>
+                <div className="text-xs text-slate-300 font-mono mt-0.5 text-center">{member.reprocannNumber}</div>
               </div>
-              <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 ${
+              <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 mx-auto ${
                 member.status === 'valid'
                   ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                   : 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
@@ -144,16 +144,16 @@ export function InteractiveDispensary() {
             </div>
 
             {/* Diagnostic Details */}
-            <div className="space-y-2 py-3 border-y border-white/[0.06] text-xs">
-              <div className="flex justify-between">
+            <div className="space-y-2 py-3 border-y border-white/[0.06] text-xs w-full">
+              <div className="flex flex-col sm:flex-row justify-between items-center text-center gap-1">
                 <span className="text-slate-400">Patología Indicada:</span>
                 <span className="text-slate-200 font-medium">{member.pathology}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex flex-col sm:flex-row justify-between items-center text-center gap-1">
                 <span className="text-slate-400">Médico Prescriptor:</span>
                 <span className="text-slate-200 font-mono">{member.doctor}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex flex-col sm:flex-row justify-between items-center text-center gap-1">
                 <span className="text-slate-400">Fecha de Vencimiento:</span>
                 <span className={`font-mono font-medium ${member.status === 'expired' ? 'text-rose-400' : 'text-slate-200'}`}>
                   {member.expiryDate}
@@ -162,7 +162,7 @@ export function InteractiveDispensary() {
             </div>
 
             {/* Quota Progress Bar */}
-            <div className="mt-4">
+            <div className="mt-4 w-full text-center">
               <div className="flex items-center justify-between text-xs mb-1.5">
                 <span className="text-slate-400">Cupo Legal Mensual (Max 40g):</span>
                 <span className="font-mono font-bold text-emerald-400">
@@ -184,7 +184,7 @@ export function InteractiveDispensary() {
             </div>
           </div>
 
-          <div className="mt-6 pt-3 border-t border-white/[0.06] text-[11px] text-slate-400 flex items-center gap-1.5">
+          <div className="mt-6 pt-3 border-t border-white/[0.06] text-[11px] text-slate-400 flex items-center justify-center gap-1.5 w-full text-center">
             <ScanLine className="w-4 h-4 text-emerald-400" />
             <span>Verificación instantánea con credencial digital con QR</span>
           </div>
@@ -194,54 +194,54 @@ export function InteractiveDispensary() {
         <div className="lg:col-span-7 p-5 rounded-2xl bg-[#0f172a]/80 border border-white/[0.08] flex flex-col justify-between">
           {!dispenseSuccess ? (
             <div className="space-y-5">
-              <div className="flex items-center justify-between">
-                <h4 className="text-sm font-bold text-white uppercase tracking-wider">
+              <div className="flex flex-col sm:flex-row items-center justify-between text-center gap-2">
+                <h4 className="text-sm font-bold text-white uppercase tracking-wider text-center">
                   Selección de Medicación & Lote
                 </h4>
-                <span className="text-xs text-slate-400 font-mono">Báscula Certificada: 0.00g</span>
+                <span className="text-xs text-slate-400 font-mono text-center">Báscula Certificada: 0.00g</span>
               </div>
 
               {/* Selector de Producto */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => setProductType('flower')}
-                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                  className={`p-3 rounded-xl border text-center flex flex-col items-center justify-center transition-all cursor-pointer ${
                     productType === 'flower'
                       ? 'bg-emerald-500/15 border-emerald-500/50 text-white'
                       : 'bg-black/30 border-white/[0.06] text-slate-400'
                   }`}
                 >
-                  <div className="font-bold text-xs">Flores Secas Curadas</div>
-                  <div className="text-[11px] text-emerald-400 font-mono mt-0.5">Lote #TRZ-2026-LH04</div>
-                  <div className="text-[10px] text-slate-400 mt-1">THC 20.4% • Stock: 1.480g</div>
+                  <div className="font-bold text-xs text-center">Flores Secas Curadas</div>
+                  <div className="text-[11px] text-emerald-400 font-mono mt-0.5 text-center">Lote #TRZ-2026-LH04</div>
+                  <div className="text-[10px] text-slate-400 mt-1 text-center">THC 20.4% • Stock: 1.480g</div>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setProductType('oil')}
-                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                  className={`p-3 rounded-xl border text-center flex flex-col items-center justify-center transition-all cursor-pointer ${
                     productType === 'oil'
                       ? 'bg-emerald-500/15 border-emerald-500/50 text-white'
                       : 'bg-black/30 border-white/[0.06] text-slate-400'
                   }`}
                 >
-                  <div className="font-bold text-xs">Aceite Sublingual (30ml)</div>
-                  <div className="text-[11px] text-teal-400 font-mono mt-0.5">Lote #OIL-1:1-B02</div>
-                  <div className="text-[10px] text-slate-400 mt-1">CBD:THC 1:1 • Stock: 42 u</div>
+                  <div className="font-bold text-xs text-center">Aceite Sublingual (30ml)</div>
+                  <div className="text-[11px] text-teal-400 font-mono mt-0.5 text-center">Lote #OIL-1:1-B02</div>
+                  <div className="text-[10px] text-slate-400 mt-1 text-center">CBD:THC 1:1 • Stock: 42 u</div>
                 </button>
               </div>
 
               {/* Slider de Cantidad (si es flor) */}
               {productType === 'flower' && (
                 <div className="p-4 rounded-xl bg-black/30 border border-white/[0.06] space-y-3">
-                  <div className="flex justify-between items-center text-xs">
+                  <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-center gap-1">
                     <span className="text-slate-300 font-semibold">Cantidad a dispensar:</span>
                     <span className="font-mono text-xl font-black text-emerald-400">
                       {gramsToDispense} <span className="text-xs font-normal text-slate-400">gramos</span>
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-center gap-3">
                     {[5, 10, 15, 20].map((val) => (
                       <button
                         key={val}

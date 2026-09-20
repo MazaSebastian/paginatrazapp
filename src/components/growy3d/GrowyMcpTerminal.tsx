@@ -90,18 +90,18 @@ export function GrowyMcpTerminal({
     <div className="flex flex-col h-full rounded-3xl bg-[#090e18]/85 border border-white/[0.08] p-5 sm:p-6 backdrop-blur-xl shadow-xl justify-between">
       <div>
         {/* Header con tabs */}
-        <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+        <div className="flex flex-col sm:flex-row items-center justify-between text-center gap-3 pb-4 border-b border-white/[0.08]">
+          <div className="flex items-center justify-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
               <Cpu className="w-4 h-4" />
             </div>
-            <div>
+            <div className="text-center sm:text-left">
               <div className="text-sm font-bold text-white tracking-tight">Centro de Simulación Growy</div>
               <div className="text-[11px] text-slate-400 font-mono">Hardware IoT + Protocolo MCP</div>
             </div>
           </div>
 
-          <div className="flex items-center gap-1 bg-black/40 p-1 rounded-full border border-white/[0.08]">
+          <div className="flex items-center justify-center gap-1 bg-black/40 p-1 rounded-full border border-white/[0.08] mx-auto sm:mx-0">
             <button
               onClick={() => setActiveTab('mcp')}
               className={`px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
@@ -138,7 +138,7 @@ export function GrowyMcpTerminal({
         {/* CONTENIDO TAB 1: SIMULADOR MCP Y CASOS DE USO */}
         {activeTab === 'mcp' && (
           <div className="mt-4 space-y-4">
-            <div className="text-xs text-slate-300">
+            <div className="text-xs text-slate-300 text-center mx-auto max-w-lg leading-relaxed">
               Interactuá con los sensores de Growy para observar cómo reacciona el modelo 3D y cómo se ejecutan las herramientas del protocolo MCP en tiempo real:
             </div>
 
@@ -146,14 +146,14 @@ export function GrowyMcpTerminal({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               <button
                 onClick={onSimulateVpdDrop}
-                className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
+                className={`p-3 rounded-2xl border text-center flex flex-col items-center justify-center transition-all cursor-pointer ${
                   currentScenario === 'vpd_drop'
                     ? 'bg-rose-500/15 border-rose-500/50 text-white'
                     : 'bg-black/30 border-white/[0.06] text-slate-300 hover:border-emerald-500/30'
                 }`}
               >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-bold text-rose-400 flex items-center gap-1.5">
+                <div className="flex items-center justify-center gap-2 mb-1.5 w-full flex-wrap">
+                  <span className="text-xs font-bold text-rose-400 flex items-center justify-center gap-1.5">
                     <AlertTriangle className="w-3.5 h-3.5" />
                     Caída Crítica de VPD
                   </span>
@@ -161,21 +161,21 @@ export function GrowyMcpTerminal({
                     0.38 kPa
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-400 leading-snug">
+                <p className="text-[11px] text-slate-400 leading-snug text-center">
                   Humedad al 88%. El modelo 3D entra en alerta roja y el MCP ordena activar deshumidificadores.
                 </p>
               </button>
 
               <button
                 onClick={onSimulateDrySoil}
-                className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
+                className={`p-3 rounded-2xl border text-center flex flex-col items-center justify-center transition-all cursor-pointer ${
                   currentScenario === 'dry_soil'
                     ? 'bg-amber-500/15 border-amber-500/50 text-white'
                     : 'bg-black/30 border-white/[0.06] text-slate-300 hover:border-emerald-500/30'
                 }`}
               >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                <div className="flex items-center justify-center gap-2 mb-1.5 w-full flex-wrap">
+                  <span className="text-xs font-bold text-amber-400 flex items-center justify-center gap-1.5">
                     <AlertTriangle className="w-3.5 h-3.5" />
                     Sustrato Seco (A3 & B2)
                   </span>
@@ -183,7 +183,7 @@ export function GrowyMcpTerminal({
                     VWC 22%
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-400 leading-snug">
+                <p className="text-[11px] text-slate-400 leading-snug text-center">
                   Sonda TDR detecta déficit hídrico. MCP crea automáticamente tarea de fertirriego.
                 </p>
               </button>
@@ -193,7 +193,7 @@ export function GrowyMcpTerminal({
             {currentScenario !== 'normal' && (
               <button
                 onClick={onResetSimulation}
-                className="w-full py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono font-bold text-slate-300 flex items-center justify-center gap-2 cursor-pointer transition-all"
+                className="w-full py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono font-bold text-slate-300 flex items-center justify-center gap-2 cursor-pointer transition-all text-center"
               >
                 <RefreshCw className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Restablecer Parámetros Óptimos de Sala</span>
@@ -201,13 +201,13 @@ export function GrowyMcpTerminal({
             )}
 
             {/* Consola de traza MCP en vivo */}
-            <div className="mt-3 rounded-2xl bg-black/60 border border-white/[0.08] p-3 font-mono text-[11px]">
-              <div className="flex items-center justify-between pb-2 border-b border-white/[0.06] text-[10px] text-slate-400">
-                <span className="flex items-center gap-1.5 text-emerald-400 font-bold">
+            <div className="mt-3 rounded-2xl bg-black/60 border border-white/[0.08] p-3.5 font-mono text-[11px]">
+              <div className="flex flex-wrap items-center justify-between pb-2 border-b border-white/[0.06] text-[10px] text-slate-400 gap-2 text-center">
+                <span className="flex items-center justify-center gap-1.5 text-emerald-400 font-bold mx-auto sm:mx-0">
                   <Terminal className="w-3 h-3" />
                   LOG PROTOCOLO MCP TRAZAPP
                 </span>
-                <span>STATUS: 200 OK</span>
+                <span className="mx-auto sm:mx-0">STATUS: 200 OK</span>
               </div>
 
               <div className="space-y-1.5 mt-2.5 text-slate-300 text-[10.5px]">
@@ -271,7 +271,7 @@ export function GrowyMcpTerminal({
         {/* CONTENIDO TAB 2: COPILOTO IA CONVERSACIONAL (CHAT MCP) */}
         {activeTab === 'chat' && (
           <div className="mt-4 space-y-3">
-            <div className="text-xs text-slate-300">
+            <div className="text-xs text-slate-300 text-center mx-auto max-w-lg leading-relaxed">
               Preguntale a la Inteligencia Artificial conectada a Growy vía MCP. Respuestas con rigor agronómico:
             </div>
 
@@ -305,7 +305,7 @@ export function GrowyMcpTerminal({
                 </div>
               ))}
               {isTyping && (
-                <div className="p-2.5 rounded-2xl bg-black/40 border border-white/10 text-xs text-slate-400 italic flex items-center gap-2">
+                <div className="p-2.5 rounded-2xl bg-black/40 border border-white/10 text-xs text-slate-400 italic flex items-center justify-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                   <span>Consultando servidor MCP de Growy...</span>
                 </div>
@@ -314,7 +314,7 @@ export function GrowyMcpTerminal({
 
             {/* Preguntas predefinidas de alto impacto agronómico */}
             <div className="pt-2 border-t border-white/[0.08] space-y-1.5">
-              <div className="text-[10px] font-mono text-slate-400">Preguntas sugeridas:</div>
+              <div className="text-[10px] font-mono text-slate-400 text-center">Preguntas sugeridas:</div>
               <div className="flex flex-col gap-1.5">
                 <button
                   onClick={() => handleAskPredefined(
@@ -322,7 +322,7 @@ export function GrowyMcpTerminal({
                     'trazapp_get_room_telemetry({ batch_id: "LOT-B4", days_in_cure: 6 })',
                     'El lote B-4 lleva 6 días de secado a 18.2°C y 58% HR. La tasa de pérdida de humedad hídrica es de 1.4% diario (óptima para preservación de terpenos beta-mirceno). Estimamos liberación de lote para trimming en 72 horas.'
                   )}
-                  className="px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] text-left text-[11px] text-slate-300 hover:text-white transition-colors cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] text-center text-[11px] text-slate-300 hover:text-white transition-colors cursor-pointer"
                 >
                   "¿Cómo viene el secado del lote B-4 de Tapeche?" →
                 </button>
@@ -332,7 +332,7 @@ export function GrowyMcpTerminal({
                     'trazapp_update_batch_stage({ current_stage: "VEG", vegetative_days: 28, canopy_coverage: "88%" })',
                     'La sala vegetativa acumula 28 días con una cobertura foliar del 88% y nudos internodales densos. Podés cambiar el fotoperiodo a 12/12 este viernes tras realizar defoliación baja y poda apical.'
                   )}
-                  className="px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] text-left text-[11px] text-slate-300 hover:text-white transition-colors cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] text-center text-[11px] text-slate-300 hover:text-white transition-colors cursor-pointer"
                 >
                   "¿Es momento de pasar la sala a 12/12 de floración?" →
                 </button>
@@ -344,20 +344,20 @@ export function GrowyMcpTerminal({
         {/* CONTENIDO TAB 3: DETALLES DE INGENIERÍA Y HOTSPOT ACTIVO */}
         {activeTab === 'specs' && (
           <div className="mt-4 space-y-3">
-            <div className="text-xs text-slate-300">
+            <div className="text-xs text-slate-300 text-center mx-auto max-w-lg leading-relaxed">
               Tocá los hotspots en el modelo 3D para inspeccionar la arquitectura de hardware de Growy:
             </div>
 
             {/* Hotspot actual */}
             {activeHotspot && hotspotInfo[activeHotspot] ? (
-              <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30">
-                <div className="text-xs font-bold text-emerald-300 mb-1">
+              <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center flex flex-col items-center justify-center">
+                <div className="text-xs font-bold text-emerald-300 mb-1 text-center">
                   {hotspotInfo[activeHotspot].title}
                 </div>
-                <p className="text-[11.5px] text-slate-300 leading-relaxed">
+                <p className="text-[11.5px] text-slate-300 leading-relaxed text-center">
                   {hotspotInfo[activeHotspot].desc}
                 </p>
-                <div className="mt-2.5 pt-2 border-t border-emerald-500/20 flex flex-wrap gap-1.5">
+                <div className="mt-2.5 pt-2 border-t border-emerald-500/20 flex flex-wrap items-center justify-center gap-1.5 w-full">
                   {hotspotInfo[activeHotspot].specs.map((s, idx) => (
                     <span key={idx} className="text-[9.5px] font-mono bg-black/40 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">
                       {s}
@@ -374,25 +374,25 @@ export function GrowyMcpTerminal({
             <div className="grid grid-cols-2 gap-2 pt-2">
               <button
                 onClick={() => onSelectHotspot('screen')}
-                className="p-2 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] text-left text-xs text-slate-300 cursor-pointer"
+                className="p-2 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] text-center text-xs text-slate-300 cursor-pointer"
               >
                 [+] Pantalla Touch
               </button>
               <button
                 onClick={() => onSelectHotspot('sensors')}
-                className="p-2 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] text-left text-xs text-slate-300 cursor-pointer"
+                className="p-2 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] text-center text-xs text-slate-300 cursor-pointer"
               >
                 [+] Sensores Suelo & Aire
               </button>
               <button
                 onClick={() => onSelectHotspot('mount')}
-                className="p-2 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] text-left text-xs text-slate-300 cursor-pointer"
+                className="p-2 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] text-center text-xs text-slate-300 cursor-pointer"
               >
                 [+] Montaje Caño
               </button>
               <button
                 onClick={() => onSelectHotspot('mcp')}
-                className="p-2 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] text-left text-xs text-slate-300 cursor-pointer"
+                className="p-2 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] text-center text-xs text-slate-300 cursor-pointer"
               >
                 [+] Protocolo MCP
               </button>
@@ -402,8 +402,8 @@ export function GrowyMcpTerminal({
       </div>
 
       {/* Footer de compatibilidad institucional */}
-      <div className="pt-4 mt-4 border-t border-white/[0.08] flex items-center justify-between text-[11px] text-slate-400 font-mono">
-        <span className="flex items-center gap-1 text-emerald-400">
+      <div className="pt-4 mt-4 border-t border-white/[0.08] flex flex-wrap items-center justify-center sm:justify-between text-center gap-2 text-[11px] text-slate-400 font-mono">
+        <span className="flex items-center justify-center gap-1 text-emerald-400">
           <CheckCircle2 className="w-3.5 h-3.5" />
           Conectado a TrazAPP OS
         </span>

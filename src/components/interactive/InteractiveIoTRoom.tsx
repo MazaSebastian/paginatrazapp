@@ -97,27 +97,25 @@ export function InteractiveIoTRoom() {
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-500/10 rounded-full blur-[100px] pointer-events-none -ml-20 -mb-20" />
 
       {/* Header del centro de control */}
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 pb-6 border-b border-white/[0.08] relative z-10">
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <div className="w-3 h-3 rounded-full bg-emerald-400 animate-ping absolute inset-0" />
-            <div className="w-3 h-3 rounded-full bg-emerald-500 relative" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg font-bold text-white tracking-tight">Sala Cultivo Alpha-03</h3>
-              <span className="px-2 py-0.5 text-[10px] font-mono uppercase bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 rounded-md font-semibold">
-                Online • Mesh IoT Zigbee
-              </span>
+      <div className="flex flex-col items-center justify-center text-center gap-4 pb-6 border-b border-white/[0.08] relative z-10">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <div className="relative">
+              <div className="w-3 h-3 rounded-full bg-emerald-400 animate-ping absolute inset-0" />
+              <div className="w-3 h-3 rounded-full bg-emerald-500 relative" />
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Último muestreo ambiental hace 2 segundos • 14 sensores conectados
-            </p>
+            <h3 className="text-lg font-bold text-white tracking-tight">Sala Cultivo Alpha-03</h3>
+            <span className="px-2 py-0.5 text-[10px] font-mono uppercase bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 rounded-md font-semibold">
+              Online • Mesh IoT Zigbee
+            </span>
           </div>
         </div>
+        <p className="text-xs text-slate-400 -mt-2 text-center">
+          Último muestreo ambiental hace 2 segundos • 14 sensores conectados
+        </p>
 
         {/* Selector de Etapa de Sala */}
-        <div className="flex items-center bg-[#0d1526] p-1 rounded-2xl border border-white/10 w-full sm:w-auto">
+        <div className="flex items-center justify-center bg-[#0d1526] p-1 rounded-2xl border border-white/10 w-full sm:w-auto mx-auto">
           {(['veg', 'flower', 'dry'] as RoomStage[]).map((stage) => {
             const isActive = activeStage === stage
             return (
@@ -155,9 +153,9 @@ export function InteractiveIoTRoom() {
             initial={{ opacity: 0, height: 0, y: -10 }}
             animate={{ opacity: 1, height: 'auto', y: 0 }}
             exit={{ opacity: 0, height: 0, y: -10 }}
-            className="mt-4 p-3.5 rounded-2xl bg-amber-500/15 border border-amber-500/40 text-amber-200 text-xs flex items-center justify-between gap-3 overflow-hidden"
+            className="mt-4 p-3.5 rounded-2xl bg-amber-500/15 border border-amber-500/40 text-amber-200 text-xs flex flex-col sm:flex-row items-center justify-between text-center sm:text-left gap-3 overflow-hidden"
           >
-            <div className="flex items-center gap-2.5">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 text-center sm:text-left">
               <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 animate-bounce" />
               <div>
                 <span className="font-bold text-amber-300">Anomalía Detectada:</span> Elevación térmica ({currentTemp}°C) superior al umbral crítico.
@@ -166,7 +164,7 @@ export function InteractiveIoTRoom() {
             </div>
             <button
               onClick={resetAnomaly}
-              className="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 font-semibold text-[11px] border border-amber-500/30 shrink-0 cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 font-semibold text-[11px] border border-amber-500/30 shrink-0 cursor-pointer mx-auto sm:mx-0"
             >
               Normalizar
             </button>
@@ -177,19 +175,19 @@ export function InteractiveIoTRoom() {
       {/* Grid Principal de Telemetría */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4 mt-6">
         {/* Temp Card */}
-        <div className="p-4 rounded-2xl bg-[#0f172a]/70 border border-white/[0.08] hover:border-emerald-500/30 transition-all flex flex-col justify-between group">
-          <div className="flex items-center justify-between text-slate-400 mb-2">
+        <div className="p-4 rounded-2xl bg-[#0f172a]/70 border border-white/[0.08] hover:border-emerald-500/30 transition-all flex flex-col items-center justify-center text-center group">
+          <div className="flex items-center justify-center gap-1.5 text-slate-400 mb-2 w-full text-center">
             <span className="text-xs font-semibold uppercase tracking-wider">Temperatura</span>
             <Thermometer className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
           </div>
-          <div>
-            <div className="flex items-baseline gap-1">
+          <div className="flex flex-col items-center justify-center text-center w-full">
+            <div className="flex items-baseline justify-center gap-1">
               <span className={`text-3xl sm:text-4xl font-black tracking-tight font-mono ${alertTriggered ? 'text-amber-400' : 'text-white'}`}>
                 {currentTemp}
               </span>
               <span className="text-sm font-semibold text-slate-400">°C</span>
             </div>
-            <div className="text-[11px] text-emerald-400 font-mono mt-1 flex items-center gap-1">
+            <div className="text-[11px] text-emerald-400 font-mono mt-1 flex items-center justify-center gap-1 text-center">
               <span>Target: {currentPreset.targetTemp}°C</span>
               <span>• ±0.4°C</span>
             </div>
@@ -197,44 +195,44 @@ export function InteractiveIoTRoom() {
         </div>
 
         {/* Humedad Card */}
-        <div className="p-4 rounded-2xl bg-[#0f172a]/70 border border-white/[0.08] hover:border-emerald-500/30 transition-all flex flex-col justify-between group">
-          <div className="flex items-center justify-between text-slate-400 mb-2">
+        <div className="p-4 rounded-2xl bg-[#0f172a]/70 border border-white/[0.08] hover:border-emerald-500/30 transition-all flex flex-col items-center justify-center text-center group">
+          <div className="flex items-center justify-center gap-1.5 text-slate-400 mb-2 w-full text-center">
             <span className="text-xs font-semibold uppercase tracking-wider">Humedad (RH)</span>
             <Droplets className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
           </div>
-          <div>
-            <div className="flex items-baseline gap-1">
+          <div className="flex flex-col items-center justify-center text-center w-full">
+            <div className="flex items-baseline justify-center gap-1">
               <span className="text-3xl sm:text-4xl font-black tracking-tight font-mono text-white">
                 {currentPreset.targetRh}
               </span>
               <span className="text-sm font-semibold text-slate-400">%</span>
             </div>
-            <div className="text-[11px] text-cyan-400 font-mono mt-1">
+            <div className="text-[11px] text-cyan-400 font-mono mt-1 text-center">
               Punto de Rocío: 14.1°C
             </div>
           </div>
         </div>
 
         {/* VPD Card (Clave para Bio-Cultivo) */}
-        <div className="p-4 rounded-2xl bg-[#0f172a]/70 border border-white/[0.08] hover:border-emerald-500/30 transition-all flex flex-col justify-between group">
-          <div className="flex items-center justify-between text-slate-400 mb-2">
+        <div className="p-4 rounded-2xl bg-[#0f172a]/70 border border-white/[0.08] hover:border-emerald-500/30 transition-all flex flex-col items-center justify-center text-center group">
+          <div className="flex items-center justify-center gap-1.5 text-slate-400 mb-2 w-full text-center">
             <span className="text-xs font-semibold uppercase tracking-wider">VPD Transpiración</span>
             <Activity className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
           </div>
-          <div>
-            <div className="flex items-baseline gap-1">
+          <div className="flex flex-col items-center justify-center text-center w-full">
+            <div className="flex items-baseline justify-center gap-1">
               <span className={`text-3xl sm:text-4xl font-black tracking-tight font-mono ${isVpdOptimal ? 'text-emerald-400' : 'text-amber-400'}`}>
                 {currentVpd}
               </span>
               <span className="text-sm font-semibold text-slate-400">kPa</span>
             </div>
-            <div className="text-[11px] font-semibold mt-1 flex items-center gap-1">
+            <div className="text-[11px] font-semibold mt-1 flex items-center justify-center gap-1 text-center">
               {isVpdOptimal ? (
-                <span className="text-emerald-400 flex items-center gap-1">
+                <span className="text-emerald-400 flex items-center justify-center gap-1">
                   <CheckCircle2 className="w-3 h-3" /> Transpiración Foliar Óptima
                 </span>
               ) : (
-                <span className="text-amber-400 flex items-center gap-1">
+                <span className="text-amber-400 flex items-center justify-center gap-1">
                   <AlertTriangle className="w-3 h-3" /> Fuera de Parámetro
                 </span>
               )}
@@ -243,19 +241,19 @@ export function InteractiveIoTRoom() {
         </div>
 
         {/* Radiación PPFD / CO2 */}
-        <div className="p-4 rounded-2xl bg-[#0f172a]/70 border border-white/[0.08] hover:border-emerald-500/30 transition-all flex flex-col justify-between group">
-          <div className="flex items-center justify-between text-slate-400 mb-2">
+        <div className="p-4 rounded-2xl bg-[#0f172a]/70 border border-white/[0.08] hover:border-emerald-500/30 transition-all flex flex-col items-center justify-center text-center group">
+          <div className="flex items-center justify-center gap-1.5 text-slate-400 mb-2 w-full text-center">
             <span className="text-xs font-semibold uppercase tracking-wider">Flujo Fotónico</span>
             <Sun className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
           </div>
-          <div>
-            <div className="flex items-baseline gap-1">
+          <div className="flex flex-col items-center justify-center text-center w-full">
+            <div className="flex items-baseline justify-center gap-1">
               <span className="text-3xl sm:text-4xl font-black tracking-tight font-mono text-white">
                 {currentPreset.targetPpfd}
               </span>
               <span className="text-[10px] font-semibold text-slate-400">µmol/m²s</span>
             </div>
-            <div className="text-[11px] text-amber-300 font-mono mt-1">
+            <div className="text-[11px] text-amber-300 font-mono mt-1 text-center">
               CO₂: {currentPreset.co2} ppm enriquecido
             </div>
           </div>
@@ -263,18 +261,18 @@ export function InteractiveIoTRoom() {
       </div>
 
       {/* Panel Inferior: Controles de Hardware & Simulación */}
-      <div className="mt-6 pt-5 border-t border-white/[0.08] grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+      <div className="mt-6 pt-5 border-t border-white/[0.08] flex flex-col items-center text-center gap-5">
         {/* Descripción de etapa agronómica */}
-        <div className="lg:col-span-6 space-y-2">
-          <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-wide">
+        <div className="space-y-2 flex flex-col items-center text-center max-w-2xl mx-auto">
+          <div className="flex items-center justify-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-wide text-center">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Algoritmo de Control: {currentPreset.name}</span>
           </div>
-          <p className="text-xs text-slate-300 leading-relaxed">
+          <p className="text-xs text-slate-300 leading-relaxed text-center">
             {currentPreset.description}
           </p>
-          <div className="flex items-center gap-3 text-[11px] font-mono text-slate-400 pt-1">
-            <span className="flex items-center gap-1">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[11px] font-mono text-slate-400 pt-1 text-center">
+            <span className="flex items-center justify-center gap-1">
               <Timer className="w-3.5 h-3.5 text-emerald-400" />
               {currentPreset.photoperiod}
             </span>
@@ -284,10 +282,10 @@ export function InteractiveIoTRoom() {
         </div>
 
         {/* Actuadores y Switchers en Vivo */}
-        <div className="lg:col-span-6 flex flex-wrap items-center justify-start lg:justify-end gap-2.5">
+        <div className="flex flex-wrap items-center justify-center gap-2.5 w-full">
           <button
             onClick={() => setExtractorOn(!extractorOn)}
-            className={`px-3 py-2 rounded-xl border text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer ${
+            className={`px-3 py-2 rounded-xl border text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
               extractorOn 
                 ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300 shadow-sm shadow-emerald-500/20' 
                 : 'bg-white/5 border-white/10 text-slate-400'
@@ -299,7 +297,7 @@ export function InteractiveIoTRoom() {
 
           <button
             onClick={() => setCo2Injection(!co2Injection)}
-            className={`px-3 py-2 rounded-xl border text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer ${
+            className={`px-3 py-2 rounded-xl border text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
               co2Injection 
                 ? 'bg-teal-500/15 border-teal-500/40 text-teal-300 shadow-sm shadow-teal-500/20' 
                 : 'bg-white/5 border-white/10 text-slate-400'
@@ -311,7 +309,7 @@ export function InteractiveIoTRoom() {
 
           <button
             onClick={alertTriggered ? resetAnomaly : triggerAnomaly}
-            className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-600/30 to-rose-600/30 hover:from-amber-600/40 hover:to-rose-600/40 border border-amber-500/40 text-amber-200 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-sm"
+            className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-600/30 to-rose-600/30 hover:from-amber-600/40 hover:to-rose-600/40 border border-amber-500/40 text-amber-200 text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
           >
             <Zap className="w-3.5 h-3.5 text-amber-400" />
             <span>{alertTriggered ? 'Normalizar Sensores' : 'Simular Alarma Térmica'}</span>
