@@ -66,7 +66,6 @@ export function TrazappCorporateLanding() {
         <Hero 
           onOpenDemo={() => setIsDemoOpen(true)} 
           onExploreModules={() => scrollToSection('growy')} 
-          onOpenIntro={() => setIsIntroOpen(true)}
         />
 
         {/* ── SECCIÓN GROWY: HARDWARE 3D & ASISTENTE IA MCP ────────────── */}

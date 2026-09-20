@@ -89,16 +89,19 @@ export function Navbar({ onOpenDemo, onOpenIntro }: NavbarProps) {
   return (
     <>
       {/* ── BARRA SUPERIOR INSTITUCIONAL CENTRADA ───────────────────────── */}
-      <div className="border-b border-white/[0.06] bg-[#070b14]/95 backdrop-blur-md py-2 px-4 text-xs text-slate-400 z-50 relative">
-        <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-6 gap-y-1.5 text-center text-[11px] sm:text-xs">
-          <div className="flex items-center justify-center gap-2 flex-wrap">
+      <div className="border-b border-white/[0.06] bg-[#070b14]/95 backdrop-blur-md py-1.5 sm:py-2 px-3 sm:px-4 text-[11px] sm:text-xs text-slate-400 z-50 relative">
+        <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-6 gap-y-1 text-center text-[10px] sm:text-xs">
+          <div className="flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap">
             <span className="font-bold text-white flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 animate-pulse" />
               TrazAPP OS
             </span>
             <span className="text-slate-600 hidden sm:inline">•</span>
-            <span className="text-slate-300">
+            <span className="text-slate-300 hidden sm:inline">
               Plataforma Cloud de Trazabilidad, IoT y Gestión Integral de Cannabis Medicinal en Argentina
+            </span>
+            <span className="text-slate-300 sm:hidden">
+              • Biotech & IoT Cannábico
             </span>
           </div>
 

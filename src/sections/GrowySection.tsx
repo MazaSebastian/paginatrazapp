@@ -77,7 +77,10 @@ export function GrowySection({ onOpenDemo }: GrowySectionProps) {
   }
 
   return (
-    <section id="growy" className="relative z-10 py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08] scroll-mt-24">
+    <section id="growy" className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
+      {/* Separador de luz etéreo con gradiente de desvanecimiento hacia los extremos */}
+      <div className="absolute top-0 inset-x-4 sm:inset-x-16 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/25 to-transparent pointer-events-none" />
+
       {/* Background glow sutil */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-emerald-500/10 blur-[150px] pointer-events-none -z-10" />
 

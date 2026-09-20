@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowRight, Sparkles } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { SplitText } from '@/components/ui/SplitText'
 import { TextType } from '@/components/ui/TextType'
 import { SpecularButton } from '@/components/ui/SpecularButton'
@@ -9,10 +9,9 @@ import { useIsMobile } from '@/hooks/use-mobile'
 interface HeroProps {
   onOpenDemo: () => void
   onExploreModules: () => void
-  onOpenIntro?: () => void
 }
 
-export function Hero({ onOpenDemo, onExploreModules, onOpenIntro }: HeroProps) {
+export function Hero({ onOpenDemo, onExploreModules }: HeroProps) {
   const containerRef = useRef<HTMLElement>(null)
   const isMobile = useIsMobile()
 
@@ -27,44 +26,31 @@ export function Hero({ onOpenDemo, onExploreModules, onOpenIntro }: HeroProps) {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-12 pb-20 px-4 sm:px-6 lg:px-8 text-center"
+      className="relative min-h-[82vh] sm:min-h-[92vh] flex items-center justify-center overflow-hidden pt-3 sm:pt-12 pb-14 sm:pb-24 px-4 sm:px-6 lg:px-8 text-center"
     >
       {/* Background ambient lighting */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[450px] bg-gradient-to-b from-emerald-600/15 via-teal-600/10 to-transparent blur-[130px] pointer-events-none -z-10" />
       <div className="absolute top-1/2 -left-40 w-[500px] h-[500px] bg-emerald-500/10 blur-[150px] rounded-full pointer-events-none -z-10" />
       <div className="absolute top-1/2 -right-40 w-[500px] h-[500px] bg-teal-500/10 blur-[150px] rounded-full pointer-events-none -z-10" />
 
-      {/* Grid Pattern sutil */}
+      {/* Grid Pattern sutil con máscara elíptica suave */}
       <div 
-        className="absolute inset-0 opacity-[0.15] pointer-events-none -z-10"
+        className="absolute inset-0 opacity-[0.14] pointer-events-none -z-10"
         style={{
           backgroundImage: 'linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px)',
           backgroundSize: '48px 48px',
-          maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 80%)'
+          maskImage: 'radial-gradient(ellipse 90% 70% at 50% 35%, black 20%, transparent 85%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 90% 70% at 50% 35%, black 20%, transparent 85%)'
         }}
       />
 
+      {/* Gradiente de fusión suave hacia la siguiente sección (elimina el corte abrupto de fondo) */}
+      <div className="absolute bottom-0 inset-x-0 h-44 bg-gradient-to-b from-transparent via-[#060913]/70 to-[#060913] pointer-events-none -z-10" />
+
       <motion.div
-        className="relative z-10 max-w-6xl mx-auto flex flex-col items-center pt-6 sm:pt-10"
+        className="relative z-10 max-w-6xl mx-auto flex flex-col items-center pt-1 sm:pt-6"
         style={isMobile ? {} : { y, opacity }}
       >
-        {/* Badge Interactivo de Bienvenida con Growy */}
-        {onOpenIntro && (
-          <motion.button
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            onClick={onOpenIntro}
-            type="button"
-            className="mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-950/60 hover:bg-emerald-900/60 border border-emerald-500/40 text-emerald-300 text-xs font-mono transition-all cursor-pointer shadow-lg shadow-emerald-950/50 hover:border-emerald-400 group"
-          >
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
-            <span className="font-semibold tracking-wide">EXPERIENCIA GROWY IA 3D</span>
-            <span className="text-slate-500">•</span>
-            <span className="text-slate-300 group-hover:text-white transition-colors">Ver Bienvenida</span>
-            <Sparkles className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform" />
-          </motion.button>
-        )}
 
         {/* Headline con SplitText */}
         <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white max-w-5xl leading-[1.12]">
