@@ -237,8 +237,8 @@ export function GrowyWelcomePortal({ isOpen, onClose }: GrowyWelcomePortalProps)
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                   <span className="text-emerald-400 font-bold tracking-wider">TRACKING OCULAR LIVE</span>
                 </div>
-                <div className="text-slate-500 text-[10px]">
-                  CURSOR: [{mousePos.x.toFixed(2)}, {mousePos.y.toFixed(2)}]
+                <div className="text-slate-500 text-[10px] tracking-wider">
+                  SALA B2 • CANOPY ONLINE
                 </div>
               </div>
 
