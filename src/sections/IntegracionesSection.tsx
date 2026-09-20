@@ -98,27 +98,28 @@ export function IntegracionesSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: idx * 0.08 }}
-              className="p-6 rounded-3xl bg-[#090e18]/80 border border-white/[0.08] hover:border-emerald-500/40 transition-all group flex flex-col justify-between"
+              className="p-7 rounded-3xl bg-[#090e18]/80 border border-white/[0.08] hover:border-emerald-500/40 transition-all group flex flex-col items-center text-center justify-between"
             >
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-2xl bg-emerald-500/10 text-emerald-400 group-hover:scale-110 transition-transform">
+              <div className="w-full flex flex-col items-center text-center">
+                <div className="flex flex-col items-center justify-center gap-2.5 mb-5">
+                  <div className="p-3.5 rounded-2xl bg-emerald-500/10 text-emerald-400 group-hover:scale-110 transition-transform shadow-inner shadow-emerald-500/10">
                     <Icon className="w-6 h-6" />
                   </div>
                   <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase bg-white/5 text-slate-300 border border-white/10">
                     {item.badge}
                   </span>
                 </div>
-                <div className="text-[11px] font-mono text-emerald-400 font-bold uppercase tracking-wider mb-1">
+                <div className="text-[11px] font-mono text-emerald-400 font-bold uppercase tracking-wider mb-1 text-center">
                   {item.category}
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2">{item.name}</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">{item.description}</p>
+                <h3 className="text-lg font-bold text-white mb-2 text-center">{item.name}</h3>
+                <p className="text-xs text-slate-400 leading-relaxed text-center max-w-sm mx-auto">{item.description}</p>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-slate-500">
+              <div className="mt-6 pt-4 border-t border-white/[0.06] flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[11px] text-slate-500 text-center w-full">
                 <span>Plug & Play • Sin setup complejo</span>
-                <span className="text-emerald-400 font-mono">100% Conectado</span>
+                <span className="hidden sm:inline text-white/20">•</span>
+                <span className="text-emerald-400 font-mono font-semibold">100% Conectado</span>
               </div>
             </motion.div>
           )

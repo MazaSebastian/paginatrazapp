@@ -69,18 +69,24 @@ export function Features() {
             </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-3 pt-5 border-t border-white/[0.06] text-center">
-            <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.04]">
-              <div className="text-[10px] text-slate-400 font-mono uppercase">Linaje</div>
-              <div className="text-sm font-bold text-white font-mono mt-0.5">Árbol Genealógico</div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-5 border-t border-white/[0.06] text-center">
+            <div className="p-2.5 sm:p-3 rounded-2xl bg-black/40 border border-white/[0.04] flex flex-col justify-center items-center overflow-hidden">
+              <div className="text-[10px] text-slate-400 font-mono uppercase tracking-wider">Linaje</div>
+              <div className="text-xs sm:text-xs md:text-sm font-bold text-white font-mono mt-0.5 leading-tight break-words max-w-full">
+                Árbol Genealógico
+              </div>
             </div>
-            <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.04]">
-              <div className="text-[10px] text-slate-400 font-mono uppercase">Pasaporte</div>
-              <div className="text-sm font-bold text-emerald-400 font-mono mt-0.5">QR Inviolable</div>
+            <div className="p-2.5 sm:p-3 rounded-2xl bg-black/40 border border-white/[0.04] flex flex-col justify-center items-center overflow-hidden">
+              <div className="text-[10px] text-slate-400 font-mono uppercase tracking-wider">Pasaporte</div>
+              <div className="text-xs sm:text-xs md:text-sm font-bold text-emerald-400 font-mono mt-0.5 leading-tight break-words max-w-full">
+                QR Inviolable
+              </div>
             </div>
-            <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.04]">
-              <div className="text-[10px] text-slate-400 font-mono uppercase">Análisis</div>
-              <div className="text-sm font-bold text-teal-400 font-mono mt-0.5">HPLC / Cannabinoides</div>
+            <div className="p-2.5 sm:p-3 rounded-2xl bg-black/40 border border-white/[0.04] flex flex-col justify-center items-center overflow-hidden">
+              <div className="text-[10px] text-slate-400 font-mono uppercase tracking-wider">Análisis</div>
+              <div className="text-xs sm:text-xs md:text-sm font-bold text-teal-400 font-mono mt-0.5 leading-tight break-words max-w-full">
+                HPLC / Cannabinoides
+              </div>
             </div>
           </div>
         </div>
@@ -159,14 +165,18 @@ export function Features() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 pt-5 border-t border-white/[0.06] text-center">
-            <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.04]">
-              <div className="text-[10px] text-slate-400 font-mono uppercase">Conciliación</div>
-              <div className="text-sm font-bold text-emerald-400 font-mono mt-0.5">Aportes 100% Directos</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 pt-5 border-t border-white/[0.06] text-center">
+            <div className="p-2.5 sm:p-3 rounded-2xl bg-black/40 border border-white/[0.04] flex flex-col justify-center items-center overflow-hidden">
+              <div className="text-[10px] text-slate-400 font-mono uppercase tracking-wider">Conciliación</div>
+              <div className="text-xs sm:text-xs md:text-sm font-bold text-emerald-400 font-mono mt-0.5 leading-tight break-words max-w-full">
+                Aportes 100% Directos
+              </div>
             </div>
-            <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.04]">
-              <div className="text-[10px] text-slate-400 font-mono uppercase">Auditoría INASE</div>
-              <div className="text-sm font-bold text-teal-400 font-mono mt-0.5">Libro Foliado PDF</div>
+            <div className="p-2.5 sm:p-3 rounded-2xl bg-black/40 border border-white/[0.04] flex flex-col justify-center items-center overflow-hidden">
+              <div className="text-[10px] text-slate-400 font-mono uppercase tracking-wider">Auditoría INASE</div>
+              <div className="text-xs sm:text-xs md:text-sm font-bold text-teal-400 font-mono mt-0.5 leading-tight break-words max-w-full">
+                Libro Foliado PDF
+              </div>
             </div>
           </div>
         </div>

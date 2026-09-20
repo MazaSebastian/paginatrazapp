@@ -143,7 +143,7 @@ export function Pricing({ onOpenDemo }: PricingProps) {
           return (
             <div
               key={plan.name}
-              className={`p-7 sm:p-8 rounded-3xl flex flex-col justify-between relative transition-all duration-300 ${
+              className={`p-7 sm:p-8 rounded-3xl flex flex-col items-center text-center justify-between relative transition-all duration-300 ${
                 plan.highlighted
                   ? 'bg-[#091322]/95 border-2 border-emerald-500/60 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(16,185,129,0.2)] lg:-translate-y-2'
                   : 'bg-[#090e18]/80 border border-white/[0.08] hover:border-emerald-500/30'
@@ -155,12 +155,12 @@ export function Pricing({ onOpenDemo }: PricingProps) {
                 </div>
               )}
 
-              <div>
-                <h3 className="text-xl font-bold text-white mb-1">{plan.name}</h3>
-                <p className="text-xs text-slate-400 mb-6 leading-relaxed">{plan.tagline}</p>
+              <div className="w-full flex flex-col items-center text-center">
+                <h3 className="text-xl font-bold text-white mb-1 text-center">{plan.name}</h3>
+                <p className="text-xs text-slate-400 mb-6 leading-relaxed text-center max-w-xs mx-auto">{plan.tagline}</p>
 
                 {/* Precio */}
-                <div className="flex items-baseline gap-1 mb-6 pb-6 border-b border-white/[0.08]">
+                <div className="flex items-baseline justify-center gap-1 mb-6 pb-6 border-b border-white/[0.08] w-full text-center">
                   <span className="text-3xl sm:text-4xl font-black font-mono text-white tracking-tight">
                     {price}
                   </span>
@@ -170,10 +170,10 @@ export function Pricing({ onOpenDemo }: PricingProps) {
                 </div>
 
                 {/* Features List */}
-                <div className="space-y-3.5 mb-8">
+                <div className="space-y-3.5 mb-8 w-full max-w-sm flex flex-col items-center">
                   {plan.features.map((feature, i) => (
-                    <div key={i} className="flex items-start gap-3 text-xs text-slate-300">
-                      <div className="p-0.5 rounded-full bg-emerald-500/20 text-emerald-400 shrink-0 mt-0.5">
+                    <div key={i} className="flex items-center justify-center gap-2.5 text-xs text-slate-300 text-center">
+                      <div className="p-0.5 rounded-full bg-emerald-500/20 text-emerald-400 shrink-0">
                         <Check className="w-3.5 h-3.5 stroke-[2.5]" />
                       </div>
                       <span className="leading-snug">{feature}</span>
@@ -182,7 +182,7 @@ export function Pricing({ onOpenDemo }: PricingProps) {
                 </div>
               </div>
 
-              <div>
+              <div className="w-full flex flex-col items-center justify-center">
                 <SpecularButton
                   size="md"
                   radius={16}
