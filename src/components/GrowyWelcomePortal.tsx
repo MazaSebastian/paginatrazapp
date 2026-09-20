@@ -232,13 +232,10 @@ export function GrowyWelcomePortal({ isOpen, onClose }: GrowyWelcomePortalProps)
               <div className="absolute inset-x-8 top-2 h-[1px] bg-gradient-to-r from-transparent via-emerald-300/40 to-transparent" />
 
               {/* Status Header dentro de la pantalla */}
-              <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-6 px-3">
+              <div className="flex items-center justify-center text-[11px] font-mono mb-6 px-3">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                  <span className="text-emerald-400 font-bold tracking-wider">TRACKING OCULAR LIVE</span>
-                </div>
-                <div className="text-slate-500 text-[10px] tracking-wider">
-                  SALA B2 • CANOPY ONLINE
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_#34d399]" />
+                  <span className="text-emerald-400 font-bold tracking-wider">TrazAPP OS - Growy</span>
                 </div>
               </div>
 
