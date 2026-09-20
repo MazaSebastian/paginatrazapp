@@ -1,68 +1,7 @@
 import React, { useRef, useEffect } from 'react'
-import { Renderer, Program, Mesh, Color, Triangle } from 'ogl'
 import './SpecularButton.css'
 
 const PAD = 20
-
-const VERT = /* glsl */ `
-attribute vec2 position;
-void main() {
-  gl_Position = vec4(position, 0.0, 1.0);
-}
-`
-
-const FRAG = /* glsl */ `
-precision highp float;
-
-uniform vec2 uCenter;
-uniform vec2 uHalfSize;
-uniform float uRadius;
-uniform float uAngle;
-uniform float uPx;
-uniform vec3 uLineColor;
-uniform vec3 uBaseColor;
-uniform float uIntensity;
-uniform float uShineSize;
-uniform float uShineFade;
-uniform float uThickness;
-uniform float uBaseWidth;
-
-out vec4 fragColor;
-
-float sdRoundedRect(vec2 p, vec2 b, float r) {
-  vec2 q = abs(p) - b + r;
-  return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r;
-}
-
-float shapeSDF(vec2 p) { return sdRoundedRect(p, uHalfSize, uRadius); }
-
-float gaussianLine(float d, float sigma) {
-  float x = d / (sigma + 1e-6);
-  float k = mix(1.0, 1.6, smoothstep(0.0, 1.5, x));
-  return exp(-k * x * x);
-}
-
-void main() {
-  vec2 p = gl_FragCoord.xy - uCenter;
-  float d = shapeSDF(p);
-  vec2 L = vec2(cos(uAngle), sin(uAngle));
-
-  // Dark base stroke hugging the edge for a sense of thickness
-  float base = (1.0 - smoothstep(0.0, uBaseWidth, abs(d))) * 0.45;
-
-  // Symmetric specular: the edges facing toward/away from the light both catch a streak
-  vec2 nEll = normalize(p / (uHalfSize * uHalfSize) + 1e-6);
-  float phi = acos(clamp(abs(dot(nEll, L)), 0.0, 1.0));
-  float rim = 1.0 - smoothstep(uShineSize - uShineFade, uShineSize + uShineFade + 1e-4, phi);
-  float line = gaussianLine(d, uThickness);
-  float edgeClamp = 1.0 - smoothstep(0.5 * uPx, 3.0 * uPx, abs(d));
-  float hi = line * rim * edgeClamp * uIntensity;
-
-  vec3 col = uBaseColor * base + uLineColor * hi;
-  float a = clamp(base + hi, 0.0, 1.0);
-  fragColor = vec4(col, a);
-}
-`
 
 export interface SpecularButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode
@@ -116,6 +55,8 @@ export function SpecularButton({
 }: SpecularButtonProps) {
   const btnRef = useRef<HTMLButtonElement>(null)
   const fxRef = useRef<HTMLSpanElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement | null>(null)
+
   const propsRef = useRef({
     radius,
     lineColor,
@@ -149,58 +90,41 @@ export function SpecularButton({
     const fx = fxRef.current
     if (!btn || !fx) return
 
-    const dpr = window.devicePixelRatio || 1
-    const renderer = new Renderer({ alpha: true, premultipliedAlpha: true, antialias: true, dpr })
-    const gl = renderer.gl
-    gl.clearColor(0, 0, 0, 0)
-    gl.enable(gl.BLEND)
-    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
+    let isMounted = true
+    const canvas = document.createElement('canvas')
+    canvasRef.current = canvas
+    fx.appendChild(canvas)
 
-    const geometry = new Triangle(gl)
-    if ((geometry.attributes as any).uv) delete (geometry.attributes as any).uv
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
 
-    const program = new Program(gl, {
-      vertex: VERT,
-      fragment: FRAG,
-      uniforms: {
-        uCenter: { value: [0, 0] },
-        uHalfSize: { value: [1, 1] },
-        uRadius: { value: 0 },
-        uAngle: { value: 2.4 },
-        uPx: { value: dpr },
-        uLineColor: { value: [1, 1, 1] },
-        uBaseColor: { value: [0.32, 0.32, 0.32] },
-        uIntensity: { value: 1 },
-        uShineSize: { value: 0.17 },
-        uShineFade: { value: 0.7 },
-        uThickness: { value: 1 },
-        uBaseWidth: { value: dpr }
-      }
-    })
-
-    const mesh = new Mesh(gl, { geometry, program })
-    fx.appendChild(gl.canvas)
-
-    const sizeRef = { w: 1, h: 1 }
+    const sizeRef = { w: 0, h: 0 }
     const resize = () => {
-      if (!btn) return
+      if (!btn || !isMounted) return
       const rect = btn.getBoundingClientRect()
-      const w = rect.width
-      const h = rect.height
+      const w = Math.round(rect.width)
+      const h = Math.round(rect.height)
+      if (w === 0 || h === 0) return
+
       sizeRef.w = w
       sizeRef.h = h
-      renderer.setSize(w + PAD * 2, h + PAD * 2)
-      program.uniforms.uCenter.value = [(PAD + w / 2) * dpr, (PAD + h / 2) * dpr]
-      program.uniforms.uHalfSize.value = [(w / 2) * dpr, (h / 2) * dpr]
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      canvas.width = Math.round((w + PAD * 2) * dpr)
+      canvas.height = Math.round((h + PAD * 2) * dpr)
+      canvas.style.width = `${w + PAD * 2}px`
+      canvas.style.height = `${h + PAD * 2}px`
     }
+
     const ro = new ResizeObserver(resize)
     ro.observe(btn)
     resize()
 
     let pointerAngle: number | null = null
     let proximityT = 0
+
     const onPointerMove = (e: MouseEvent) => {
-      if (!btn) return
+      if (!btn || !isMounted) return
       const rect = btn.getBoundingClientRect()
       const cx = rect.left + rect.width / 2
       const cy = rect.top + rect.height / 2
@@ -209,16 +133,18 @@ export function SpecularButton({
       const dist = Math.hypot(dx, dy)
 
       if (dist === 0) {
-        const nx = (e.clientX - cx) / (rect.width / 2)
-        const ny = (cy - e.clientY) / (rect.height / 2)
-        pointerAngle = Math.atan2(2 / rect.height, -2 / rect.width) + nx * 0.3 + ny * 0.15
+        const nx = (e.clientX - cx) / (rect.width / 2 || 1)
+        const ny = (cy - e.clientY) / (rect.height / 2 || 1)
+        pointerAngle = Math.atan2(2 / (rect.height || 1), -2 / (rect.width || 1)) + nx * 0.3 + ny * 0.15
       } else {
         pointerAngle = Math.atan2(cy - e.clientY, e.clientX - cx)
       }
+
       const t = Math.max(0, 1 - dist / Math.max(propsRef.current.proximity, 1))
       proximityT = t * t * (3 - 2 * t)
     }
-    window.addEventListener('pointermove', onPointerMove)
+
+    window.addEventListener('pointermove', onPointerMove, { passive: true })
 
     let angle = 2.4
     let idleAngle = 2.4
@@ -226,11 +152,9 @@ export function SpecularButton({
     let last = performance.now()
     let raf = 0
 
-    const lineC = new Color()
-    const baseC = new Color()
-
     const update = (now: number) => {
-      raf = requestAnimationFrame(update)
+      if (!isMounted) return
+
       const dt = Math.min((now - last) / 1000, 0.05)
       last = now
       const p = propsRef.current
@@ -244,26 +168,72 @@ export function SpecularButton({
       const brightTarget = p.autoAnimate ? 1 : proximityT
       bright += (brightTarget - bright) * (1 - Math.exp(-dt * 8))
 
-      lineC.set(p.lineColor)
-      baseC.set(p.baseColor)
-      program.uniforms.uAngle.value = angle
-      program.uniforms.uRadius.value = Math.min(p.radius, Math.min(sizeRef.w, sizeRef.h) / 2) * dpr
-      program.uniforms.uLineColor.value = [lineC.r, lineC.g, lineC.b]
-      program.uniforms.uBaseColor.value = [baseC.r, baseC.g, baseC.b]
-      program.uniforms.uIntensity.value = p.intensity * bright
-      program.uniforms.uShineSize.value = (p.shineSize * Math.PI) / 180
-      program.uniforms.uShineFade.value = (p.shineFade * Math.PI) / 180
-      program.uniforms.uThickness.value = p.thickness * dpr
-      renderer.render({ scene: mesh })
+      const { w, h } = sizeRef
+      if (w > 0 && h > 0 && ctx) {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2)
+        ctx.save()
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+        ctx.clearRect(0, 0, w + PAD * 2, h + PAD * 2)
+
+        const r = Math.min(p.radius, Math.min(w, h) / 2)
+        const cx = PAD + w / 2
+        const cy = PAD + h / 2
+
+        // Posición del resplandor en el contorno
+        const hx = cx + Math.cos(angle) * (w / 2)
+        const hy = cy - Math.sin(angle) * (h / 2)
+
+        // Trazo base sutil
+        ctx.beginPath()
+        if (typeof ctx.roundRect === 'function') {
+          ctx.roundRect(PAD, PAD, w, h, r)
+        } else {
+          ctx.rect(PAD, PAD, w, h)
+        }
+        ctx.lineWidth = p.thickness
+        ctx.strokeStyle = p.baseColor
+        ctx.globalAlpha = 0.35
+        ctx.stroke()
+
+        // Resplandor especular dinámico
+        if (bright > 0.005) {
+          ctx.beginPath()
+          if (typeof ctx.roundRect === 'function') {
+            ctx.roundRect(PAD, PAD, w, h, r)
+          } else {
+            ctx.rect(PAD, PAD, w, h)
+          }
+
+          const spread = Math.max(w, h) * 0.45
+          const grad = ctx.createRadialGradient(hx, hy, 0, hx, hy, spread)
+          grad.addColorStop(0, p.lineColor)
+          grad.addColorStop(0.3, p.lineColor)
+          grad.addColorStop(1, 'transparent')
+
+          ctx.lineWidth = p.thickness * 1.6
+          ctx.strokeStyle = grad
+          ctx.globalAlpha = Math.min(1, p.intensity * bright)
+          ctx.shadowColor = p.lineColor
+          ctx.shadowBlur = 10 * p.intensity * bright
+          ctx.stroke()
+        }
+
+        ctx.restore()
+      }
+
+      raf = requestAnimationFrame(update)
     }
+
     raf = requestAnimationFrame(update)
 
     return () => {
+      isMounted = false
       cancelAnimationFrame(raf)
       ro.disconnect()
       window.removeEventListener('pointermove', onPointerMove)
-      if (gl.canvas.parentNode === fx) fx.removeChild(gl.canvas)
-      gl.getExtension('WEBGL_lose_context')?.loseContext()
+      if (canvas.parentNode === fx) {
+        fx.removeChild(canvas)
+      }
     }
   }, [])
 
