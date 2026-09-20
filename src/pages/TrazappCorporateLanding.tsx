@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Navbar } from '@/components/Navbar'
 import { Hero } from '@/sections/Hero'
+import { GrowyWelcomePortal } from '@/components/GrowyWelcomePortal'
 import { GrowySection } from '@/sections/GrowySection'
 import { InteractiveIoTRoom } from '@/components/interactive/InteractiveIoTRoom'
 import { InteractiveBatchTracker } from '@/components/interactive/InteractiveBatchTracker'
@@ -21,6 +22,17 @@ import { Cpu, Dna, Stethoscope, Briefcase } from 'lucide-react'
 
 export function TrazappCorporateLanding() {
   const [isDemoOpen, setIsDemoOpen] = useState(false)
+  const [isIntroOpen, setIsIntroOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const seen = sessionStorage.getItem('trazapp_intro_seen')
+        return !seen // True si nunca lo vio en la sesión actual
+      } catch (e) {
+        return false
+      }
+    }
+    return false
+  })
 
   const scrollToSection = (id: string) => {
     const target = document.getElementById(id)
@@ -35,16 +47,26 @@ export function TrazappCorporateLanding() {
 
   return (
     <div className="w-full min-h-screen bg-[#060913] text-slate-100 selection:bg-emerald-500/30 selection:text-white font-sans antialiased overflow-x-hidden relative">
+      {/* Portal de Bienvenida Cinemático con Growy en Modo Rostro */}
+      <GrowyWelcomePortal 
+        isOpen={isIntroOpen} 
+        onClose={() => setIsIntroOpen(false)} 
+      />
+
       <DemoModal isOpen={isDemoOpen} onClose={() => setIsDemoOpen(false)} />
 
       {/* Navbar Capsule Flotante con Barra Institucional */}
-      <Navbar onOpenDemo={() => setIsDemoOpen(true)} />
+      <Navbar 
+        onOpenDemo={() => setIsDemoOpen(true)} 
+        onOpenIntro={() => setIsIntroOpen(true)} 
+      />
 
       <main className="relative z-10">
         {/* ── HERO SECTION ────────────────────────────────────────────── */}
         <Hero 
           onOpenDemo={() => setIsDemoOpen(true)} 
           onExploreModules={() => scrollToSection('growy')} 
+          onOpenIntro={() => setIsIntroOpen(true)}
         />
 
         {/* ── SECCIÓN GROWY: HARDWARE 3D & ASISTENTE IA MCP ────────────── */}

@@ -13,6 +13,7 @@ import {
   X,
   Gauge
 } from 'lucide-react'
+import type { DomCalibration } from './GrowyDomCalibrator'
 
 export interface GrowyScreenProps {
   mode: 'face' | 'sense'
@@ -26,6 +27,7 @@ export interface GrowyScreenProps {
     soilMoisture: number
     plantsCount: number
   }
+  calibration?: DomCalibration
 }
 
 // 5 Genéticas reales documentadas en la pantalla física de la sala B2
@@ -86,7 +88,8 @@ export function GrowyScreenContent({
   onToggleMode,
   alertActive = false,
   alertMessage = 'PARÁMETROS AMBIENTALES FUERA DE RANGO',
-  telemetry
+  telemetry,
+  calibration
 }: GrowyScreenProps) {
   const [blink, setBlink] = useState(false)
   const [activeTab, setActiveTab] = useState<'lote' | 'mapa' | 'resumen'>('lote')
@@ -154,12 +157,17 @@ export function GrowyScreenContent({
 
   const selectedPlant = selectedPlantId ? plants.find(p => p.id === selectedPlantId) : null
 
+  const hitboxPad = calibration?.hitboxPadding ?? 8
+
   return (
     <div 
       onPointerDown={(e) => e.stopPropagation()}
       onMouseDown={(e) => e.stopPropagation()}
-      className="w-full h-full bg-[#050811] text-slate-100 font-mono select-none overflow-hidden flex flex-col justify-between p-2.5 relative border border-emerald-500/25 rounded-md"
+      className={`w-full h-full bg-[#050811] text-slate-100 font-mono select-none overflow-hidden flex flex-col justify-between p-2.5 relative border border-emerald-500/25 rounded-md transition-transform duration-75 ${
+        calibration?.showHitboxes ? 'ring-2 ring-purple-500 ring-offset-1 ring-offset-black' : ''
+      }`}
       style={{
+        transform: `translate(${calibration?.offsetX ?? 0}px, ${calibration?.offsetY ?? 0}px)`,
         boxShadow: alertActive 
           ? 'inset 0 0 45px rgba(225,29,72,0.35)' 
           : 'inset 0 0 45px rgba(16,185,129,0.18)'
@@ -173,6 +181,14 @@ export function GrowyScreenContent({
           backgroundSize: '100% 3px'
         }}
       />
+
+      {/* Overlay de Diagnóstico Milimétrico de Calibración */}
+      {calibration?.showHitboxes && (
+        <div className="absolute top-1 left-1/2 -translate-x-1/2 z-40 bg-purple-900/90 border border-purple-400 text-purple-200 text-[8px] font-mono px-2 py-0.5 rounded-full pointer-events-none shadow-lg animate-pulse flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+          <span>DEBUG DOM: Y:{calibration.offsetY > 0 ? '+' : ''}{calibration.offsetY}px | Hitbox:+{hitboxPad}px</span>
+        </div>
+      )}
 
       {/* ──────────────────────────────────────────────────────────── */}
       {/* MODO A: ROSTRO IA CIBERNÉTICO (STANDBY INTERACTIVO)          */}
@@ -290,18 +306,29 @@ export function GrowyScreenContent({
                   e.stopPropagation()
                   onToggleMode()
                 }}
-                className="px-2.5 py-1 rounded bg-white/15 hover:bg-white/25 text-white cursor-pointer font-bold text-[10px] flex items-center gap-1 transition-all select-none active:scale-95"
+                className={`relative px-2.5 py-1 rounded bg-white/15 hover:bg-white/25 text-white cursor-pointer font-bold text-[10px] flex items-center gap-1 transition-all select-none active:scale-95 ${
+                  calibration?.showHitboxes ? 'ring-2 ring-rose-400 ring-offset-1 ring-offset-black' : ''
+                }`}
                 title="Volver a los ojos de Growy"
               >
-                <span>👁️</span>
-                <span>ROSTRO</span>
+                <span 
+                  className="absolute -inset-x-1 pointer-events-auto"
+                  style={{
+                    top: `-${hitboxPad}px`,
+                    bottom: `-${hitboxPad}px`
+                  }}
+                />
+                <span className="relative z-10 flex items-center gap-1 pointer-events-none">
+                  <span>👁️</span>
+                  <span>ROSTRO</span>
+                </span>
               </button>
               <span className="font-bold text-cyan-400 text-[12px] tracking-wide drop-shadow-[0_0_8px_rgba(6,182,212,0.6)]">
                 TRAZAPP SENSE
               </span>
             </div>
 
-            {/* Selector de Pestañas (Tabs) con hit area amplia y stopPropagation */}
+            {/* Selector de Pestañas (Tabs) con hit area ampliada y calibrada milimétricamente */}
             <div 
               onPointerDown={(e) => e.stopPropagation()}
               className="flex items-center gap-1.5 bg-black/75 p-1 rounded-lg border border-white/20 shadow-inner"
@@ -314,14 +341,23 @@ export function GrowyScreenContent({
                   setActiveTab('lote')
                   setSelectedPlantId(null)
                 }}
-                className={`px-3 py-1 rounded-md text-[10px] font-bold transition-all cursor-pointer select-none active:scale-95 flex items-center gap-1 ${
+                className={`relative px-3 py-1 rounded-md text-[10px] font-bold transition-all cursor-pointer select-none active:scale-95 flex items-center gap-1 ${
                   activeTab === 'lote' 
                     ? 'bg-cyan-400 text-black shadow-md font-extrabold ring-1 ring-cyan-300' 
                     : 'text-slate-300 hover:text-white hover:bg-white/10'
-                }`}
+                } ${calibration?.showHitboxes ? 'ring-2 ring-cyan-400 ring-offset-1 ring-offset-black bg-cyan-400/20' : ''}`}
               >
-                <span>🧬</span>
-                <span>INFO LOTE</span>
+                <span 
+                  className="absolute -inset-x-1.5 pointer-events-auto"
+                  style={{
+                    top: `-${hitboxPad}px`,
+                    bottom: `-${hitboxPad}px`
+                  }}
+                />
+                <span className="relative z-10 flex items-center gap-1 pointer-events-none">
+                  <span>🧬</span>
+                  <span>INFO LOTE</span>
+                </span>
               </button>
               <button
                 type="button"
@@ -330,14 +366,23 @@ export function GrowyScreenContent({
                   e.stopPropagation()
                   setActiveTab('mapa')
                 }}
-                className={`px-3 py-1 rounded-md text-[10px] font-bold transition-all cursor-pointer select-none active:scale-95 flex items-center gap-1 ${
+                className={`relative px-3 py-1 rounded-md text-[10px] font-bold transition-all cursor-pointer select-none active:scale-95 flex items-center gap-1 ${
                   activeTab === 'mapa' 
                     ? 'bg-emerald-400 text-black shadow-md font-extrabold ring-1 ring-emerald-300' 
                     : 'text-slate-300 hover:text-white hover:bg-white/10'
-                }`}
+                } ${calibration?.showHitboxes ? 'ring-2 ring-emerald-400 ring-offset-1 ring-offset-black bg-emerald-400/20' : ''}`}
               >
-                <span>🗺️</span>
-                <span>MAPA PLANTAS</span>
+                <span 
+                  className="absolute -inset-x-1.5 pointer-events-auto"
+                  style={{
+                    top: `-${hitboxPad}px`,
+                    bottom: `-${hitboxPad}px`
+                  }}
+                />
+                <span className="relative z-10 flex items-center gap-1 pointer-events-none">
+                  <span>🗺️</span>
+                  <span>MAPA PLANTAS</span>
+                </span>
               </button>
               <button
                 type="button"
@@ -347,14 +392,23 @@ export function GrowyScreenContent({
                   setActiveTab('resumen')
                   setSelectedPlantId(null)
                 }}
-                className={`px-3 py-1 rounded-md text-[10px] font-bold transition-all cursor-pointer select-none active:scale-95 flex items-center gap-1 ${
+                className={`relative px-3 py-1 rounded-md text-[10px] font-bold transition-all cursor-pointer select-none active:scale-95 flex items-center gap-1 ${
                   activeTab === 'resumen' 
                     ? 'bg-teal-400 text-black shadow-md font-extrabold ring-1 ring-teal-300' 
                     : 'text-slate-300 hover:text-white hover:bg-white/10'
-                }`}
+                } ${calibration?.showHitboxes ? 'ring-2 ring-teal-400 ring-offset-1 ring-offset-black bg-teal-400/20' : ''}`}
               >
-                <span>📊</span>
-                <span>AMBIENTE</span>
+                <span 
+                  className="absolute -inset-x-1.5 pointer-events-auto"
+                  style={{
+                    top: `-${hitboxPad}px`,
+                    bottom: `-${hitboxPad}px`
+                  }}
+                />
+                <span className="relative z-10 flex items-center gap-1 pointer-events-none">
+                  <span>📊</span>
+                  <span>AMBIENTE</span>
+                </span>
               </button>
             </div>
 
@@ -740,10 +794,21 @@ export function GrowyScreenContent({
                       }, 1800)
                     }, 1200)
                   }}
-                  className="px-3 py-1 rounded bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-[9.5px] flex items-center gap-1.5 cursor-pointer transition-all active:scale-95 shadow-md shadow-emerald-500/25"
+                  className={`relative px-3 py-1 rounded bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-[9.5px] flex items-center gap-1.5 cursor-pointer transition-all active:scale-95 shadow-md shadow-emerald-500/25 ${
+                    calibration?.showHitboxes ? 'ring-2 ring-amber-400 ring-offset-1 ring-offset-black' : ''
+                  }`}
                 >
-                  <Plus className="w-3.5 h-3.5" />
-                  <span>REGISTRAR TAREA / INCIDENCIA</span>
+                  <span 
+                    className="absolute -inset-x-2 pointer-events-auto"
+                    style={{
+                      top: `-${hitboxPad}px`,
+                      bottom: `-${hitboxPad}px`
+                    }}
+                  />
+                  <span className="relative z-10 flex items-center gap-1.5 pointer-events-none">
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>REGISTRAR TAREA / INCIDENCIA</span>
+                  </span>
                 </button>
               </div>
             </div>

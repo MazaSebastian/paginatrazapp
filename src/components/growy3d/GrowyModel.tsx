@@ -4,6 +4,7 @@ import { useFrame } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
 import { GrowyScreenContent } from './GrowyScreenContent'
 import type { GrowyScreenProps } from './GrowyScreenContent'
+import type { DomCalibration } from './GrowyDomCalibrator'
 
 interface GrowyModelProps {
   mode: 'face' | 'sense'
@@ -13,6 +14,7 @@ interface GrowyModelProps {
   telemetry: GrowyScreenProps['telemetry']
   activeHotspot: string | null
   onSelectHotspot: (hotspot: string) => void
+  calibration?: DomCalibration
 }
 
 export function GrowyModel({
@@ -22,7 +24,8 @@ export function GrowyModel({
   alertMessage,
   telemetry,
   activeHotspot,
-  onSelectHotspot
+  onSelectHotspot,
+  calibration
 }: GrowyModelProps) {
   const groupRef = useRef<THREE.Group>(null)
   const [screenVisible, setScreenVisible] = useState(true)
@@ -205,8 +208,12 @@ export function GrowyModel({
         {screenVisible && (
           <Html
             transform
-            distanceFactor={0.969}
-            position={[0, 0, 0.045]}
+            distanceFactor={calibration?.distanceFactor ?? 0.969}
+            position={[
+              0, 
+              0 + (calibration?.posOffsetY ?? 0), 
+              0.045 + (calibration?.posOffsetZ ?? 0)
+            ]}
             className="w-[520px] h-[256px] rounded-sm overflow-hidden shadow-2xl pointer-events-auto select-none"
           >
             <GrowyScreenContent
@@ -215,6 +222,7 @@ export function GrowyModel({
               alertActive={alertActive}
               alertMessage={alertMessage}
               telemetry={telemetry}
+              calibration={calibration}
             />
           </Html>
         )}

@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { Sparkles, Menu, X } from 'lucide-react'
 import { SpecularButton } from '@/components/ui/SpecularButton'
 
 interface NavbarProps {
   onOpenDemo: () => void
+  onOpenIntro?: () => void
 }
 
-export function Navbar({ onOpenDemo }: NavbarProps) {
+export function Navbar({ onOpenDemo, onOpenIntro }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState<string>('iot')
@@ -103,6 +104,20 @@ export function Navbar({ onOpenDemo }: NavbarProps) {
 
           <div className="flex items-center justify-center gap-3 shrink-0">
             <span className="text-slate-700 hidden sm:inline">|</span>
+            {onOpenIntro && (
+              <>
+                <button
+                  type="button"
+                  onClick={onOpenIntro}
+                  className="text-emerald-400 hover:text-emerald-300 font-semibold hover:underline flex items-center gap-1 cursor-pointer transition-colors"
+                  title="Ver portal de bienvenida interactivo de Growy"
+                >
+                  <Sparkles className="w-3 h-3 text-emerald-400 animate-pulse" />
+                  <span>Ver Intro</span>
+                </button>
+                <span className="text-slate-600">•</span>
+              </>
+            )}
             <Link
               to="/login"
               className="text-slate-300 hover:text-white transition-colors font-medium hover:underline"
@@ -242,6 +257,19 @@ export function Navbar({ onOpenDemo }: NavbarProps) {
               >
                 Acceso Clubes →
               </Link>
+              {onOpenIntro && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false)
+                    onOpenIntro()
+                  }}
+                  className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 py-1"
+                >
+                  <Sparkles className="w-3 h-3 text-emerald-400" />
+                  <span>Ver Intro</span>
+                </button>
+              )}
             </div>
           </div>
         )}

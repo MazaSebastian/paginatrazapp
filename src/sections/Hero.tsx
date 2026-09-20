@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Sparkles } from 'lucide-react'
 import { SplitText } from '@/components/ui/SplitText'
 import { TextType } from '@/components/ui/TextType'
 import { SpecularButton } from '@/components/ui/SpecularButton'
@@ -9,9 +9,10 @@ import { useIsMobile } from '@/hooks/use-mobile'
 interface HeroProps {
   onOpenDemo: () => void
   onExploreModules: () => void
+  onOpenIntro?: () => void
 }
 
-export function Hero({ onOpenDemo, onExploreModules }: HeroProps) {
+export function Hero({ onOpenDemo, onExploreModules, onOpenIntro }: HeroProps) {
   const containerRef = useRef<HTMLElement>(null)
   const isMobile = useIsMobile()
 
@@ -47,6 +48,24 @@ export function Hero({ onOpenDemo, onExploreModules }: HeroProps) {
         className="relative z-10 max-w-6xl mx-auto flex flex-col items-center pt-6 sm:pt-10"
         style={isMobile ? {} : { y, opacity }}
       >
+        {/* Badge Interactivo de Bienvenida con Growy */}
+        {onOpenIntro && (
+          <motion.button
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            onClick={onOpenIntro}
+            type="button"
+            className="mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-950/60 hover:bg-emerald-900/60 border border-emerald-500/40 text-emerald-300 text-xs font-mono transition-all cursor-pointer shadow-lg shadow-emerald-950/50 hover:border-emerald-400 group"
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+            <span className="font-semibold tracking-wide">EXPERIENCIA GROWY IA 3D</span>
+            <span className="text-slate-500">•</span>
+            <span className="text-slate-300 group-hover:text-white transition-colors">Ver Bienvenida</span>
+            <Sparkles className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform" />
+          </motion.button>
+        )}
+
         {/* Headline con SplitText */}
         <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white max-w-5xl leading-[1.12]">
           <SplitText
