@@ -19,7 +19,6 @@ export function Navbar({ onOpenDemo, onOpenIntro }: NavbarProps) {
     { id: 'iot', label: 'Telemetría' },
     { id: 'trazabilidad', label: 'Trazabilidad' },
     { id: 'dispensario', label: 'Dispensario' },
-    { id: 'gobernanza', label: 'Gobernanza' },
     { id: 'precios', label: 'Precios' },
   ]
 
@@ -63,7 +62,7 @@ export function Navbar({ onOpenDemo, onOpenIntro }: NavbarProps) {
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
 
-    const sectionIds = ['growy', 'iot', 'trazabilidad', 'dispensario', 'gobernanza', 'precios']
+    const sectionIds = ['growy', 'iot', 'trazabilidad', 'dispensario', 'precios']
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

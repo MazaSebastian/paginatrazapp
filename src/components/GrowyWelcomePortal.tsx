@@ -203,7 +203,6 @@ export function GrowyWelcomePortal({ isOpen, onClose }: GrowyWelcomePortalProps)
                   TRAZAPP BIOTECH OS v2.4
                 </span>
               </div>
-              <span className="hidden sm:inline-flex text-slate-500 text-xs font-mono">• KERNEL ONLINE</span>
             </div>
 
             <div className="flex items-center gap-3">

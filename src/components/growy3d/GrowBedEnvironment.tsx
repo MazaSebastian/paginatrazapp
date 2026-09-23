@@ -105,29 +105,42 @@ export function GrowBedEnvironment({
       }),
       // Tallo botánico leñoso
       plantStem: new THREE.MeshStandardMaterial({
-        color: '#2d5a32',
-        roughness: 0.75,
-        metalness: 0.05,
+        color: '#28542d',
+        roughness: 0.78,
+        metalness: 0.04,
       }),
-      // Hojas de cannabis (Verde clorofila)
+      // Hojas de abanico principales (Verde clorofila profundo)
       plantLeaf: new THREE.MeshStandardMaterial({
-        color: '#286835',
-        roughness: 0.42,
+        color: '#1f5b2b',
+        roughness: 0.44,
+        metalness: 0.05,
+        side: THREE.DoubleSide,
+      }),
+      // Hojas tiernas / foliolo basal
+      plantLeafBright: new THREE.MeshStandardMaterial({
+        color: '#2ea843',
+        roughness: 0.4,
+        metalness: 0.05,
+        side: THREE.DoubleSide,
+      }),
+      // Hojas de azúcar (sugar leaves entre los cogollos)
+      sugarLeaf: new THREE.MeshStandardMaterial({
+        color: '#3cb654',
+        roughness: 0.35,
         metalness: 0.08,
         side: THREE.DoubleSide,
       }),
-      // Hojas apicales nuevas
-      plantLeafBright: new THREE.MeshStandardMaterial({
-        color: '#3cb352',
-        roughness: 0.38,
-        metalness: 0.05,
-        side: THREE.DoubleSide,
-      }),
-      // Cogollos / colas en floración
+      // Cogollos / cálices en floración
       plantCola: new THREE.MeshStandardMaterial({
-        color: '#348e42',
-        emissive: '#13401c',
-        emissiveIntensity: 0.2,
+        color: '#2b6e36',
+        roughness: 0.65,
+        metalness: 0.04,
+      }),
+      // Pistilos maduros (pelillos anaranjados/ámbar de flor madura)
+      pistil: new THREE.MeshStandardMaterial({
+        color: '#d97706',
+        emissive: '#b45309',
+        emissiveIntensity: 0.35,
         roughness: 0.6,
       }),
       // Sensor industrial de suelo (Sonda XZ-LMUS-SM-TM)
@@ -166,7 +179,7 @@ export function GrowBedEnvironment({
       zPositions.forEach((z, zi) => {
         const jitterX = ((xi * 11 + zi * 7) % 5 - 2) * 0.03
         const jitterZ = ((xi * 7 + zi * 13) % 5 - 2) * 0.03
-        list.push([x + jitterX, -0.45, z + jitterZ])
+        list.push([x + jitterX, -0.38, z + jitterZ])
       })
     })
     return list
@@ -182,6 +195,21 @@ export function GrowBedEnvironment({
     
     const curve = new THREE.CubicBezierCurve3(p0, p1, p2, p3)
     return new THREE.TubeGeometry(curve, 32, 0.016, 10, false)
+  }, [])
+
+  // Geometría procedural del folíolo botánico de Cannabis (lanceolado con nervadura y punta afilada)
+  const leafletGeometry = useMemo(() => {
+    const shape = new THREE.Shape()
+    shape.moveTo(0, 0)
+    // Curva que define el perfil aserrado/lanceolado característico
+    shape.bezierCurveTo(0.016, 0.04, 0.024, 0.11, 0, 0.22) // Punta apical
+    shape.bezierCurveTo(-0.024, 0.11, -0.016, 0.04, 0, 0) // Retorno a la base
+    return new THREE.ShapeGeometry(shape)
+  }, [])
+
+  // Geometría compacta de cálice floral (dodecaedro para faceteado orgánico de resina)
+  const calyxGeometry = useMemo(() => {
+    return new THREE.DodecahedronGeometry(0.04, 1)
   }, [])
 
   return (
@@ -276,7 +304,7 @@ export function GrowBedEnvironment({
             <mesh position={[0, 1.2, 0]} material={materials.pipeJointWhite}>
               <sphereGeometry args={[0.07, 12, 12]} />
             </mesh>
-            <mesh position={[0, -0.4, 0]} material={materials.pipeJointWhite}>
+            <mesh position={[0, -0.08, 0]} material={materials.pipeJointWhite}>
               <boxGeometry args={[0.1, 0.1, 0.1]} />
             </mesh>
           </group>
@@ -303,16 +331,16 @@ export function GrowBedEnvironment({
           </mesh>
         ))}
 
-        {/* Travesaño longitudinal medio que sostiene la red SCROG */}
-        <mesh position={[-1.15, 0.08, -2.55]} rotation={[Math.PI / 2, 0, 0]} material={materials.structurePipe}>
+        {/* Travesaño longitudinal medio que sostiene la red SCROG elevada */}
+        <mesh position={[-1.15, 0.42, -2.55]} rotation={[Math.PI / 2, 0, 0]} material={materials.structurePipe}>
           <cylinderGeometry args={[0.035, 0.035, 6.4, 12]} />
         </mesh>
-        <mesh position={[1.15, 0.08, -2.55]} rotation={[Math.PI / 2, 0, 0]} material={materials.structurePipe}>
+        <mesh position={[1.15, 0.42, -2.55]} rotation={[Math.PI / 2, 0, 0]} material={materials.structurePipe}>
           <cylinderGeometry args={[0.035, 0.035, 6.4, 12]} />
         </mesh>
 
         {/* Travesaño posterior del fondo */}
-        <mesh position={[0, 0.1, -5.8]} rotation={[0, 0, Math.PI / 2]} material={materials.structurePipe}>
+        <mesh position={[0, 0.42, -5.8]} rotation={[0, 0, Math.PI / 2]} material={materials.structurePipe}>
           <cylinderGeometry args={[0.045, 0.045, 2.3, 16]} />
         </mesh>
 
@@ -369,7 +397,7 @@ export function GrowBedEnvironment({
       {/* ──────────────────────────────────────────────────────────── */}
       {/* 5. RED DE TUTORADO SCROG A LO LARGO DEL CORREDOR              */}
       {/* ──────────────────────────────────────────────────────────── */}
-      <group position={[0, 0.08, -2.55]}>
+      <group position={[0, 0.42, -2.55]}>
         {/* Hilos longitudinales de la red */}
         {[-0.8, -0.4, 0, 0.4, 0.8].map((x, idx) => (
           <mesh key={idx} position={[x, 0, 0]} rotation={[Math.PI / 2, 0, 0]} material={materials.trellisNet}>
@@ -385,54 +413,140 @@ export function GrowBedEnvironment({
       </group>
 
       {/* ──────────────────────────────────────────────────────────── */}
-      {/* 6. CANOPIA DE 27 PLANTAS EXTENDIÉNDOSE HACIA EL FONDO         */}
-      {/* Fila 1 está a z = 0.0 (justo detrás de Growy) y fila 9 a z = -5.6 */}
+      {/* 6. CANOPIA DE 27 PLANTAS DE CANNABIS EXTENDIÉNDOSE AL FONDO  */}
       {/* ──────────────────────────────────────────────────────────── */}
       <group ref={foliageGroupRef}>
         {plantPositions.map((pos, pIdx) => {
-          const heightScale = 0.88 + (pIdx % 3) * 0.08
+          const heightScale = 0.96 + (pIdx % 4) * 0.07
+          const baseRotation = (pIdx * 1.37) % (Math.PI * 2)
+
           return (
-            <group key={pIdx} position={pos} scale={[1, heightScale, 1]}>
-              {/* Tallo principal botánico */}
-              <mesh position={[0, 0.28, 0]} material={materials.plantStem}>
-                <cylinderGeometry args={[0.025, 0.045, 0.56, 8]} />
+            <group key={pIdx} position={pos} rotation={[0, baseRotation, 0]} scale={[1, heightScale, 1]}>
+              {/* Tallo botánico leñoso principal, alto y vigoroso */}
+              <mesh position={[0, 0.44, 0]} material={materials.plantStem}>
+                <cylinderGeometry args={[0.016, 0.034, 0.88, 8]} />
               </mesh>
 
-              {/* Ramas laterales con hojas compuestas de cannabis */}
-              {[0.16, 0.32, 0.46].map((nodeY, nIdx) => (
-                <group key={nIdx} position={[0, nodeY, 0]}>
-                  {[0, Math.PI / 2, Math.PI, Math.PI * 1.5].map((angle, leafIdx) => (
-                    <group 
-                      key={leafIdx} 
-                      rotation={[0.28, angle + (pIdx * 0.35), 0.22]}
-                    >
-                      <mesh position={[0.2, 0.04, 0]} rotation={[0, 0, -0.2]} material={materials.plantLeaf}>
-                        <coneGeometry args={[0.12, 0.34, 5]} />
-                      </mesh>
-                      <mesh position={[0.16, 0.04, 0.08]} rotation={[0, 0.25, -0.22]} material={materials.plantLeafBright}>
-                        <coneGeometry args={[0.07, 0.24, 4]} />
-                      </mesh>
-                      <mesh position={[0.16, 0.04, -0.08]} rotation={[0, -0.25, -0.22]} material={materials.plantLeafBright}>
-                        <coneGeometry args={[0.07, 0.24, 4]} />
-                      </mesh>
-                    </group>
-                  ))}
+              {/* 6 Pisos de Nudos vegetativos con hojas de abanico características de Cannabis (Fan Leaves) */}
+              {[
+                { y: 0.12, fanScale: 1.20, branches: 4, droop: 0.38 },
+                { y: 0.25, fanScale: 1.35, branches: 4, droop: 0.30 },
+                { y: 0.39, fanScale: 1.25, branches: 4, droop: 0.24 }, // A ras de la red SCROG
+                { y: 0.53, fanScale: 1.12, branches: 4, droop: 0.18 }, // Superando la red SCROG
+                { y: 0.67, fanScale: 0.96, branches: 4, droop: 0.14 },
+                { y: 0.80, fanScale: 0.80, branches: 3, droop: 0.10 },
+              ].map((tier, tIdx) => (
+                <group key={tIdx} position={[0, tier.y, 0]}>
+                  {Array.from({ length: tier.branches }).map((_, bIdx) => {
+                    const branchAngle = (bIdx * (Math.PI * 2) / tier.branches) + (tIdx * 0.42)
+                    return (
+                      <group key={bIdx} rotation={[0, branchAngle, 0]}>
+                        {/* Pecíolo botánico */}
+                        <mesh position={[0.09, -0.01, 0]} rotation={[0, 0, -tier.droop]} material={materials.plantStem}>
+                          <cylinderGeometry args={[0.004, 0.005, 0.18, 5]} />
+                        </mesh>
+
+                        {/* Abanico de 5 folíolos (Palmate Leaf auténtico de cannabis) */}
+                        <group 
+                          position={[0.18, -0.01 - (tier.droop * 0.09), 0]} 
+                          rotation={[tier.droop * 0.5, 0, -tier.droop]}
+                          scale={[tier.fanScale, tier.fanScale, tier.fanScale]}
+                        >
+                          {/* Folíolo Central (Lanza principal más larga) */}
+                          <mesh geometry={leafletGeometry} material={materials.plantLeaf} scale={[1.15, 1.35, 1]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} />
+                          
+                          {/* Folíolos Laterales Medios (±26°) */}
+                          <mesh geometry={leafletGeometry} material={materials.plantLeaf} scale={[0.96, 1.15, 1]} rotation={[Math.PI / 2, 0, -Math.PI / 2 - 0.45]} />
+                          <mesh geometry={leafletGeometry} material={materials.plantLeaf} scale={[0.96, 1.15, 1]} rotation={[Math.PI / 2, 0, -Math.PI / 2 + 0.45]} />
+
+                          {/* Folíolos Basales Menores (±52°) */}
+                          <mesh geometry={leafletGeometry} material={materials.plantLeafBright} scale={[0.76, 0.90, 1]} rotation={[Math.PI / 2, 0, -Math.PI / 2 - 0.9]} />
+                          <mesh geometry={leafletGeometry} material={materials.plantLeafBright} scale={[0.76, 0.90, 1]} rotation={[Math.PI / 2, 0, -Math.PI / 2 + 0.9]} />
+                        </group>
+                      </group>
+                    )
+                  })}
                 </group>
               ))}
 
-              {/* Corona apical floreciente (Cola de floración) */}
-              <group position={[0, 0.6, 0]}>
-                <mesh material={materials.plantCola}>
-                  <sphereGeometry args={[0.16, 8, 8]} />
-                </mesh>
-                {[0, 1.25, 2.5, 3.75, 5.0].map((rotA, i) => (
-                  <mesh 
-                    key={i} 
-                    position={[Math.cos(rotA) * 0.13, 0.04, Math.sin(rotA) * 0.13]} 
-                    rotation={[0.35, rotA, 0.25]} 
-                    material={materials.plantLeafBright}
-                  >
-                    <coneGeometry args={[0.065, 0.2, 4]} />
+              {/* 4 Ramas laterales satélite que suben en abanico cruzando la red SCROG */}
+              {[
+                { x: -0.16, z: 0.14, angle: -0.38 },
+                { x: 0.16, z: 0.14, angle: 0.38 },
+                { x: -0.14, z: -0.16, angle: -0.35 },
+                { x: 0.14, z: -0.16, angle: 0.35 }
+              ].map((branch, rIdx) => (
+                <group key={rIdx} position={[branch.x, 0.46, branch.z]}>
+                  {/* Tallo lateral en ángulo hacia el marco del tutorado */}
+                  <mesh position={[branch.x * 0.4, 0.10, branch.z * 0.4]} rotation={[0, 0, branch.angle]} material={materials.plantStem}>
+                    <cylinderGeometry args={[0.007, 0.010, 0.24, 6]} />
+                  </mesh>
+                  {/* Cogollo satélite frondoso cruzando la red */}
+                  <group position={[branch.x * 0.85, 0.22, branch.z * 0.85]} scale={[0.75, 0.85, 0.75]}>
+                    <mesh geometry={calyxGeometry} material={materials.plantCola} position={[0, 0.05, 0]} scale={[1.1, 1.3, 1.1]} />
+                    <mesh geometry={calyxGeometry} material={materials.plantCola} position={[0, -0.02, 0]} scale={[1.25, 1.1, 1.25]} />
+                    <mesh geometry={calyxGeometry} material={materials.plantCola} position={[0, 0.11, 0]} scale={[0.85, 1.1, 0.85]} />
+                    {/* Hojas resinosas satélite */}
+                    {[0, Math.PI * 0.66, Math.PI * 1.33].map((rot, i) => (
+                      <mesh key={i} geometry={leafletGeometry} material={materials.sugarLeaf} scale={[0.5, 0.68, 1]} rotation={[Math.PI / 2 - 0.28, 0, rot]} />
+                    ))}
+                    {/* Pistilos satélite */}
+                    <mesh position={[0.02, 0.06, 0.02]} material={materials.pistil}>
+                      <cylinderGeometry args={[0.0018, 0.0018, 0.035, 4]} />
+                    </mesh>
+                  </group>
+                </group>
+              ))}
+
+              {/* COLA APICAL PRINCIPAL (Gran cogollo dominante, alzándose sobre la canopia) */}
+              <group position={[0, 0.86, 0]}>
+                {/* Estructura estratificada de cálices apilados en cono botánico orgánico */}
+                <group position={[0, 0, 0]}>
+                  {/* Base ancha de cálices florales */}
+                  <mesh geometry={calyxGeometry} material={materials.plantCola} position={[0, -0.04, 0]} scale={[1.6, 1.3, 1.6]} />
+                  <mesh geometry={calyxGeometry} material={materials.plantCola} position={[0.03, 0.02, 0.02]} scale={[1.4, 1.2, 1.35]} />
+                  {/* Nivel medio de la flor */}
+                  <mesh geometry={calyxGeometry} material={materials.plantCola} position={[-0.02, 0.08, -0.015]} scale={[1.25, 1.3, 1.2]} />
+                  <mesh geometry={calyxGeometry} material={materials.plantCola} position={[0.01, 0.14, 0.01]} scale={[1.05, 1.25, 1.05]} />
+                  {/* Punta apical de la flor */}
+                  <mesh geometry={calyxGeometry} material={materials.plantCola} position={[0, 0.20, 0]} scale={[0.80, 1.35, 0.80]} />
+                </group>
+
+                {/* 4 Niveles de Sugar Leaves (Hojitas de azúcar brotando entre los cálices) */}
+                {[
+                  { y: -0.02, r: 0.075, scale: 0.65, rotZ: 0.38, count: 5 },
+                  { y: 0.05,  r: 0.060, scale: 0.52, rotZ: 0.28, count: 5 },
+                  { y: 0.12,  r: 0.045, scale: 0.40, rotZ: 0.20, count: 4 },
+                  { y: 0.18,  r: 0.032, scale: 0.30, rotZ: 0.12, count: 3 },
+                ].map((tier, sIdx) => (
+                  <group key={sIdx} position={[0, tier.y, 0]}>
+                    {Array.from({ length: tier.count }).map((_, i) => {
+                      const a = (i * (Math.PI * 2) / tier.count) + (sIdx * 0.6)
+                      return (
+                        <mesh
+                          key={i}
+                          geometry={leafletGeometry}
+                          material={materials.sugarLeaf}
+                          position={[Math.cos(a) * tier.r, 0, Math.sin(a) * tier.r]}
+                          rotation={[Math.PI / 2 - tier.rotZ, 0, a + Math.PI / 2]}
+                          scale={[tier.scale, tier.scale * 1.2, 1]}
+                        />
+                      )
+                    })}
+                  </group>
+                ))}
+
+                {/* Pistilos maduros (pelillos ámbar/anaranjados de maduración) */}
+                {[
+                  [0.045, -0.01, 0.035],
+                  [-0.04, 0.04, 0.03],
+                  [0.02, 0.10, -0.04],
+                  [-0.03, 0.14, 0.02],
+                  [0.015, 0.18, 0.025],
+                  [-0.01, 0.22, -0.015],
+                ].map((pPos, i) => (
+                  <mesh key={i} position={pPos as [number, number, number]} material={materials.pistil}>
+                    <cylinderGeometry args={[0.002, 0.002, 0.04, 4]} />
                   </mesh>
                 ))}
               </group>

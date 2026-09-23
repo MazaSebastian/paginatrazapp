@@ -61,7 +61,7 @@ export function GrowyMcpTerminal({
   const hotspotInfo: Record<string, { title: string; desc: string; specs: string[] }> = {
     screen: {
       title: 'Pantalla Táctil TrazAPP SENSE',
-      desc: 'Panel OLED multitáctil capacitivo integrado. Permite alternar entre el Face Mode (rostro IA biofílico con telemetría viva) y el Sense Mode (mapa de 27 plantas en Cama B2, genéticas activas y registro de incidencias sin teléfono).',
+      desc: 'Panel OLED multitáctil capacitivo integrado. Permite alternar entre el Face Mode (Rostro IA/Growy escaneando el sistema cada 10 segundos) y el Sense Mode (mapa de 27 plantas en Cama B2, genéticas activas y registro de incidencias sin teléfono).',
       specs: ['Panel OLED 6.5" 1080p', 'Respuesta táctil industrial', 'Apto condensación y humedad']
     },
     sensors: {
@@ -139,7 +139,7 @@ export function GrowyMcpTerminal({
         {activeTab === 'mcp' && (
           <div className="mt-4 space-y-4">
             <div className="text-xs text-slate-300 text-center mx-auto max-w-lg leading-relaxed">
-              Interactuá con los sensores de Growy para observar cómo reacciona el modelo 3D y cómo se ejecutan las herramientas del protocolo MCP en tiempo real:
+              Interactuá con los sensores de Growy para observar cómo reacciona y cómo se ejecutan las herramientas del protocolo MCP en tiempo real:
             </div>
 
             {/* Botones de escenarios */}
@@ -162,7 +162,7 @@ export function GrowyMcpTerminal({
                   </span>
                 </div>
                 <p className="text-[11px] text-slate-400 leading-snug text-center">
-                  Humedad al 88%. El modelo 3D entra en alerta roja y el MCP ordena activar deshumidificadores.
+                  Humedad al 88%. Growy entra en alerta roja y el MCP ordena activar deshumidificadores.
                 </p>
               </button>
 
